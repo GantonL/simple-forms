@@ -7,8 +7,7 @@ import {
 	Settings,
 	DatabaseZap,
 	LogIn,
-	Signature,
-	Shield
+	Signature
 } from '@lucide/svelte';
 
 export interface GroupedRoutes {
@@ -24,11 +23,6 @@ export const AppRoutes: GroupedRoutes[] = [
 				label: 'common.settings',
 				path: '/settings',
 				icon: Settings
-			},
-			{
-				label: 'common.auth_protected',
-				path: '/user',
-				icon: Shield
 			}
 		]
 	},
