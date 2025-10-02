@@ -1,11 +1,9 @@
 import type { Link } from '$lib/models/link';
 import {
-	Banana,
 	BookLock,
 	Cookie,
 	Handshake,
 	PersonStanding,
-	AlertTriangle,
 	Settings,
 	Server,
 	DatabaseZap,
@@ -24,25 +22,9 @@ export const AppRoutes: GroupedRoutes[] = [
 		title: 'common.application',
 		children: [
 			{
-				label: 'common.example',
-				path: '/example',
-				icon: Banana
-			},
-			{
 				label: 'common.settings',
 				path: '/settings',
 				icon: Settings
-			},
-			{
-				label: 'common.error_boundary',
-				path: '/error-boundary',
-				icon: AlertTriangle
-			},
-			{
-				label: 'common.manage_cookies',
-				path: '/manage-cookies',
-				icon: Cookie,
-				authenticationRequired: false
 			},
 			{
 				label: 'common.server_health',
@@ -65,6 +47,12 @@ export const AppRoutes: GroupedRoutes[] = [
 				label: 'common.cookies_policy',
 				path: '/policies/cookies',
 				icon: Cookie
+			},
+			{
+				label: 'common.manage_cookies',
+				path: '/manage-cookies',
+				icon: Cookie,
+				authenticationRequired: false
 			},
 			{
 				label: 'common.privacy_policy',
