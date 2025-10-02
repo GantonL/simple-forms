@@ -1,0 +1,26 @@
+{
+	"description": "תבנית לבניית אפליקציית Sveltekit",
+	"pages": {
+		"example": {
+			"description": "עמוד דוגמה שמציג תוכן דמה שניתן לגלילה"
+		},
+		"settings": {
+			"description": "הגדרות מערכת כלליות"
+		},
+		"accessibility_statement": {
+			"description": "מידע על תכונות נגישות ועמידה בסטנדרטים"
+		},
+		"manage_cookies": {
+			"description": "ניהול העדפות והגדרות עוגיות"
+		},
+		"cookies_policy": {
+			"description": "המדיניות שלנו לגבי עוגיות וטכנולוגיות מעקב"
+		},
+		"privacy_policy": {
+			"description": "כיצד אנו אוספים, משתמשים ומגנים על המידע האישי שלך"
+		},
+		"terms_of_service": {
+			"description": "תנאי השירות לשימוש בשירות שלנו"
+		}
+	}
+}
