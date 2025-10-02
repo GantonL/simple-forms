@@ -1,10 +1,10 @@
 services:
   db:
     image: postgres:latest
-    container_name: postgres
+    container_name: simple-forms-postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: simple-forms-postgres
+      POSTGRES_PASSWORD: simple-forms-postgres
+      POSTGRES_DB: simple-forms-postgres
     ports:
       - '5432:5432'
