@@ -1,1 +1,0 @@
-This endpoint (GET /api/health) performs a basic sanity check to verify that the server is responsive and operational. It provides a simple ping mechanism to confirm the application server is running and can process requests.

@@ -5,7 +5,6 @@ import {
 	Handshake,
 	PersonStanding,
 	Settings,
-	Server,
 	DatabaseZap,
 	LogIn,
 	Signature,
@@ -25,12 +24,6 @@ export const AppRoutes: GroupedRoutes[] = [
 				label: 'common.settings',
 				path: '/settings',
 				icon: Settings
-			},
-			{
-				label: 'common.server_health',
-				path: '/health',
-				icon: Server,
-				authenticationRequired: false
 			},
 			{
 				label: 'common.auth_protected',
