@@ -59,17 +59,6 @@ export const AppRoutes: GroupedRoutes[] = [
 		]
 	},
 	{
-		title: 'common.demos',
-		children: [
-			{
-				label: 'common.database_operations',
-				path: '/database-operations',
-				icon: DatabaseZap,
-				authenticationRequired: false
-			}
-		]
-	},
-	{
 		title: 'common.authentication',
 		excludeFromMainMenu: true,
 		children: [
