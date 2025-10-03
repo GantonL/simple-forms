@@ -1,1 +1,1 @@
-export type TranslatableString = `${'common' | 'seo' | 'homepage'}.${string}`;
+export type TranslatableString = `${'common' | 'seo'}.${string}`;
