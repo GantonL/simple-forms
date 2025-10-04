@@ -4,11 +4,11 @@
 		"en-US": "English"
 	},
 	"brand": {
-		"name": "My Brand",
+		"name": "Simple Forms",
 		"description": "The best brand that does amazing things",
-		"support-email": "support@my-brand.com"
+		"support-email": "support@simple-forms.com"
 	},
-	"copyright": "© {{year}} My Brand. All rights reserved.",
+	"copyright": "© {{year}} Simple Forms. All rights reserved.",
 	"privacy_policy": "Privacy Policy",
 	"terms_of_service": "Terms of Service",
 	"error_number": "Error ({{number}})",
