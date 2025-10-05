@@ -4,11 +4,11 @@
 		"en-US": "English"
 	},
 	"brand": {
-		"name": "המותג שלי",
-		"description": "המותג המטריף שלי שעושה דברים מגניבים",
+		"name": "טפסים פשוטים",
+		"description": "ניהול, הפצה וחתימה על טפסים",
 		"support-email": "support@my-brand.com"
 	},
-	"copyright": "© {{year}} המותג שלי. כל הזכויות שמורות.",
+	"copyright": "© {{year}} כל הזכויות שמורות. טפסים פשוטים.",
 	"privacy_policy": "מדיניות פרטיות",
 	"terms_of_service": "תנאי שירות",
 	"error_number": "שגיאה ({{number}})",
@@ -83,5 +83,7 @@
 		"PASSWORD_TOO_SHORT": "סיסמה איננה ארוכה מספיק",
 		"USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "כבר קיים משתמש עם כתובת הדוא״ל הזאת"
 	},
-	"scroll_to_top": "חזרה למעלה"
+	"scroll_to_top": "חזרה למעלה",
+	"dashboard": "לוח בקרה",
+	"forms": "טפסים"
 }

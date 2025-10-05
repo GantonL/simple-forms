@@ -5,7 +5,7 @@
 	},
 	"brand": {
 		"name": "Simple Forms",
-		"description": "The best brand that does amazing things",
+		"description": "Management, distribution & signing forms",
 		"support-email": "support@simple-forms.com"
 	},
 	"copyright": "© {{year}} Simple Forms. All rights reserved.",
@@ -83,5 +83,7 @@
 		"PASSWORD_TOO_SHORT": "Password is not long enough",
 		"USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "User with this email already exists"
 	},
-	"scroll_to_top": "Scroll to top"
+	"scroll_to_top": "Scroll to top",
+	"dashboard": "Dashboard",
+	"forms": "Forms"
 }

@@ -1,5 +1,14 @@
 import type { Link } from '$lib/models/link';
-import { BookLock, Cookie, Handshake, PersonStanding, LogIn, Signature } from '@lucide/svelte';
+import {
+	BookLock,
+	Cookie,
+	Handshake,
+	PersonStanding,
+	LogIn,
+	Signature,
+	FileSignature,
+	LayoutDashboard
+} from '@lucide/svelte';
 
 export interface GroupedRoutes {
 	title: string;
@@ -9,7 +18,18 @@ export interface GroupedRoutes {
 export const AppRoutes: GroupedRoutes[] = [
 	{
 		title: 'common.application',
-		children: []
+		children: [
+			{
+				label: 'common.dashboard',
+				path: '/dashboard',
+				icon: LayoutDashboard
+			},
+			{
+				label: 'common.forms',
+				path: '/forms',
+				icon: FileSignature
+			}
+		]
 	},
 	{
 		title: 'common.site',
