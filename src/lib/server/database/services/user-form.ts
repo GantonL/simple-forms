@@ -1,4 +1,4 @@
-import { inArray, type Column } from 'drizzle-orm';
+import { eq, inArray, type Column } from 'drizzle-orm';
 import { UserFormTable, type UserFormTableInsert } from '../schemas/form';
 import type { WhereCondition } from './abstract';
 import { provider } from './provider';
@@ -12,7 +12,9 @@ import {
 export const Service = provider.getFactory().getService(UserFormTable);
 
 export const getUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
-	return getUrlFiltersUtil(url, { searchColumns: [] });
+	const baseUrlFilters = getUrlFiltersUtil(url, { searchColumns: [] });
+	const serviceUrlFilters = getServiveUrlFilters(url);
+	return [...baseUrlFilters, ...serviceUrlFilters];
 };
 
 type UserFormFilters = BodyFiltersUtil & {
@@ -52,6 +54,16 @@ const getServiceSpecificBodyFilters = (
 				conditions.push(inArray(column, value));
 			}
 		}
+	}
+	return conditions;
+};
+
+const getServiveUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
+	const searchParams = url.searchParams;
+	const pli = searchParams.get('pli');
+	const conditions: WhereCondition<typeof UserFormTable>[] = [];
+	if (pli) {
+		conditions.push(eq(UserFormTable.public_link_identifier, pli));
 	}
 	return conditions;
 };
