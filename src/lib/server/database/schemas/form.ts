@@ -1,4 +1,4 @@
-import { jsonb, numeric, pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { integer, jsonb, pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { user } from './auth';
 
 export const FormTemplateTable = pgTable('form_template', {
@@ -21,7 +21,7 @@ export const UserFormTable = pgTable('user_form', {
 	user_id: text('user_id')
 		.notNull()
 		.references(() => user.id),
-	template_id: numeric('template_id')
+	template_id: integer('template_id')
 		.notNull()
 		.references(() => FormTemplateTable.id),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -30,7 +30,7 @@ export const UserFormTable = pgTable('user_form', {
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
 	public_link_identifier: uuid('public_link_identifier').defaultRandom(),
-	submissions: numeric('submissions')
+	submissions: integer('submissions')
 });
 
 export type UserForm = typeof UserFormTable.$inferSelect;
@@ -38,7 +38,7 @@ export type UserFormTableInsert = typeof UserFormTable.$inferInsert;
 
 export const FormSubmissionTable = pgTable('form_submission', {
 	id: serial('id').primaryKey(),
-	user_form_id: numeric('user_form_id')
+	user_form_id: integer('user_form_id')
 		.notNull()
 		.references(() => UserFormTable.id),
 	data: jsonb('data').notNull(),
