@@ -61,9 +61,13 @@ const getServiceSpecificBodyFilters = (
 const getServiveUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
 	const searchParams = url.searchParams;
 	const pli = searchParams.get('pli');
+	const uid = searchParams.get('uid');
 	const conditions: WhereCondition<typeof UserFormTable>[] = [];
 	if (pli) {
 		conditions.push(eq(UserFormTable.public_link_identifier, pli));
+	}
+	if (uid) {
+		conditions.push(eq(UserFormTable.user_id, uid));
 	}
 	return conditions;
 };
