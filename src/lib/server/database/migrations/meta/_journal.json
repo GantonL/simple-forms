@@ -15,6 +15,13 @@
       "when": 1759866133634,
       "tag": "0001_noisy_professor_monster",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1759952766682,
+      "tag": "0002_shiny_stephen_strange",
+      "breakpoints": true
     }
   ]
 }
