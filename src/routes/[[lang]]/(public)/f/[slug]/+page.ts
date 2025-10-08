@@ -1,10 +1,19 @@
 import { GET } from '$lib/api/helpers/request';
-import type { UserForm } from '$lib/server/database/schemas/form';
-import { UsersForms } from '../../../../api';
+import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
+import { FormsTemplates, UsersForms } from '../../../../api';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const publicLinkIndetifier = params.slug;
-	const data = await GET<UserForm>(`${UsersForms}?pli=${publicLinkIndetifier}&limit=1`, { fetch });
-	return { data };
+	const userForm = await GET<UserForm>(`${UsersForms}?pli=${publicLinkIndetifier}&limit=1`, {
+		fetch
+	});
+	const template = await GET<FormTemplate>(`${FormsTemplates}/${userForm.template_id}`, { fetch });
+
+	return {
+		schema: template.schema,
+		form: {
+			id: userForm.id
+		}
+	};
 };
