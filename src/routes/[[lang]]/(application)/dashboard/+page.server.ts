@@ -1,4 +1,5 @@
 import { GET } from '$lib/api/helpers/request';
+import { SearchParams } from '$lib/enums/search-params';
 import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
 import { FormsTemplates, UsersForms } from '../../../api';
 import type { PageServerLoad } from './$types';
@@ -12,7 +13,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		forms: null
 	};
 	const userId = locals.user.id;
-	const userForms = await GET<UserForm[]>(`${UsersForms}?uid=${userId}`, {
+	const userForms = await GET<UserForm[]>(`${UsersForms}?${SearchParams.UserId}=${userId}`, {
 		fetch
 	});
 	if (!userForms || userForms.length === 0) {

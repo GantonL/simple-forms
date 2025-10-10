@@ -89,5 +89,14 @@
 	"scroll_to_top": "Scroll to top",
 	"dashboard": "Dashboard",
 	"forms": "Forms",
-	"sign": "Sign"
+	"sign": "Sign",
+	"templates": {
+		"private_details_and_signature": {
+			"name": "Private details & signature",
+			"description": "Requires some short details of the signee and a signature"
+		}
+	},
+	"available_templates": "Available templates",
+	"your_forms": "Your forms",
+	"create": "Create"
 }

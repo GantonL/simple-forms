@@ -1,3 +1,5 @@
 export enum SearchParams {
-	Ref = 'ref'
+	Ref = 'ref',
+	PublicLinkIdentifier = 'pli',
+	UserId = 'uid'
 }

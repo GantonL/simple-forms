@@ -1,10 +1,10 @@
 import { integer, jsonb, pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { user } from './auth';
+import { TemplatesKeys } from '$lib/enums/templates-keys';
 
 export const FormTemplateTable = pgTable('form_template', {
 	id: serial('id').primaryKey(),
-	name: text('name').notNull(),
-	description: text('description'),
+	key: text('key').$type<TemplatesKeys>().unique(),
 	schema: jsonb('schema').notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at')

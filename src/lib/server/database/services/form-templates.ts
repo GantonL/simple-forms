@@ -13,7 +13,7 @@ export const Service = provider.getFactory().getService(FormTemplateTable);
 
 export const getUrlFilters = (url: URL): WhereCondition<typeof FormTemplateTable>[] => {
 	return getUrlFiltersUtil(url, {
-		searchColumns: [FormTemplateTable.name, FormTemplateTable.description]
+		searchColumns: [FormTemplateTable.key]
 	});
 };
 
@@ -31,13 +31,12 @@ export const getUrlOptions = (url: URL) => {
 	return getUrlOptionsUtil(url, FormTemplateTable);
 };
 
-type NewFormTemplate = Pick<FormTemplateTableInsert, 'name' | 'description' | 'schema'>;
+type NewFormTemplate = Pick<FormTemplateTableInsert, 'key' | 'schema'>;
 export const buildCreateCandidates = (candidates: NewFormTemplate[]): NewFormTemplate[] => {
 	const newUsers: NewFormTemplate[] = [];
 	candidates.forEach((candidate) => {
 		newUsers.push({
-			name: candidate.name,
-			description: candidate.description,
+			key: candidate.key,
 			schema: candidate.schema
 		});
 	});
@@ -47,12 +46,6 @@ export const buildCreateCandidates = (candidates: NewFormTemplate[]): NewFormTem
 type UpdateFormTemplateData = Partial<NewFormTemplate>;
 export const buildUpdateData = (updateData: UpdateFormTemplateData): UpdateFormTemplateData => {
 	const validatedUpdate: UpdateFormTemplateData = {};
-	if (updateData?.name) {
-		validatedUpdate.name = updateData.name;
-	}
-	if (updateData?.description) {
-		validatedUpdate.description = updateData.description;
-	}
 	if (updateData?.schema) {
 		validatedUpdate.schema = updateData.schema;
 	}

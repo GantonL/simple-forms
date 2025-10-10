@@ -3,6 +3,7 @@ import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
 import { error } from '@sveltejs/kit';
 import { FormsTemplates, UsersForms } from '../../../../api';
 import type { PageLoad } from './$types';
+import { SearchParams } from '$lib/enums/search-params';
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	const response: { schema: FormTemplate['schema'] | null; form: Pick<UserForm, 'id'> | null } = {
@@ -10,9 +11,12 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		form: null
 	};
 	const publicLinkIndetifier = params.slug;
-	const [userForm] = await GET<UserForm[]>(`${UsersForms}?pli=${publicLinkIndetifier}&limit=1`, {
-		fetch
-	});
+	const [userForm] = await GET<UserForm[]>(
+		`${UsersForms}?${SearchParams.PublicLinkIdentifier}=${publicLinkIndetifier}&limit=1`,
+		{
+			fetch
+		}
+	);
 	if (!userForm) {
 		error(404);
 	}

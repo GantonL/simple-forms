@@ -8,6 +8,7 @@ import {
 	getUrlOptionsUtil,
 	type BodyFiltersUtil
 } from './utils';
+import { SearchParams } from '$lib/enums/search-params';
 
 export const Service = provider.getFactory().getService(UserFormTable);
 
@@ -60,8 +61,8 @@ const getServiceSpecificBodyFilters = (
 
 const getServiveUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
 	const searchParams = url.searchParams;
-	const pli = searchParams.get('pli');
-	const uid = searchParams.get('uid');
+	const pli = searchParams.get(SearchParams.PublicLinkIdentifier);
+	const uid = searchParams.get(SearchParams.UserId);
 	const conditions: WhereCondition<typeof UserFormTable>[] = [];
 	if (pli) {
 		conditions.push(eq(UserFormTable.public_link_identifier, pli));
