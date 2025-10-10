@@ -4,15 +4,11 @@
 	import * as Card from '$lib/components/ui/card';
 	import { t } from '$lib/i18n';
 	import type { ColumnDef } from '@tanstack/table-core';
+	import { page } from '$app/state';
+	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
 
-	interface FormTemplate {
-		id: number;
-		name: string;
-		status: string;
-		submissions: number;
-		createdAt: Date;
-	}
-
+	const templates: Record<FormTemplate['id'], FormTemplate> = $derived(page.data.templates);
+	const forms: UserForm[] = $derived(page.data.forms);
 	interface FormSubmission {
 		id: number;
 		formName: string;
@@ -20,13 +16,6 @@
 		submittedAt: Date;
 		status: string;
 	}
-
-	// Mock data for active form templates
-	const activeTemplates: FormTemplate[] = [
-		{ id: 1, name: 'Contact Form', status: 'active', submissions: 45, createdAt: new Date() },
-		{ id: 2, name: 'Survey 2024', status: 'active', submissions: 123, createdAt: new Date() },
-		{ id: 3, name: 'Registration Form', status: 'active', submissions: 67, createdAt: new Date() }
-	];
 
 	// Mock data for form submissions
 	const submissions: FormSubmission[] = [
@@ -87,23 +76,20 @@
 	<div class="container mx-auto space-y-8 py-6">
 		<!-- Active Form Templates Section -->
 		<section>
-			<h2 class="mb-4 text-2xl font-bold">{$t('common.active_form_templates')}</h2>
+			<h2 class="mb-4 text-2xl font-bold">{$t('common.your_active_forms')}</h2>
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each activeTemplates as template (template)}
+				{#each forms as userForm (userForm.id)}
 					<Card.Root class="p-6">
 						<Card.Header>
-							<Card.Title>{template.name}</Card.Title>
-							<Card.Description>
-								{$t('common.status')}: {template.status}
-							</Card.Description>
+							<Card.Title>{templates[userForm.template_id].name}</Card.Title>
 						</Card.Header>
 						<Card.Content>
 							<div class="space-y-2">
 								<p class="text-sm">
-									{$t('common.submissions')}: {template.submissions}
+									{$t('common.submissions')}: {userForm.submissions}
 								</p>
 								<p class="text-muted-foreground text-sm">
-									{$t('common.created')}: {template.createdAt.toLocaleDateString()}
+									{$t('common.created')}: {userForm.createdAt.toLocaleDateString()}
 								</p>
 							</div>
 						</Card.Content>
