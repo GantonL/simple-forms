@@ -17,6 +17,9 @@
 	"status_code_error": {
 		"404": {
 			"description": "Page not found"
+		},
+		"500": {
+			"description": "Something went wrong"
 		}
 	},
 	"manage_cookies_preferences": "Manage cookies preferences",

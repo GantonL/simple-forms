@@ -17,6 +17,9 @@
 	"status_code_error": {
 		"404": {
 			"description": "העמוד המבוקש לא נמצא"
+		},
+		"500": {
+			"description": "משהו השתבש"
 		}
 	},
 	"manage_cookies_preferences": "ניהול העדפות עוגיות",
