@@ -4,7 +4,13 @@
 	import { Eye, FilePlus2, LayoutTemplate } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	let { data }: { data: FormTemplate } = $props();
+
+	function onCreate() {
+		goto(resolve('/forms/create'));
+	}
 </script>
 
 <Card.Root class="flex-column flex justify-between">
@@ -16,7 +22,7 @@
 		<Card.Description>{$t(`common.templates.${data.key}.description`)}</Card.Description>
 	</Card.Header>
 	<Card.Footer class="align-items flex flex-row gap-2">
-		<Button class="flex flex-row items-center gap-2">
+		<Button class="flex flex-row items-center gap-2" onclick={onCreate}>
 			<FilePlus2 size={12} />
 			<span>{$t('common.create')}</span>
 		</Button>
