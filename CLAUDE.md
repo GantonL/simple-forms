@@ -1,332 +1,344 @@
-# CLAUDE.md
+# Simple Forms - Claude Code Guide
 
-Developer guidance for Claude Code when working with this SvelteKit template.
+**Application**: Form management system - users create forms from templates, distribute via public links, collect signatures.
 
-## Commands
+## Commands (Auto-use)
 
 ```bash
-# Development
-bun run dev                     # Start dev server
-bun run build                   # Build for production
-bun run check                   # Type checking
-bun run lint && bun run format  # Code quality
+# Dev workflow
+bun run dev           # start dev
+bun run check         # type check - use before commits
+bun run lint && bun run format  # code quality - use before commits
 
 # Database
-bun run local:db:up             # Start PostgreSQL container
-bun run local:db:down           # Stop PostgreSQL container
-bun run test:server             # Run database tests
+bun run local:db:up   # start PostgreSQL - use before dev/tests
+bun run local:db:down # stop PostgreSQL
+bun run test:server   # run DB tests - use after service changes
+bun run db:push       # apply schema changes - use after schema edits
 
 # Scaffolding
-bun run create:page <path>              # New page template
-bun run create:md <filename>            # Markdown files for all locales
-bun run create:api-controller <path>    # API endpoint template
+bun run create:page <path>              # new page
+bun run create:md <filename>            # new markdown (all locales)
+bun run create:api-controller <path>    # new API endpoint
 ```
 
 ## Tech Stack
 
-- **SvelteKit v5** + TypeScript + Vite
-- **shadcn-svelte** (bits-ui) + Tailwind CSS v4
-- **Drizzle ORM** + PostgreSQL + Docker
-- **better-auth** - Modern authentication library with OAuth & email/password
-- **sveltekit-i18n** (Hebrew/English with RTL/LTR)
-- **Vitest** + Playwright for testing
+SvelteKit 5 + TypeScript + Vite + Drizzle ORM + PostgreSQL + Tailwind 4 + shadcn-svelte + better-auth + sveltekit-i18n (he-IL/en-US RTL/LTR)
 
-## Features
+## Database Services Pattern
 
-- **Authentication System** - better-auth with OAuth (Google) & email/password
-- **Database Layer** - Abstract service pattern with CRUD operations
-- **Internationalization** - Hebrew & English with RTL/LTR support
-- **Theme System** - Dark/light mode with persistence
-- **Cookie Management** - GDPR-compliant consent system
-- **SEO Optimized** - Meta tags, structured data, sitemap
-
-## Project Structure
-
+### Structure
 ```
-src/lib/
-├── server/
-│   ├── database/           # Database services & tests
-│   └── auth/              # better-auth configuration & handlers
-├── client/
-│   ├── auth/              # Client-side auth utilities
-│   └── configurations/    # Client configs (routes, themes)
-├── components/
-│   ├── ui/                # shadcn-svelte components
-│   ├── signin/            # Authentication components
-│   └── signup/            # Registration components
-├── api/configurations/     # Server configs
-├── i18n/                  # Translations (en-US, he-IL)
-└── resources/markdown/    # Localized content
+src/lib/server/database/
+├── services/
+│   ├── provider.ts        # singleton provider
+│   ├── factory.ts         # service factory (cached per table)
+│   ├── abstract.ts        # base CRUD service
+│   ├── utils.ts           # query builders
+│   └── [table-name].ts    # table-specific service
+└── schemas/
+    └── [table-name].ts    # drizzle schema
+```
 
+### Service File Template (`services/[table-name].ts`)
+
+```typescript
+import { YourTable, type YourTableInsert } from '../schemas/your-table';
+import type { WhereCondition } from './abstract';
+import { provider } from './provider';
+import { getBodyFiltersUtil, getUrlFiltersUtil, getUrlOptionsUtil, type BodyFiltersUtil } from './utils';
+import type { Column } from 'drizzle-orm';
+
+// Get cached service instance
+export const Service = provider.getFactory().getService(YourTable);
+
+// URL search filters (?q=search_term)
+export const getUrlFilters = (url: URL): WhereCondition<typeof YourTable>[] => {
+  return getUrlFiltersUtil(url, {
+    searchColumns: [YourTable.name, YourTable.email] // searchable columns
+  });
+};
+
+// Body filters (IDs, etc)
+type YourTableFilters = BodyFiltersUtil; // extend if needed
+const bodyFiltersConfig: Record<keyof YourTableFilters, Column> = {
+  ids: YourTable.id
+};
+export const getBodyFilters = (filters: YourTableFilters): WhereCondition<typeof YourTable>[] => {
+  return getBodyFiltersUtil(filters, bodyFiltersConfig);
+};
+
+// URL options (?limit=20&offset=40&orderBy=name,-createdAt)
+export const getUrlOptions = (url: URL) => {
+  return getUrlOptionsUtil(url, YourTable);
+};
+
+// Data builders - validation & transformation
+type NewYourTable = Pick<YourTableInsert, 'name' | 'email'>;
+export const buildCreateCandidates = (candidates: NewYourTable[]): NewYourTable[] => {
+  return candidates.map(c => ({
+    name: c.name,
+    email: c.email
+  }));
+};
+
+type UpdateYourTableData = Partial<NewYourTable>;
+export const buildUpdateData = (data: UpdateYourTableData): UpdateYourTableData => {
+  const validated: UpdateYourTableData = {};
+  if (data?.name) validated.name = data.name;
+  if (data?.email) validated.email = data.email;
+  return validated;
+};
+```
+
+### Rules
+- Export `Service` as const from factory
+- Export 4 functions: `getUrlFilters`, `getBodyFilters`, `getUrlOptions`, `buildCreateCandidates`, `buildUpdateData`
+- Use utility functions from `services/utils.ts`
+- Keep business logic in service file, not in API routes
+- Validate/transform data in `build*` functions
+- Never expose raw DB operations to API routes
+
+## API Routes Pattern
+
+### Structure
+```
+src/routes/api/
+├── [resource]/
+│   ├── +server.ts           # GET POST PUT DELETE
+│   └── [id]/
+│       └── +server.ts       # GET PUT DELETE by ID
+```
+
+### Template (`api/[resource]/+server.ts`)
+
+```typescript
+import {
+  Service as service,
+  getUrlFilters,
+  getUrlOptions,
+  buildCreateCandidates,
+  buildUpdateData,
+  getBodyFilters
+} from '$lib/server/database/services/your-table';
+import { json, type RequestHandler } from '@sveltejs/kit';
+
+export const GET: RequestHandler = async ({ url }) => {
+  const filters = getUrlFilters(url);
+  const options = getUrlOptions(url);
+  const items = await service.find(filters, options);
+  return json(items);
+};
+
+export const POST: RequestHandler = async ({ request }) => {
+  const { data } = await request.json();
+  const itemsToCreate = buildCreateCandidates(data);
+  const created = await service.createMany(itemsToCreate);
+  return json({ created });
+};
+
+export const PUT: RequestHandler = async ({ url, request }) => {
+  const { data, filters } = await request.json();
+  const urlFilters = getUrlFilters(url);
+  const bodyFilters = getBodyFilters(filters);
+  const updateData = buildUpdateData(data);
+  const updated = await service.updateWhere([...urlFilters, ...bodyFilters], updateData);
+  return json({ updated });
+};
+
+export const DELETE: RequestHandler = async ({ url, request }) => {
+  const { filters } = await request.json();
+  const urlFilters = getUrlFilters(url);
+  const bodyFilters = getBodyFilters(filters ?? []);
+  const deleted = await service.deleteWhere([...urlFilters, ...bodyFilters]);
+  return json({ deleted });
+};
+```
+
+### Rules
+- Import all 5 functions from service file
+- Combine URL + body filters for PUT/DELETE
+- Always use `build*` functions before mutations
+- Return JSON with descriptive keys: `{ created }`, `{ updated }`, `{ deleted }`
+- Use `?q=search&limit=20&offset=0&orderBy=name,-createdAt` format
+
+## Component Structure
+
+### Directory Rules
+```
+components/
+├── [feature-name]/
+│   ├── [feature-name].svelte       # main component
+│   └── configurations/             # optional
+│       └── [config-name].ts        # config objects
+└── ui/                             # shadcn-svelte only
+    └── [component]/
+        ├── [component].svelte
+        ├── index.ts
+        └── [sub-components].svelte
+```
+
+### Component Rules
+- Name folder = main file name
+- Configuration objects go in `configurations/` subfolder as `.ts` files
+- Use `$props()`, `$state()`, `$derived()` (Svelte 5 runes)
+- Import UI components from `$lib/components/ui/[component]`
+- Never create nested features in `ui/` - only shadcn components there
+
+### Props Pattern
+```typescript
+type MyComponentProps = {
+  data: DataType;
+  config?: ConfigType;
+  disabled?: boolean;
+};
+
+let { data, config, disabled }: MyComponentProps = $props();
+```
+
+## i18n Pattern
+
+### Translation Files
+```
+src/lib/i18n/
+├── en-US/
+│   ├── common.json      # shared translations
+│   └── [namespace].json # feature translations
+└── he-IL/               # same structure
+```
+
+### Usage
+```svelte
+<script>
+  import { t } from '$lib/i18n';
+</script>
+
+<!-- Template -->
+<h1>{$t('common.title')}</h1>
+
+<!-- TypeScript -->
+<script>
+  const title = t.get('common.title');
+</script>
+```
+
+### Rules
+- Namespace keys: `namespace.section.key`
+- Use `common` for shared text
+- Support params: `{{param}}`
+- Both locales must have identical keys
+- RTL/LTR handled automatically via `$direction` store
+
+## Page Structure
+
+### Routes
+```
 src/routes/
-├── [[lang]]/              # Internationalized routes
-│   ├── (application)/     # App pages with auth routes
-│   │   └── (auth)/        # Authentication pages (signin/signup)
-│   └── (site)/           # Content pages (policies)
-├── api/                   # Server endpoints
-└── auth/                  # better-auth API endpoints
+├── [[lang]]/                    # i18n wrapper
+│   ├── (application)/           # auth-required pages
+│   │   ├── +layout.server.ts    # load user session
+│   │   └── dashboard/
+│   │       ├── +page.svelte
+│   │       └── +page.server.ts  # load data
+│   ├── (public)/                # public pages (forms signing)
+│   └── (site)/                  # static content (policies)
+└── api/                         # API endpoints
 ```
 
-## Authentication System
-
-### better-auth Integration
-
-The template uses [better-auth](https://better-auth.com), a modern authentication library designed for TypeScript applications with excellent SvelteKit integration.
-
-### Features
-
-- **Email & Password Authentication** - Traditional signup/signin flow with email verification
-- **OAuth Providers** - Google OAuth integration (configurable for additional providers)
-- **Session Management** - Secure session handling with database persistence
-- **Route Protection** - Automatic authentication middleware for protected routes
-- **TypeScript Support** - Full type safety for user sessions and authentication state
-
-### Configuration
-
-#### Server Configuration (`src/lib/server/auth/config.ts`)
-
+### Page Data Loading
 ```typescript
-import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+// +page.server.ts
+import { GET } from '$lib/api/helpers/request';
+import { SearchParams } from '$lib/enums/search-params';
+import type { MyTableSchema } from '$lib/server/database/schemas/[my-table-or-tables]';
+import { APIRoutePath } from '../../../api';
+import type { PageServerLoad } from './$types';
 
-export const auth = betterAuth({
-  database: drizzleAdapter(db, {
-    provider: 'pg',
-    schema: { user, session, account, verification }
-  }),
-  emailAndPassword: {
-    enabled: true
-  },
-  socialProviders: {
-    google: {
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET
-    }
-  },
-  plugins: [sveltekitCookies(getRequestEvent)]
+// SearchParams are not required, it depends on the route path, maybe it just uses a slug, need to check how you should use the route for a specific service
+export const load: PageServerLoad = async ({ locals, fetch }) => {
+  const userId = locals.user.id;
+	const items = await GET<MyTableSchema[]>(`${APIRoutePath}?${SearchParams}=${userId}`, { fetch });
+	return { items };
+};
+
+// +page.svelte
+<script lang="ts">
+  import { page } from '$app/state';
+  const items = $derived(page.data.items);
+</script>
+```
+
+### Rules
+- Use `+page.server.ts` for DB queries
+- Use `$derived()` for reactive page data
+- Import data from `page.data`
+- Never fetch from API routes in server load functions
+
+## Feature Development Flow
+
+### New Table/Resource
+1. Run `bun run local:db:up`
+2. Create schema in `schemas/[name].ts`
+3. Run `bun run db:push`
+4. Create service in `services/[name].ts` (use template above)
+5. Run `bun run create:api-controller [name]`
+6. Implement API route (use template above)
+7. Run `bun run test:server` to verify
+8. Create page with `bun run create:page /[name]`
+
+### New UI Component
+1. Create `components/[name]/[name].svelte`
+2. Add config in `components/[name]/configurations/[config].ts` if needed
+3. Import as `import Component from '$lib/components/[name]/[name].svelte'`
+4. Use i18n for all user-facing text
+
+### Bug Fixes
+1. Check if test exists in `services/*.test.ts`
+2. Run `bun run check` for type errors
+3. Run `bun run lint && bun run format` before commit
+
+## Critical Patterns
+
+### Service Usage
+```typescript
+// ✅ Correct
+import { Service } from '$lib/server/database/services/users';
+const user = await Service.findById(1);
+
+// ❌ Wrong - don't instantiate directly
+import { AbstractService } from '$lib/server/database/services/abstract';
+new AbstractService(db, table);
+```
+
+### Filter Building
+```typescript
+// ✅ Correct - use service functions
+const urlFilters = getUrlFilters(url);
+const bodyFilters = getBodyFilters({ ids: [1, 2, 3] });
+await Service.find([...urlFilters, ...bodyFilters], options);
+
+// ❌ Wrong - raw drizzle queries
+await db.select().from(table).where(eq(table.id, 1));
+```
+
+### Component Data
+```typescript
+// ✅ Correct - derive from page data
+const items = $derived(page.data.items);
+
+// ❌ Wrong - fetching in component
+onMount(async () => {
+  items = await fetch('/api/items').then(r => r.json());
 });
 ```
 
-#### Client Configuration (`src/lib/client/auth/client.ts`)
+## Business Logic
 
-```typescript
-import { createAuthClient } from 'better-auth/svelte';
+Application manages form templates → user instances → public signing.
+- **Form Templates**: JSON schema definitions (admin-created)
+- **User Forms**: Instances created by users from templates
+- **Public Links**: Shareable URLs for form signing (`/f/[slug]`)
+- **Submissions**: Signed form data with timestamps
 
-const client = createAuthClient();
-export default client;
-```
-
-### Database Schema
-
-The authentication system uses four main tables:
-
-- **user** - User profiles with email, name, and verification status
-- **session** - Active user sessions with expiration and metadata
-- **account** - OAuth provider accounts linked to users
-- **verification** - Email verification tokens and codes
-
-### Usage Examples
-
-#### Client-Side Authentication
-
-```typescript
-import authClient from '$lib/client/auth/client';
-
-// Get current session (reactive)
-const session = authClient.useSession();
-
-// Sign in with email/password
-await authClient.signIn.email({
-  email: 'user@example.com',
-  password: 'password'
-});
-
-// Sign in with Google OAuth
-await authClient.signIn.social({
-  provider: 'google',
-  callbackURL: '/dashboard'
-});
-
-// Sign up new user
-await authClient.signUp.email({
-  email: 'user@example.com',
-  password: 'password',
-  name: 'User Name'
-});
-
-// Sign out
-await authClient.signOut();
-```
-
-#### Server-Side Session Access
-
-```typescript
-// In +layout.server.ts or +page.server.ts
-export async function load({ event }) {
-  const session = event.locals.session;
-  const user = event.locals.user;
-
-  return {
-    user: user ? { name: user.name, email: user.email } : null
-  };
-}
-```
-
-### Route Protection
-
-Routes are automatically protected based on configuration in `src/lib/client/configurations/routes.ts`. Set `authenticationRequired: false` to make routes publicly accessible.
-
-```typescript
-// Protected route (default)
-{ path: '/dashboard', authenticationRequired: true }
-
-// Public route
-{ path: '/about', authenticationRequired: false }
-```
-
-### Environment Variables
-
-Required environment variables for authentication:
-
-```bash
-# For OAuth providers
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# Database connection (already configured)
-DATABASE_URL=postgresql://...
-```
-
-### Authentication Components
-
-- **`src/lib/components/signin/signin.svelte`** - Complete signin form with OAuth and email/password options
-- **`src/lib/components/signup/signup.svelte`** - User registration form
-- **`src/lib/components/signin/providers/`** - Individual provider components (Google, email/password)
-
-### Migration from Other Auth Libraries
-
-When migrating from other authentication libraries:
-
-1. Update imports from `better-auth/svelte`
-2. Replace auth calls with better-auth equivalents
-3. Update session access patterns in server code
-4. Migrate database schema using provided auth tables
-
-## Database Layer
-
-### Service Pattern
-
-Use $lib/server/database/services/users.ts and src/routes/api/demo/users/+server.ts for best practices.
-
-```typescript
-import { serviceFactory } from '$lib/server/database/services/provider';
-
-// Get service instance
-const userService = serviceFactory.getService(users);
-
-// CRUD operations
-const user = await userService.create({ name: "John", email: "john@example.com" });
-const allUsers = await userService.findAll({ limit: 20 });
-const user = await userService.findById(1);
-await userService.updateById(1, { name: "Jane" });
-await userService.deleteById(1);
-
-// Advanced queries
-const activeUsers = await userService.find(
-  (table) => eq(table.status, 'active'),
-  { limit: 10, orderBy: desc(table.createdAt) }
-);
-```
-
-### Query Utilities
-
-```typescript
-// Parse URL params into query conditions
-const filters = getUrlFiltersUtil(url, {
-  searchColumns: [users.name, users.email]
-});
-
-// Parse pagination from URL: ?limit=20&offset=40&orderBy=name,-createdAt
-const options = getUrlOptionsUtil(url, users);
-
-// Parse body filters
-const bodyFilters = getBodyFiltersUtil(
-  { ids: [1, 2, 3] },
-  { ids: users.id }
-);
-```
-
-### Request Helper
-
-Client-side API request utilities:
-
-```typescript
-import { GET, POST, PUT, DELETE } from '$lib/api/helpers/request';
-
-// GET with query params
-const users = await GET<User[]>('/api/users', {
-  limit: 20,
-  searchTerm: 'john',
-  orderBy: 'name,-createdAt'
-});
-
-// POST to create
-const user = await POST<CreateData, User>('/api/users', data);
-
-// PUT to update with filters
-const updated = await PUT<Data, Filters, User>('/api/users', data, filters);
-
-// DELETE with filters
-await DELETE<Filters, void>('/api/users', { ids: [1, 2, 3] });
-
-// SSR with custom fetch
-const serverData = await GET('/api/users', { fetch: event.fetch });
-```
-
-## Internationalization
-
-```typescript
-// In templates
-$t('common.navigation.home')
-
-// In TypeScript
-t.get('common.navigation.home')
-
-// Translation files: src/lib/i18n/[locale]/[namespace].json
-// Supported: en-US, he-IL (with RTL/LTR support)
-```
-
-## Component Patterns
-
-```
-components/[name]/
-├── [name].svelte
-└── configurations/ (optional)
-    └── [config].ts
-
-components/ui/[name]/           # shadcn-svelte
-├── [name].svelte
-├── index.ts
-└── [additional-parts].svelte
-```
-
-## Scaffolding Examples
-
-```bash
-# Create dynamic product page
-bun run create:page /products/[product_id]
-
-# Create localized content
-bun run create:md about-us.md
-
-# Create nested API controller
-bun run create:api-controller users/[user_id]/orders
-```
-
-## Important Notes
-
-- **Template repository** - customize for your specific needs
-- Hebrew (RTL) and English (LTR) preconfigured
-- Policy pages are placeholder content
-- Services are cached per table in singleton factory
-- Use configuration-driven architecture for maintainable code
+When adding features, maintain: template → instance → submission flow.

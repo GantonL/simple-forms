@@ -1,6 +1,6 @@
 {
-  "id": "a3de8ae5-8f0a-44b3-9b4c-a8b000a1105d",
-  "prevId": "bc9dd0d0-a8db-4df2-9e4a-6359fa771cad",
+  "id": "b8fa65d1-a604-4c13-bc67-fb1fd3447edd",
+  "prevId": "6c210d48-ef10-4e39-8642-52c3798f9e48",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -379,14 +379,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
+        "key": {
+          "name": "key",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -415,7 +409,15 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "form_template_key_unique": {
+          "name": "form_template_key_unique",
+          "columns": [
+            "key"
+          ],
+          "nullsNotDistinct": false
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

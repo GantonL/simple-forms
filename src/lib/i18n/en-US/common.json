@@ -91,9 +91,9 @@
 	"forms": "Forms",
 	"sign": "Sign",
 	"templates": {
-		"private_details_and_signature": {
-			"name": "Private details & signature",
-			"description": "Requires some short details of the signee and a signature"
+		"generic_consent_form": {
+			"name": "Generic consent",
+			"description": "Includes basic text blocks, participant and approver details and signatures"
 		}
 	},
 	"available_templates": "Available templates",
