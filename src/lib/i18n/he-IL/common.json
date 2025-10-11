@@ -20,6 +20,9 @@
 		},
 		"500": {
 			"description": "משהו השתבש"
+		},
+		"400": {
+			"description": "בקשה לא תקינה"
 		}
 	},
 	"manage_cookies_preferences": "ניהול העדפות עוגיות",

@@ -20,6 +20,9 @@
 		},
 		"500": {
 			"description": "Something went wrong"
+		},
+		"400": {
+			"description": "Bad request"
 		}
 	},
 	"manage_cookies_preferences": "Manage cookies preferences",

@@ -6,10 +6,11 @@
 	import Button from '../ui/button/button.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { SearchParams } from '$lib/enums/search-params';
 	let { data }: { data: FormTemplate } = $props();
 
 	function onCreate() {
-		goto(resolve('/forms/create'));
+		goto(resolve(`/forms/create?${SearchParams.TemplateId}=${data.id}`));
 	}
 </script>
 
