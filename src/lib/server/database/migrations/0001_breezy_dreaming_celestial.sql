@@ -8,11 +8,11 @@ CREATE TABLE "form_submission" (
 --> statement-breakpoint
 CREATE TABLE "form_template" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
-	"description" text,
+	"key" text,
 	"schema" jsonb NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "form_template_key_unique" UNIQUE("key")
 );
 --> statement-breakpoint
 CREATE TABLE "user_form" (

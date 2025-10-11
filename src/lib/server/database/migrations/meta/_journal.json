@@ -12,29 +12,15 @@
     {
       "idx": 1,
       "version": "7",
-      "when": 1759866133634,
-      "tag": "0001_noisy_professor_monster",
+      "when": 1760161035091,
+      "tag": "0001_breezy_dreaming_celestial",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1759952766682,
-      "tag": "0002_shiny_stephen_strange",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1760100237017,
-      "tag": "0003_clever_pretty_boy",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1760100354633,
-      "tag": "0004_messy_surge",
+      "when": 1760161064838,
+      "tag": "0002_minor_hannibal_king",
       "breakpoints": true
     }
   ]

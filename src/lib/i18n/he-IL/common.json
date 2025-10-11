@@ -91,9 +91,9 @@
 	"forms": "טפסים",
 	"sign": "חתימה",
 	"templates": {
-		"private_details_and_signature": {
-			"name": "פרטים אישיים וחתימה",
-			"description": "נדרשים פרטים אישיים של החתום וחתימה"
+		"generic_consent_form": {
+			"name": "טופס הסכמה כללי",
+			"description": "כולל בלוקים פשוטים של טקסט, פרטי משתתף ומאשר וחתימותיהם"
 		}
 	},
 	"available_templates": "תבניות זמינות לבחירה",
