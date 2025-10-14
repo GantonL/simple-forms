@@ -7,5 +7,5 @@
 </script>
 
 <BasePage title="common.sign" description="seo.description">
-	{form}
+	<h1>{form.name}</h1>
 </BasePage>

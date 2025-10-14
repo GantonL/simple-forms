@@ -1,18 +1,40 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { DELETE } from '$lib/api/helpers/request';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormTemplateCard from '$lib/components/form-template-card/form-template-card.svelte';
+	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
+	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { t } from '$lib/i18n';
+	import { type AppCustomEvent } from '$lib/models/common';
 	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	const userForms: UserForm[] = $derived(page.data.userForms);
+	import { UsersForms } from '../../../api';
+	let userForms: UserForm[] = $derived(page.data.userForms);
 	const templates: FormTemplate[] = $derived(page.data.templates);
+
+	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
+		switch (event.type) {
+			case AppCustomEventType.Delete: {
+				deleteForm(event.data!.id);
+			}
+		}
+	}
+
+	async function deleteForm(id: number) {
+		const deletedRes = await DELETE<unknown, { deleted: UserForm }>(`${UsersForms}/${id}`, {});
+		if (deletedRes?.deleted?.id === id) {
+			userForms = userForms.filter((uf) => uf.id !== id);
+		}
+	}
 </script>
 
 <BasePage title="common.forms" description="seo.description">
 	<h2 class="text-xl">{$t('common.your_forms')}</h2>
-	{#each userForms as userForm (userForm.id)}
-		{userForm.public_link_identifier}
-	{/each}
+	<div class="grid w-full grid-cols-3 gap-2">
+		{#each userForms as userForm (userForm.id)}
+			<UserFormCard data={userForm} onEvent={onUserCardEvent} />
+		{/each}
+	</div>
 	<h2 class="text-xl">{$t('common.available_templates')}</h2>
 	<div class="grid w-full grid-cols-3 gap-2">
 		{#each templates as template (template.id)}

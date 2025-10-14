@@ -77,13 +77,19 @@ export const getUrlOptions = (url: URL) => {
 	return getUrlOptionsUtil(url, UserFormTable);
 };
 
-type NewUserForm = Pick<UserFormTableInsert, 'user_id' | 'template_id'>;
+type NewUserForm = Pick<
+	UserFormTableInsert,
+	'user_id' | 'template_id' | 'data' | 'name' | 'description'
+>;
 export const buildCreateCandidates = (candidates: NewUserForm[]): NewUserForm[] => {
 	const newUsers: NewUserForm[] = [];
 	candidates.forEach((candidate) => {
 		newUsers.push({
 			user_id: candidate.user_id,
-			template_id: candidate.template_id
+			template_id: candidate.template_id,
+			data: candidate.data,
+			name: candidate.name,
+			description: candidate.description
 		});
 	});
 	return newUsers;

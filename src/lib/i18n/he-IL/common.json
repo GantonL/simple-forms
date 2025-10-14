@@ -101,5 +101,24 @@
 	},
 	"available_templates": "תבניות זמינות לבחירה",
 	"your_forms": "הטפסים שלך",
-	"create": "יצירה"
+	"create": "יצירה",
+	"form_builder": {
+		"title": "צור את הטופס שלך",
+		"description": "התאם אישית את תבנית הטופס על ידי מילוי המידע שלך",
+		"editable_text_blocks": "תוכן טקסט",
+		"editable_text_blocks_description": "התאם אישית את תוכן הטקסט שיופיע בטופס שלך",
+		"form_fields": "שדות טופס",
+		"form_fields_description": "מלא את המידע הנדרש עבור הטופס שלך",
+		"create_form": "צור טופס",
+		"submitting": "יוצר...",
+		"agree": "אני מסכים",
+		"preview": "תצוגה מקדימה",
+		"reset": "איפוס"
+	},
+	"link_copied_to_clipboard": "קישור הועתק ללוח",
+	"copy_link": "העתקת קישור",
+	"form_name": "שם הטופס",
+	"form_name_placeholder": "שם קצר שמתאר את הטופס בצורה נוחה",
+	"form_description": "תיאור הטופס",
+	"form_description_placeholder": "הוסיפו תיאור מפורט של הטופס"
 }

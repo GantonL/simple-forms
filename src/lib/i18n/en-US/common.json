@@ -101,5 +101,24 @@
 	},
 	"available_templates": "Available templates",
 	"your_forms": "Your forms",
-	"create": "Create"
+	"create": "Create",
+	"form_builder": {
+		"title": "Create Your Form",
+		"description": "Customize the form template by filling in your information",
+		"editable_text_blocks": "Text Content",
+		"editable_text_blocks_description": "Customize the text content that will appear in your form",
+		"form_fields": "Form Fields",
+		"form_fields_description": "Fill in the required information for your form",
+		"create_form": "Create Form",
+		"submitting": "Creating...",
+		"agree": "I agree",
+		"preview": "Preview",
+		"reset": "Reset"
+	},
+	"link_copied_to_clipboard": "Link copied to clipboard",
+	"copy_link": "Copy link",
+	"form_name": "Form name",
+	"form_name_placeholder": "Give your form a descriptive name",
+	"form_description": "Form description",
+	"form_description_placeholder": "Add a detailed description"
 }

@@ -23,6 +23,11 @@ const config: Config<Params> = {
 			loader: async () => (await import('./he-IL/seo.json')).default
 		},
 		{
+			locale: AvailableLocals.Hebrew,
+			key: 'templates',
+			loader: async () => (await import('./he-IL/templates.json')).default
+		},
+		{
 			locale: AvailableLocals.English_US,
 			key: 'common',
 			loader: async () => (await import('./en-US/common.json')).default
@@ -31,6 +36,11 @@ const config: Config<Params> = {
 			locale: AvailableLocals.English_US,
 			key: 'seo',
 			loader: async () => (await import('./en-US/seo.json')).default
+		},
+		{
+			locale: AvailableLocals.English_US,
+			key: 'templates',
+			loader: async () => (await import('./en-US/templates.json')).default
 		}
 	]
 };

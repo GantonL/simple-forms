@@ -20,13 +20,12 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	if (!userForm) {
 		error(404);
 	}
-	response.form = { id: userForm.id };
+	response.form = userForm;
 
 	const template = await GET<FormTemplate>(`${FormsTemplates}/${userForm.template_id}`, { fetch });
 	if (!template) {
 		error(500);
 	}
 	response.schema = template.schema;
-
 	return response;
 };
