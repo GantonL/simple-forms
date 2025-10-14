@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import UserFormBuilder from '$lib/components/user-form-builder/user-form-builder.svelte';
+	import FormPreview from '$lib/components/form-preview/form-preview.svelte';
 	import {
 		Card,
 		CardContent,
@@ -10,6 +11,13 @@
 		CardHeader,
 		CardTitle
 	} from '$lib/components/ui/card';
+	import {
+		Dialog,
+		DialogContent,
+		DialogDescription,
+		DialogHeader,
+		DialogTitle
+	} from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
 	import { type UserForm, type FormTemplate } from '$lib/server/database/schemas/form';
 	import type { UserFormData } from '$lib/models/user-form-data';
@@ -22,6 +30,7 @@
 	import { resolve } from '$app/paths';
 	import { Label } from '$lib/components/ui/label';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import { direction } from '$lib/stores';
 
 	const template: FormTemplate = $derived(page.data.template);
 
@@ -34,6 +43,7 @@
 	let formDescription: string = $state('');
 
 	let isSubmitting = $state(false);
+	let showPreview = $state(false);
 
 	async function handleCreate() {
 		isSubmitting = true;
@@ -62,8 +72,7 @@
 	}
 
 	function handlePreview() {
-		// TODO: Implement preview functionality
-		console.log('Preview form with data:', userData);
+		showPreview = true;
 	}
 
 	function handleReset() {
@@ -126,4 +135,15 @@
 			</div>
 		</CardFooter>
 	</Card>
+
+	<!-- Preview Dialog -->
+	<Dialog open={showPreview} onOpenChange={(open) => (showPreview = open)}>
+		<DialogContent class="max-h-[90vh] max-w-5xl overflow-y-auto">
+			<DialogHeader dir={$direction === 'lr' ? 'ltr' : 'rtl'}>
+				<DialogTitle>{$t('common.form_builder.preview_title')}</DialogTitle>
+				<DialogDescription>{$t('common.form_builder.preview_description')}</DialogDescription>
+			</DialogHeader>
+			<FormPreview schema={template.schema} {userData} />
+		</DialogContent>
+	</Dialog>
 </BasePage>

@@ -113,6 +113,9 @@
 		"submitting": "יוצר...",
 		"agree": "אני מסכים",
 		"preview": "תצוגה מקדימה",
+		"preview_title": "תצוגה מקדימה של הטופס",
+		"preview_description": "כך יראה הטופס שלך כאשר יודפס או יישמר כקובץ PDF",
+		"close_preview": "סגור תצוגה מקדימה",
 		"reset": "איפוס"
 	},
 	"link_copied_to_clipboard": "קישור הועתק ללוח",
