@@ -33,9 +33,11 @@
 					</h4>
 					<ul class="mt-4 space-y-3 text-sm">
 						{#each group.children as link (link.path)}
-							<li>
-								<Link {link} />
-							</li>
+							{#if !link.hidden}
+								<li>
+									<Link {link} />
+								</li>
+							{/if}
 						{/each}
 					</ul>
 				</div>

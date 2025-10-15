@@ -81,7 +81,7 @@
 				{#each forms as userForm (userForm.id)}
 					<Card.Root class="p-6">
 						<Card.Header>
-							<Card.Title>{templates[userForm.template_id].name}</Card.Title>
+							<Card.Title>{userForm.name}</Card.Title>
 						</Card.Header>
 						<Card.Content>
 							<div class="space-y-2">
@@ -89,7 +89,7 @@
 									{$t('common.submissions')}: {userForm.submissions}
 								</p>
 								<p class="text-muted-foreground text-sm">
-									{$t('common.created')}: {userForm.createdAt.toLocaleDateString()}
+									{$t('common.created')}: {new Date(userForm.createdAt).toLocaleDateString()}
 								</p>
 							</div>
 						</Card.Content>

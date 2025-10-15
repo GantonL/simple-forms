@@ -8,5 +8,7 @@
 </script>
 
 <BasePage title="common.sign" description="seo.description">
-	<FormPreview {schema} userData={form.data!} />
+	{#if schema && form.data}
+		<FormPreview {schema} userData={form.data!} />
+	{/if}
 </BasePage>

@@ -123,5 +123,15 @@
 	"form_name": "Form name",
 	"form_name_placeholder": "Give your form a descriptive name",
 	"form_description": "Form description",
-	"form_description_placeholder": "Add a detailed description"
+	"form_description_placeholder": "Add a detailed description",
+	"signature_field": {
+		"add_signature": "Add Signature",
+		"edit_signature": "Edit Signature",
+		"clear": "Clear",
+		"save": "Save",
+		"cancel": "Cancel",
+		"signature_pad_title": "Sign Here"
+	},
+	"submit": "Submit",
+	"generating": "Generating"
 }

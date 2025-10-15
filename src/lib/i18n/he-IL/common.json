@@ -123,5 +123,15 @@
 	"form_name": "שם הטופס",
 	"form_name_placeholder": "שם קצר שמתאר את הטופס בצורה נוחה",
 	"form_description": "תיאור הטופס",
-	"form_description_placeholder": "הוסיפו תיאור מפורט של הטופס"
+	"form_description_placeholder": "הוסיפו תיאור מפורט של הטופס",
+	"signature_field": {
+		"add_signature": "הוסף חתימה",
+		"edit_signature": "ערוך חתימה",
+		"clear": "נקה",
+		"save": "שמור",
+		"cancel": "ביטול",
+		"signature_pad_title": "חתמו כאן"
+	},
+	"submit": "שליחה",
+	"generating": "יוצר"
 }

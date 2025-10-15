@@ -28,6 +28,12 @@ export const AppRoutes: GroupedRoutes[] = [
 				label: 'common.forms',
 				path: '/forms',
 				icon: FileSignature
+			},
+			{
+				label: 'common.public',
+				path: '/f',
+				hidden: true,
+				authenticationRequired: false
 			}
 		]
 	},

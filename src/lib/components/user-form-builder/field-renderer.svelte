@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import SignaturePad from '$lib/components/signature-pad/signature-pad.svelte';
 	import type { Field } from '$lib/models/form-temaplte-schema';
 	import { t } from '$lib/i18n';
 
@@ -43,6 +44,13 @@
 			id={field.id}
 			type="date"
 			bind:value
+			disabled={field.disabled}
+			required={field.required}
+		/>
+	{:else if field.type === 'signature'}
+		<SignaturePad
+			fieldId={field.id}
+			bind:value={value as string | undefined}
 			disabled={field.disabled}
 			required={field.required}
 		/>
