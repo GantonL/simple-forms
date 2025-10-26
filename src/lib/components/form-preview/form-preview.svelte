@@ -5,8 +5,7 @@
 	import { t } from '$lib/i18n';
 	import { direction } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
-	import jsPDF from 'jspdf';
-	import html2canvas from 'html2canvas-pro';
+	import { onMount } from 'svelte';
 
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
@@ -25,6 +24,13 @@
 		id: string;
 		content?: string;
 	};
+
+	let html2pdf;
+
+	onMount(async () => {
+		const module = await import('html2pdf.js');
+		html2pdf = module.default;
+	});
 
 	const parseSectionItem = (item: string): SectionItem | null => {
 		// Check if it's a field reference (format: "fields:field_id")
@@ -80,29 +86,26 @@
 		isGeneratingPdf = true;
 
 		try {
-			// html2canvas-pro has better CSS support including modern color formats
-			const canvas = await html2canvas(formContainer, {
-				scale: 2,
-				useCORS: true,
-				logging: false,
-				backgroundColor: '#ffffff'
-			});
+			// Configure html2pdf options
+			const options = {
+				margin: 10,
+				filename: 'form.pdf',
+				image: { type: 'jpeg', quality: 0.98 },
+				html2canvas: {
+					scale: 2,
+					useCORS: true,
+					logging: false,
+					backgroundColor: '#ffffff'
+				},
+				jsPDF: {
+					unit: 'mm',
+					format: 'a4',
+					orientation: 'portrait'
+				}
+			};
 
-			// Calculate PDF dimensions
-			const imgWidth = 210; // A4 width in mm
-			const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-			// Create PDF
-			const pdf = new jsPDF({
-				orientation: imgHeight > imgWidth ? 'portrait' : 'landscape',
-				unit: 'mm',
-				format: 'a4'
-			});
-
-			const imgData = canvas.toDataURL('image/png');
-			pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-			pdf.save(`form.pdf`);
+			// Generate and save PDF
+			await html2pdf().set(options).from(formContainer).save();
 		} catch (error) {
 			console.error('Error generating PDF:', error);
 		} finally {

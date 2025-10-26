@@ -6,6 +6,8 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import { t } from '$lib/i18n';
 	import { onMount } from 'svelte';
+	import EditableText from '../editable-text/editable-text.svelte';
+	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
 
 	type UserFormBuilderProps = {
 		schema: FormTemplateSchema;
@@ -59,12 +61,13 @@
 			{#each schema.editableTextBlocks as block (block)}
 				<div class="space-y-2">
 					<Label for={block.id}>{$t(block.label)}</Label>
-					<textarea
+					<!-- <textarea
 						id={block.id}
 						bind:value={userData.editableTextBlocks[block.id]}
 						placeholder={$t(block.label)}
 						class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[100px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-					></textarea>
+					></textarea> -->
+					<CompiledMarkdown content={userData.editableTextBlocks[block.id]}></CompiledMarkdown>
 				</div>
 			{/each}
 		</div>
