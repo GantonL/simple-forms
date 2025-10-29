@@ -61,6 +61,7 @@
 	"user": "User",
 	"add": "Add",
 	"view": "View",
+	"edit": "Edit",
 	"page": "Page",
 	"delete": "Delete",
 	"actions": "Actions",
@@ -133,5 +134,6 @@
 		"signature_pad_title": "Sign Here"
 	},
 	"submit": "Submit",
-	"generating": "Generating"
+	"generating": "Generating",
+	"bold": "Bold"
 }

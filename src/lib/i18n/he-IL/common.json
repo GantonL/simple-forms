@@ -61,6 +61,7 @@
 	"user": "משתמש",
 	"add": "הוספה",
 	"view": "תצוגה",
+	"edit": "עריכה",
 	"page": "עמוד",
 	"delete": "מחיקה",
 	"actions": "פעולות",
@@ -133,5 +134,6 @@
 		"signature_pad_title": "חתמו כאן"
 	},
 	"submit": "שליחה",
-	"generating": "יוצר"
+	"generating": "יוצר",
+	"bold": "מודגש"
 }

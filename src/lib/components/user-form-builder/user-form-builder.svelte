@@ -66,8 +66,13 @@
 						bind:value={userData.editableTextBlocks[block.id]}
 						placeholder={$t(block.label)}
 						class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[100px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-					></textarea> -->
-					<CompiledMarkdown content={userData.editableTextBlocks[block.id]}></CompiledMarkdown>
+					></textarea>
+					<CompiledMarkdown bind:content={userData.editableTextBlocks[block.id]}></CompiledMarkdown> -->
+					<EditableText
+						id={block.id}
+						bind:value={userData.editableTextBlocks[block.id]}
+						placeholder={$t(block.label)}
+					/>
 				</div>
 			{/each}
 		</div>
