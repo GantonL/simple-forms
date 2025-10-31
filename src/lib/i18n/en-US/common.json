@@ -135,5 +135,8 @@
 	},
 	"submit": "Submit",
 	"generating": "Generating",
-	"bold": "Bold"
+	"bold": "Bold",
+	"italic": "Italic",
+	"code": "Code",
+	"link": "Link"
 }
