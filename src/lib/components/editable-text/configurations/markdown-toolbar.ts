@@ -1,5 +1,5 @@
 import type { MarkdownToolbarConfig } from '$lib/models/markdown-toolbar';
-import { Bold, Italic, Code, Link } from '@lucide/svelte';
+import { Bold, Italic, Code, Link, AlignCenter } from '@lucide/svelte';
 
 const applyBold = (textarea: HTMLTextAreaElement) => {
 	const start = textarea.selectionStart;
@@ -88,6 +88,27 @@ const applyLink = (textarea: HTMLTextAreaElement) => {
 	textarea.focus();
 };
 
+const applyCenter = (textarea: HTMLTextAreaElement) => {
+	const start = textarea.selectionStart;
+	const end = textarea.selectionEnd;
+	const selectedText = textarea.value.substring(start, end);
+	const before = textarea.value.substring(0, start);
+	const after = textarea.value.substring(end);
+
+	if (selectedText) {
+		const newValue = `${before}<center>${selectedText}</center>${after}`;
+		textarea.value = newValue;
+		textarea.setSelectionRange(start + 8, end + 8);
+	} else {
+		const newValue = `${before}<center></center>${after}`;
+		textarea.value = newValue;
+		textarea.setSelectionRange(start + 8, start + 8);
+	}
+
+	textarea.dispatchEvent(new Event('input', { bubbles: true }));
+	textarea.focus();
+};
+
 export const MarkdownToolbarConfiguration: MarkdownToolbarConfig = {
 	items: [
 		{
@@ -113,6 +134,12 @@ export const MarkdownToolbarConfiguration: MarkdownToolbarConfig = {
 			label: 'common.link',
 			icon: Link,
 			action: applyLink
+		},
+		{
+			id: 'center',
+			label: 'common.center',
+			icon: AlignCenter,
+			action: applyCenter
 		}
 	]
 };

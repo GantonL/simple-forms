@@ -98,6 +98,10 @@
 		"generic_consent_form": {
 			"name": "Generic consent",
 			"description": "Includes basic text blocks, participant and approver details and signatures"
+		},
+		"simple_consent_form": {
+			"name": "Simple consent form",
+			"description": "The signee details at the top, generic content, signature and approver detailes"
 		}
 	},
 	"available_templates": "Available templates",
@@ -138,5 +142,8 @@
 	"bold": "Bold",
 	"italic": "Italic",
 	"code": "Code",
-	"link": "Link"
+	"link": "Link",
+	"center": "Center",
+	"title": "Title",
+	"description": "Description"
 }

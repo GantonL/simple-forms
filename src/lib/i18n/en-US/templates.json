@@ -3,12 +3,14 @@
 		"consent_form": "Consent Form"
 	},
 	"sections": {
+		"content": "Content",
 		"introduction": "Introduction",
 		"terms": "Terms and Conditions",
 		"confirmation": "Confirmation",
 		"admin_statement": "Administrator Section"
 	},
 	"content": {
+		"content": "Your amazing form content",
 		"consent_form_title": "Consent Form",
 		"introduction": "This form outlines the terms and conditions for participation. Please read carefully before signing.",
 		"terms": "By signing this form, you agree to the following terms and conditions:\n\n1. You have read and understood all information provided\n2. You consent to participate voluntarily\n3. You understand that you may withdraw at any time\n4. Your personal information will be handled according to our privacy policy",
