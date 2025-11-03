@@ -141,9 +141,14 @@
 	"generating": "Generating",
 	"bold": "Bold",
 	"italic": "Italic",
+	"underline": "Underline",
 	"code": "Code",
 	"link": "Link",
 	"center": "Center",
+	"bulletList": "Bullet List",
+	"numberedList": "Numbered List",
+	"heading": "Heading",
+	"indent": "Indent",
 	"title": "Title",
 	"description": "Description"
 }

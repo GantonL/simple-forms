@@ -6,6 +6,7 @@
 	import { direction } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
 	import { onMount } from 'svelte';
+	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
 
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
@@ -132,9 +133,9 @@
 								{#if parsedItem}
 									{#if parsedItem.type === 'text'}
 										<!-- Render text content without label -->
-										<div class="prose prose-sm max-w-none whitespace-pre-wrap">
-											{parsedItem.content}
-										</div>
+										{#if parsedItem.content}
+											<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
+										{/if}
 									{:else if parsedItem.type === 'field'}
 										<!-- Render actual input field -->
 										{@const field = getField(parsedItem.id)}
@@ -154,9 +155,9 @@
 							<div class="print:break-inside-avoid">
 								{#if parsedItem.type === 'text'}
 									<!-- Render text content without label -->
-									<div class="prose prose-sm max-w-none whitespace-pre-wrap">
-										{parsedItem.content}
-									</div>
+									{#if parsedItem.content}
+										<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
+									{/if}
 								{:else if parsedItem.type === 'field'}
 									<!-- Render actual input field -->
 									{@const field = getField(parsedItem.id)}
@@ -170,11 +171,6 @@
 				{/each}
 			</div>
 		{/if}
-
-		<!-- Footer with preview info -->
-		<div class="mt-8 border-t border-gray-300 pt-4 text-xs text-gray-500 print:break-inside-avoid">
-			<p>{$t('common.form_builder.preview')} - {new Date().toLocaleDateString()}</p>
-		</div>
 	</div>
 
 	<!-- Submit Button -->

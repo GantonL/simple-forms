@@ -141,9 +141,14 @@
 	"generating": "יוצר",
 	"bold": "מודגש",
 	"italic": "נטוי",
+	"underline": "קו תחתון",
 	"code": "קוד",
 	"link": "קישור",
 	"center": "ממורכז",
+	"bulletList": "רשימה מנוקדת",
+	"numberedList": "רשימה ממוספרת",
+	"heading": "כותרת",
+	"indent": "הזחה",
 	"title": "כותרת",
 	"description": "תיאור"
 }

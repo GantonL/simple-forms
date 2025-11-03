@@ -16,7 +16,7 @@
 </script>
 
 <Card class="gap-2 py-2">
-	<CardHeader class="flex flex-row-reverse justify-between px-2">
+	<CardHeader class="flex flex-row-reverse flex-wrap items-center justify-between px-2">
 		<ButtonGroup config={ModeToggleConfiguration} bind:activeValue={mode} />
 		{#if mode === 'edit'}
 			<EditableTextToolbar config={MarkdownToolbarConfiguration} textarea={textareaRef} />
