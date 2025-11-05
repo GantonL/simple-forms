@@ -26,11 +26,16 @@
 		content?: string;
 	};
 
-	let html2pdf;
+	let html2canvas;
+	let jsPDF;
 
 	onMount(async () => {
-		const module = await import('html2pdf.js');
-		html2pdf = module.default;
+		const [html2canvasModule, jsPDFModule] = await Promise.all([
+			import('html2canvas-pro'),
+			import('jspdf')
+		]);
+		html2canvas = html2canvasModule.default;
+		jsPDF = jsPDFModule.jsPDF;
 	});
 
 	const parseSectionItem = (item: string): SectionItem | null => {
@@ -82,31 +87,80 @@
 
 	// Generate PDF from the form container
 	const generatePdf = async () => {
-		if (!formContainer || isGeneratingPdf) return;
+		if (!formContainer || isGeneratingPdf || !html2canvas || !jsPDF) return;
 
 		isGeneratingPdf = true;
 
 		try {
-			// Configure html2pdf options
-			const options = {
-				margin: 10,
-				filename: 'form.pdf',
-				image: { type: 'jpeg', quality: 0.98 },
-				html2canvas: {
-					scale: 2,
-					useCORS: true,
-					logging: false,
-					backgroundColor: '#ffffff'
-				},
-				jsPDF: {
-					unit: 'mm',
-					format: 'a4',
-					orientation: 'portrait'
-				}
-			};
+			// Render the form container to canvas with html2canvas (supports oklch)
+			const canvas = await html2canvas(formContainer, {
+				scale: 2,
+				useCORS: true,
+				logging: false,
+				backgroundColor: '#ffffff'
+			});
 
-			// Generate and save PDF
-			await html2pdf().set(options).from(formContainer).save();
+			// Get canvas dimensions
+			const imgWidth = 210; // A4 width in mm
+			const pageHeight = 297; // A4 height in mm
+			const imgHeight = (canvas.height * imgWidth) / canvas.width;
+			const margin = 10; // mm
+			const availableWidth = imgWidth - 2 * margin;
+			const availableHeight = pageHeight - 2 * margin;
+
+			// Convert canvas to image
+			const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+			// Create PDF
+			const pdf = new jsPDF({
+				unit: 'mm',
+				format: 'a4',
+				orientation: 'portrait'
+			});
+
+			// Add image to PDF with margins
+			if (imgHeight <= availableHeight) {
+				// Single page
+				pdf.addImage(
+					imgData,
+					'JPEG',
+					margin,
+					margin,
+					availableWidth,
+					(canvas.height * availableWidth) / canvas.width
+				);
+			} else {
+				// Multi-page
+				let heightLeft = imgHeight;
+				let position = 0;
+
+				pdf.addImage(
+					imgData,
+					'JPEG',
+					margin,
+					margin,
+					availableWidth,
+					(canvas.height * availableWidth) / canvas.width
+				);
+				heightLeft -= availableHeight;
+
+				while (heightLeft > 0) {
+					position = heightLeft - imgHeight;
+					pdf.addPage();
+					pdf.addImage(
+						imgData,
+						'JPEG',
+						margin,
+						position + margin,
+						availableWidth,
+						(canvas.height * availableWidth) / canvas.width
+					);
+					heightLeft -= availableHeight;
+				}
+			}
+
+			// Save PDF
+			pdf.save('form.pdf');
 		} catch (error) {
 			console.error('Error generating PDF:', error);
 		} finally {
