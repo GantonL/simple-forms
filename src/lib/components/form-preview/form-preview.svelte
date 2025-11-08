@@ -94,184 +94,144 @@
 
 		isGeneratingPdf = true;
 
-		try {
-			// Render the form container to canvas with html2canvas (supports oklch)
-			const canvas = await html2canvas(formContainer, {
-				scale: 2,
-				useCORS: true,
-				logging: false,
-				backgroundColor: '#ffffff'
-			});
+		setTimeout(async () => {
+			try {
+				// Render the form container to canvas with html2canvas-pro (supports oklch)
+				const canvas = await html2canvas(formContainer, {
+					scale: 2,
+					useCORS: true,
+					logging: false,
+					backgroundColor: '#ffffff'
+				});
 
-			// Get canvas dimensions
-			const imgWidth = 210; // A4 width in mm
-			const pageHeight = 297; // A4 height in mm
-			const imgHeight = (canvas.height * imgWidth) / canvas.width;
-			const margin = 10; // mm
-			const availableWidth = imgWidth - 2 * margin;
-			const availableHeight = pageHeight - 2 * margin;
+				// Get canvas dimensions
+				const imgWidth = 210; // A4 width in mm
+				const pageHeight = 297; // A4 height in mm
+				const imgHeight = (canvas.height * imgWidth) / canvas.width;
+				const margin = 5; // mm
+				const availableWidth = imgWidth - 2 * margin;
+				const availableHeight = pageHeight - 2 * margin;
 
-			// Convert canvas to image
-			const imgData = canvas.toDataURL('image/jpeg', 0.98);
+				// Convert canvas to image
+				const imgData = canvas.toDataURL('image/jpeg', 0.98);
 
-			// Create PDF
-			const pdf = new jsPDF({
-				unit: 'mm',
-				format: 'a4',
-				orientation: 'portrait'
-			});
+				// Create PDF
+				const pdf = new jsPDF({
+					unit: 'mm',
+					format: 'a4',
+					orientation: 'portrait'
+				});
 
-			// Add image to PDF with margins
-			if (imgHeight <= availableHeight) {
-				// Single page
-				pdf.addImage(
-					imgData,
-					'JPEG',
-					margin,
-					margin,
-					availableWidth,
-					(canvas.height * availableWidth) / canvas.width
-				);
-			} else {
-				// Multi-page
-				let heightLeft = imgHeight;
-				let position = 0;
-
-				pdf.addImage(
-					imgData,
-					'JPEG',
-					margin,
-					margin,
-					availableWidth,
-					(canvas.height * availableWidth) / canvas.width
-				);
-				heightLeft -= availableHeight;
-
-				while (heightLeft > 0) {
-					position = heightLeft - imgHeight;
-					pdf.addPage();
+				// Add image to PDF with margins
+				if (imgHeight <= availableHeight) {
+					// Single page
 					pdf.addImage(
 						imgData,
 						'JPEG',
 						margin,
-						position + margin,
+						margin,
+						availableWidth,
+						(canvas.height * availableWidth) / canvas.width
+					);
+				} else {
+					// Multi-page
+					let heightLeft = imgHeight;
+					let position = 0;
+
+					pdf.addImage(
+						imgData,
+						'JPEG',
+						margin,
+						margin,
 						availableWidth,
 						(canvas.height * availableWidth) / canvas.width
 					);
 					heightLeft -= availableHeight;
-				}
-			}
 
-			// Save PDF
-			pdf.save('form.pdf');
-		} catch (error) {
-			console.error('Error generating PDF:', error);
-		} finally {
-			isGeneratingPdf = false;
-		}
+					while (heightLeft > 0) {
+						position = heightLeft - imgHeight;
+						pdf.addPage();
+						pdf.addImage(
+							imgData,
+							'JPEG',
+							margin,
+							position + margin,
+							availableWidth,
+							(canvas.height * availableWidth) / canvas.width
+						);
+						heightLeft -= availableHeight;
+					}
+				}
+
+				// Save PDF
+				pdf.save('form.pdf');
+			} catch (error) {
+				console.error('Error generating PDF:', error);
+			} finally {
+				isGeneratingPdf = false;
+			}
+		});
 	};
 </script>
 
-<div class="space-y-6">
-	<div
-		bind:this={formContainer}
-		class="mx-auto w-full max-w-4xl bg-white p-8 text-black print:p-0"
-		style="direction: {$direction === 'lr' ? 'ltr' : 'rtl'}"
-	>
-		<!-- Layout-based rendering -->
-		{#if schema.layout?.sections && schema.layout.sections.length > 0}
-			<div class="space-y-6">
-				{#each schema.layout.sections as section, sectionIndex (sectionIndex)}
-					{#if Array.isArray(section)}
-						<!-- Section is an array of items (can be text or fields) -->
-						<div class="flex flex-row flex-wrap items-start space-y-4 print:break-inside-avoid">
-							{#each section as item, itemIndex (itemIndex)}
-								{@const parsedItem = parseSectionItem(item)}
-								{#if parsedItem}
-									{#if parsedItem.type === 'text'}
-										<!-- Render text content without label -->
-										{#if parsedItem.content}
-											<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
-										{/if}
-									{:else if parsedItem.type === 'field'}
-										<!-- Render actual input field -->
-										{@const field = getField(parsedItem.id)}
-										{#if field && userData.fields}
-											{@const isDisabled = (): boolean => {
-												const value = userData.fields![field.id];
-												return (
-													((typeof value === 'string' || Array.isArray(value)) &&
-														value.length > 0) ||
-													typeof value === 'number' ||
-													typeof value === 'boolean'
-												);
-											}}
-											<div class="inline-block min-w-[200px] md:min-w-[250px]">
-												<FieldRenderer
-													{field}
-													disabled={isDisabled()}
-													bind:value={userData.fields[field.id]}
-													onChange={handleFormInvalidation}
-												/>
-											</div>
-										{/if}
-									{/if}
-								{/if}
-							{/each}
-						</div>
-					{:else}
-						<!-- Section is a single item -->
-						{@const parsedItem = parseSectionItem(section)}
+<div
+	bind:this={formContainer}
+	class="mx-auto w-full max-w-4xl bg-white p-8 text-black print:p-0"
+	style="direction: {$direction === 'lr' ? 'ltr' : 'rtl'}"
+>
+	<!-- Layout-based rendering -->
+	{#if schema.layout?.sections && schema.layout.sections.length > 0}
+		<div class="space-y-6">
+			{#each schema.layout.sections as section, sectionIndex (sectionIndex)}
+				<div class="flex flex-row flex-wrap items-start space-y-4 print:break-inside-avoid">
+					{#each section as item, itemIndex (itemIndex)}
+						{@const parsedItem = parseSectionItem(item)}
 						{#if parsedItem}
-							<div class="print:break-inside-avoid">
-								{#if parsedItem.type === 'text'}
-									<!-- Render text content without label -->
-									{#if parsedItem.content}
-										<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
-									{/if}
-								{:else if parsedItem.type === 'field'}
-									<!-- Render actual input field -->
-									{@const field = getField(parsedItem.id)}
-									{#if field && userData.fields}
-										{@const isDisabled = (): boolean => {
-											const value = userData.fields![field.id];
-											return (
-												((typeof value === 'string' || Array.isArray(value)) && value.length > 0) ||
-												typeof value === 'number' ||
-												typeof value === 'boolean'
-											);
-										}}
+							{#if parsedItem.type === 'text'}
+								<!-- Render text content without label -->
+								{#if parsedItem.content}
+									<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
+								{/if}
+							{:else if parsedItem.type === 'field'}
+								<!-- Render actual input field -->
+								{@const field = getField(parsedItem.id)}
+								{#if field && userData.fields}
+									{@const isDisabled = (): boolean => {
+										const value = userData.fields![field.id];
+										return (
+											((typeof value === 'string' || Array.isArray(value)) && value.length > 0) ||
+											typeof value === 'number' ||
+											typeof value === 'boolean'
+										);
+									}}
+									<div class="inline-block min-w-[200px] md:min-w-[250px]">
 										<FieldRenderer
 											{field}
 											disabled={isDisabled()}
 											bind:value={userData.fields[field.id]}
 											onChange={handleFormInvalidation}
+											mode={isGeneratingPdf ? 'display' : 'default'}
 										/>
-									{/if}
+									</div>
 								{/if}
-							</div>
+							{/if}
 						{/if}
-					{/if}
-				{/each}
-			</div>
-		{/if}
-	</div>
+					{/each}
+				</div>
+			{/each}
+		</div>
+	{/if}
+</div>
 
-	<!-- Submit Button -->
-	<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
-		<Button
-			onclick={generatePdf}
-			disabled={isGeneratingPdf || !isFormValid}
-			size="lg"
-			class="w-full"
-		>
-			{#if isGeneratingPdf}
-				{$t('common.generating')}...
-			{:else}
-				{$t('common.submit')}
-			{/if}
-		</Button>
-	</div>
+<!-- Submit Button -->
+<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
+	<Button onclick={generatePdf} disabled={isGeneratingPdf || !isFormValid} size="lg" class="w-full">
+		{#if isGeneratingPdf}
+			{$t('common.generating')}...
+		{:else}
+			{$t('common.submit')}
+		{/if}
+	</Button>
 </div>
 
 <style>

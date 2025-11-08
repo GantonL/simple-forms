@@ -8,11 +8,18 @@
 	type FieldRendererProps = {
 		field: Field;
 		value: string | number | boolean | string[] | undefined;
+		mode?: 'default' | 'display';
 		disabled?: boolean;
 		onChange?: (newValue: FieldRendererProps['value']) => FieldRendererProps['value'];
 	};
 
-	let { field, value = $bindable(), disabled, onChange }: FieldRendererProps = $props();
+	let {
+		field,
+		value = $bindable(),
+		mode = 'default',
+		disabled,
+		onChange
+	}: FieldRendererProps = $props();
 
 	$effect.pre(() => {
 		if (disabled !== null || disabled !== undefined) {
@@ -24,41 +31,53 @@
 <div class="space-y-2" class:opacity-70={field.disabled} class:pointer-events-none={field.disabled}>
 	<Label for={field.id}>
 		{$t(field.label)}
-		{#if field.required && !field.disabled}
+		{#if field.required && !field.disabled && mode === 'default'}
 			<span class="text-destructive">*</span>
 		{/if}
 	</Label>
 
 	{#if field.type === 'text' || field.type === 'email' || field.type === 'number' || field.type === 'tel'}
-		<Input
-			id={field.id}
-			type={field.type}
-			bind:value
-			disabled={field.disabled}
-			required={field.required}
-			placeholder={$t(field.label)}
-			onchange={() => onChange?.(value)}
-		/>
+		{#if mode === 'default'}
+			<Input
+				id={field.id}
+				type={field.type}
+				bind:value
+				disabled={field.disabled}
+				required={field.required}
+				placeholder={$t(field.label)}
+				onchange={() => onChange?.(value)}
+			/>
+		{:else if mode === 'display'}
+			<span class="w-fit">{value}</span>
+		{/if}
 	{:else if field.type === 'textarea'}
-		<textarea
-			id={field.id}
-			bind:value
-			disabled={field.disabled}
-			required={field.required}
-			placeholder={$t(field.label)}
-			class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-			onchange={() => onChange?.(value)}
-		></textarea>
+		{#if mode === 'default'}
+			<textarea
+				id={field.id}
+				bind:value
+				disabled={field.disabled}
+				required={field.required}
+				placeholder={$t(field.label)}
+				class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+				onchange={() => onChange?.(value)}
+			></textarea>
+		{:else if mode === 'display'}
+			<span class="w-fit">{value}</span>
+		{/if}
 	{:else if field.type === 'date'}
-		<Input
-			id={field.id}
-			type="date"
-			bind:value
-			disabled={field.disabled}
-			required={field.required}
-			class="w-36"
-			onchange={() => onChange?.(value)}
-		/>
+		{#if mode === 'default'}
+			<Input
+				id={field.id}
+				type="date"
+				bind:value
+				disabled={field.disabled}
+				required={field.required}
+				class="w-36"
+				onchange={() => onChange?.(value)}
+			/>
+		{:else if mode === 'display'}
+			<span class="w-fit">{value}</span>
+		{/if}
 	{:else if field.type === 'signature'}
 		<SignaturePad
 			fieldId={field.id}
@@ -66,16 +85,6 @@
 			disabled={field.disabled}
 			required={field.required}
 			onChange={() => onChange?.(value)}
-		/>
-	{:else}
-		<Input
-			id={field.id}
-			type="text"
-			bind:value
-			disabled={field.disabled}
-			required={field.required}
-			placeholder={$t(field.label)}
-			onchange={() => onChange?.(value)}
 		/>
 	{/if}
 </div>
