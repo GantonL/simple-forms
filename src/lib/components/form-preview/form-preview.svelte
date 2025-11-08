@@ -181,7 +181,7 @@
 				{#each schema.layout.sections as section, sectionIndex (sectionIndex)}
 					{#if Array.isArray(section)}
 						<!-- Section is an array of items (can be text or fields) -->
-						<div class="space-y-4 print:break-inside-avoid">
+						<div class="flex flex-row flex-wrap items-start space-y-4 print:break-inside-avoid">
 							{#each section as item, itemIndex (itemIndex)}
 								{@const parsedItem = parseSectionItem(item)}
 								{#if parsedItem}
