@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import SignaturePad from 'signature_pad';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -13,18 +12,24 @@
 	import { t } from '$lib/i18n';
 
 	type SignaturePadProps = {
+		fieldId: string;
 		value?: string;
 		required?: boolean;
 		disabled?: boolean;
-		fieldId: string;
+		onChange?: (newValue: string) => void;
 	};
 
-	let { value = $bindable(), required = false, disabled = false, fieldId }: SignaturePadProps = $props();
+	let {
+		fieldId,
+		value = $bindable(),
+		required = false,
+		disabled = false,
+		onChange
+	}: SignaturePadProps = $props();
 
 	let open = $state(false);
 	let canvasElement: HTMLCanvasElement;
 	let signaturePad: SignaturePad | null = null;
-	let containerDiv: HTMLDivElement;
 
 	// Initialize signature pad when dialog opens
 	$effect(() => {
@@ -56,11 +61,13 @@
 
 	const handleClear = () => {
 		signaturePad?.clear();
+		onChange?.('');
 	};
 
 	const handleSave = () => {
 		if (signaturePad && !signaturePad.isEmpty()) {
 			value = signaturePad.toDataURL('image/svg+xml');
+			onChange?.(value);
 		} else if (required) {
 			// Don't close if required and empty
 			return;
@@ -84,11 +91,11 @@
 	};
 </script>
 
-<div class="flex items-center gap-2" bind:this={containerDiv}>
+<div id={fieldId} class="flex items-center gap-2">
 	{#if value}
 		<!-- Display existing signature -->
-		<div class="flex items-center gap-2 flex-1">
-			<img src={value} alt="Signature" class="h-16 border border-gray-300 rounded px-2 bg-white" />
+		<div class="flex flex-1 items-center gap-2">
+			<img src={value} alt="Signature" class="h-16 rounded border border-gray-300 bg-white px-2" />
 			{#if !disabled}
 				<Button
 					type="button"
@@ -103,12 +110,7 @@
 		</div>
 	{:else}
 		<!-- No signature yet -->
-		<Button
-			type="button"
-			variant="outline"
-			onclick={() => (open = true)}
-			{disabled}
-		>
+		<Button type="button" variant="outline" onclick={() => (open = true)} {disabled}>
 			<Pen class="mr-2 h-4 w-4" />
 			{$t('common.signature_field.add_signature')}
 		</Button>
@@ -124,7 +126,7 @@
 		<div class="my-4">
 			<canvas
 				bind:this={canvasElement}
-				class="w-full border-2 border-gray-300 rounded-md touch-none"
+				class="w-full touch-none rounded-md border-2 border-gray-300"
 				style="height: 300px;"
 			></canvas>
 		</div>

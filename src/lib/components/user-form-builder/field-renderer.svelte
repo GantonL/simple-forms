@@ -8,9 +8,10 @@
 	type FieldRendererProps = {
 		field: Field;
 		value: string | number | boolean | string[] | undefined;
+		onChange?: (newValue: FieldRendererProps['value']) => FieldRendererProps['value'];
 	};
 
-	let { field, value = $bindable() }: FieldRendererProps = $props();
+	let { field, value = $bindable(), onChange }: FieldRendererProps = $props();
 
 	const isFilled = $derived(
 		(typeof value === 'string' && value.length > 0) ||
@@ -39,6 +40,7 @@
 			disabled={isDisabled}
 			required={field.required}
 			placeholder={$t(field.label)}
+			onchange={() => onChange?.(value)}
 		/>
 	{:else if field.type === 'textarea'}
 		<textarea
@@ -48,6 +50,7 @@
 			required={field.required}
 			placeholder={$t(field.label)}
 			class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
+			onchange={() => onChange?.(value)}
 		></textarea>
 	{:else if field.type === 'date'}
 		<Input
@@ -57,6 +60,7 @@
 			disabled={isDisabled}
 			required={field.required}
 			class="w-36"
+			onchange={() => onChange?.(value)}
 		/>
 	{:else if field.type === 'signature'}
 		<SignaturePad
@@ -64,6 +68,7 @@
 			bind:value={value as string | undefined}
 			disabled={isDisabled}
 			required={field.required}
+			onChange={() => onChange?.(value)}
 		/>
 	{:else}
 		<Input
@@ -73,6 +78,7 @@
 			disabled={isDisabled}
 			required={field.required}
 			placeholder={$t(field.label)}
+			onchange={() => onChange?.(value)}
 		/>
 	{/if}
 </div>

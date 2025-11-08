@@ -18,6 +18,7 @@
 	// Form container reference for PDF generation
 	let formContainer: HTMLDivElement;
 	let isGeneratingPdf = $state(false);
+	let isFormValid = $state(false);
 
 	// Parse section item to determine type
 	type SectionItem = {
@@ -57,32 +58,34 @@
 		return null;
 	};
 
-	// Get field definition by ID
 	const getField = (fieldId: string) => {
 		return schema.fields?.find((f) => f.id === fieldId);
 	};
 
-	// Validation logic - check if all required fields are filled
-	const isFormValid = $derived(() => {
+	const handleFormInvalidation = $derived(() => {
 		if (!schema.fields || !userData.fields) return true;
 
-		return schema.fields.every((field) => {
+		const allFieldsValid = schema.fields.every((field) => {
 			if (!field.required) return true;
 
 			const value = userData.fields?.[field.id];
 
-			// Check if value exists and is not empty
-			if (value === undefined || value === null || value === '') {
+			if (
+				value === undefined ||
+				value === null ||
+				((typeof value === 'string' || Array.isArray(value)) && value.length === 0)
+			) {
 				return false;
 			}
 
-			// For signature fields, check if it's a valid data URL
 			if (field.type === 'signature' && typeof value === 'string') {
 				return value.startsWith('data:image');
 			}
 
 			return true;
 		});
+
+		isFormValid = allFieldsValid;
 	});
 
 	// Generate PDF from the form container
@@ -195,7 +198,11 @@
 										{@const field = getField(parsedItem.id)}
 										{#if field && userData.fields}
 											<div class="inline-block min-w-[200px] md:min-w-[250px]">
-												<FieldRenderer {field} bind:value={userData.fields[field.id]} />
+												<FieldRenderer
+													{field}
+													bind:value={userData.fields[field.id]}
+													onChange={handleFormInvalidation}
+												/>
 											</div>
 										{/if}
 									{/if}
@@ -229,7 +236,12 @@
 
 	<!-- Submit Button -->
 	<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
-		<Button onclick={generatePdf} disabled={isGeneratingPdf} size="lg" class="min-w-[200px]">
+		<Button
+			onclick={generatePdf}
+			disabled={isGeneratingPdf || !isFormValid}
+			size="lg"
+			class="w-full"
+		>
 			{#if isGeneratingPdf}
 				{$t('common.generating')}...
 			{:else}
