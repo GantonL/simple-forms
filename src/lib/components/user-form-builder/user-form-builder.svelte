@@ -7,7 +7,6 @@
 	import { t } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import EditableText from '../editable-text/editable-text.svelte';
-	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
 
 	type UserFormBuilderProps = {
 		schema: FormTemplateSchema;
@@ -25,7 +24,8 @@
 		if (schema.editableTextBlocks) {
 			const initialTextBlocks: Record<string, string> = {};
 			schema.editableTextBlocks.forEach((block) => {
-				initialTextBlocks[block.id] = userData.editableTextBlocks[block.id] || t.get(block.content);
+				initialTextBlocks[block.id] =
+					userData.editableTextBlocks?.[block.id] || t.get(block.content);
 			});
 			userData.editableTextBlocks = initialTextBlocks;
 		}
@@ -34,7 +34,7 @@
 		if (schema.fields) {
 			const initialFields: Record<string, string | number | boolean | string[]> = {};
 			schema.fields.forEach((field) => {
-				if (userData.fields[field.id] !== undefined) {
+				if (userData.fields?.[field.id] !== undefined) {
 					initialFields[field.id] = userData.fields[field.id];
 				} else if (field.type === 'number') {
 					initialFields[field.id] = 0;
@@ -61,16 +61,9 @@
 			{#each schema.editableTextBlocks as block (block)}
 				<div class="space-y-2">
 					<Label for={block.id}>{$t(block.label)}</Label>
-					<!-- <textarea
-						id={block.id}
-						bind:value={userData.editableTextBlocks[block.id]}
-						placeholder={$t(block.label)}
-						class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[100px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-					></textarea>
-					<CompiledMarkdown bind:content={userData.editableTextBlocks[block.id]}></CompiledMarkdown> -->
 					<EditableText
 						id={block.id}
-						bind:value={userData.editableTextBlocks[block.id]}
+						bind:value={userData.editableTextBlocks![block.id]}
 						placeholder={$t(block.label)}
 					/>
 				</div>
@@ -89,7 +82,7 @@
 			</div>
 			<Separator />
 			{#each schema.fields as field (field)}
-				<FieldRenderer {field} bind:value={userData.fields[field.id]} />
+				<FieldRenderer {field} bind:value={userData.fields![field.id]} />
 			{/each}
 		</div>
 	{/if}

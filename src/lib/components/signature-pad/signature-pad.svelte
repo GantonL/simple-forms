@@ -8,7 +8,7 @@
 		DialogTitle,
 		DialogFooter
 	} from '$lib/components/ui/dialog';
-	import { Pen, X } from '@lucide/svelte';
+	import { Pen, Trash, X } from '@lucide/svelte';
 	import { t } from '$lib/i18n';
 
 	type SignaturePadProps = {
@@ -95,17 +95,28 @@
 	{#if value}
 		<!-- Display existing signature -->
 		<div class="flex flex-1 items-center gap-2">
-			<img src={value} alt="Signature" class="h-16 rounded border border-gray-300 bg-white px-2" />
+			<img src={value} alt="Signature" class="h-20 rounded border border-gray-300 bg-white px-2" />
 			{#if !disabled}
-				<Button
-					type="button"
-					variant="outline"
-					size="icon"
-					onclick={() => (open = true)}
-					aria-label={$t('common.signature_field.edit_signature')}
-				>
-					<Pen class="h-4 w-4" />
-				</Button>
+				<div class="flex flex-col gap-2">
+					<Button
+						type="button"
+						variant="outline"
+						size="icon"
+						onclick={() => (open = true)}
+						aria-label={$t('common.signature_field.edit_signature')}
+					>
+						<Pen class="h-4 w-4" />
+					</Button>
+					<Button
+						type="button"
+						variant="outline"
+						size="icon"
+						onclick={() => (value = undefined)}
+						aria-label={$t('common.delete')}
+					>
+						<Trash class="h-4 w-4" />
+					</Button>
+				</div>
 			{/if}
 		</div>
 	{:else}

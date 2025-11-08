@@ -197,9 +197,19 @@
 										<!-- Render actual input field -->
 										{@const field = getField(parsedItem.id)}
 										{#if field && userData.fields}
+											{@const isDisabled = (): boolean => {
+												const value = userData.fields![field.id];
+												return (
+													((typeof value === 'string' || Array.isArray(value)) &&
+														value.length > 0) ||
+													typeof value === 'number' ||
+													typeof value === 'boolean'
+												);
+											}}
 											<div class="inline-block min-w-[200px] md:min-w-[250px]">
 												<FieldRenderer
 													{field}
+													disabled={isDisabled()}
 													bind:value={userData.fields[field.id]}
 													onChange={handleFormInvalidation}
 												/>
@@ -223,7 +233,20 @@
 									<!-- Render actual input field -->
 									{@const field = getField(parsedItem.id)}
 									{#if field && userData.fields}
-										<FieldRenderer {field} bind:value={userData.fields[field.id]} />
+										{@const isDisabled = (): boolean => {
+											const value = userData.fields![field.id];
+											return (
+												((typeof value === 'string' || Array.isArray(value)) && value.length > 0) ||
+												typeof value === 'number' ||
+												typeof value === 'boolean'
+											);
+										}}
+										<FieldRenderer
+											{field}
+											disabled={isDisabled()}
+											bind:value={userData.fields[field.id]}
+											onChange={handleFormInvalidation}
+										/>
 									{/if}
 								{/if}
 							</div>

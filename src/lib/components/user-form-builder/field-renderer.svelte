@@ -8,26 +8,23 @@
 	type FieldRendererProps = {
 		field: Field;
 		value: string | number | boolean | string[] | undefined;
+		disabled?: boolean;
 		onChange?: (newValue: FieldRendererProps['value']) => FieldRendererProps['value'];
 	};
 
-	let { field, value = $bindable(), onChange }: FieldRendererProps = $props();
+	let { field, value = $bindable(), disabled, onChange }: FieldRendererProps = $props();
 
-	const isFilled = $derived(
-		(typeof value === 'string' && value.length > 0) ||
-			typeof value === 'number' ||
-			typeof value === 'boolean' ||
-			(Array.isArray(value) && value.length > 0)
-	);
-
-	// Field is disabled if explicitly disabled OR if it has a filled value
-	const isDisabled = $derived(field.disabled || isFilled);
+	$effect.pre(() => {
+		if (disabled !== null || disabled !== undefined) {
+			field.disabled = disabled;
+		}
+	});
 </script>
 
-<div class="space-y-2" class:opacity-70={isFilled} class:pointer-events-none={isFilled}>
+<div class="space-y-2" class:opacity-70={field.disabled} class:pointer-events-none={field.disabled}>
 	<Label for={field.id}>
 		{$t(field.label)}
-		{#if field.required && !isDisabled}
+		{#if field.required && !field.disabled}
 			<span class="text-destructive">*</span>
 		{/if}
 	</Label>
@@ -37,7 +34,7 @@
 			id={field.id}
 			type={field.type}
 			bind:value
-			disabled={isDisabled}
+			disabled={field.disabled}
 			required={field.required}
 			placeholder={$t(field.label)}
 			onchange={() => onChange?.(value)}
@@ -46,7 +43,7 @@
 		<textarea
 			id={field.id}
 			bind:value
-			disabled={isDisabled}
+			disabled={field.disabled}
 			required={field.required}
 			placeholder={$t(field.label)}
 			class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
@@ -57,7 +54,7 @@
 			id={field.id}
 			type="date"
 			bind:value
-			disabled={isDisabled}
+			disabled={field.disabled}
 			required={field.required}
 			class="w-36"
 			onchange={() => onChange?.(value)}
@@ -66,7 +63,7 @@
 		<SignaturePad
 			fieldId={field.id}
 			bind:value={value as string | undefined}
-			disabled={isDisabled}
+			disabled={field.disabled}
 			required={field.required}
 			onChange={() => onChange?.(value)}
 		/>
@@ -75,7 +72,7 @@
 			id={field.id}
 			type="text"
 			bind:value
-			disabled={isDisabled}
+			disabled={field.disabled}
 			required={field.required}
 			placeholder={$t(field.label)}
 			onchange={() => onChange?.(value)}
