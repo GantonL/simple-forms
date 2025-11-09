@@ -150,5 +150,7 @@
 	"heading": "Heading",
 	"indent": "Indent",
 	"title": "Title",
-	"description": "Description"
+	"description": "Description",
+	"form_submited_successfuly": "Form submited successfuly",
+	"thank_you": "Thanks you!"
 }

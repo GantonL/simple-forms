@@ -11,9 +11,10 @@
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
 		userData: UserFormData;
+		onSubmit?: (data?: string) => void;
 	};
 
-	let { schema, userData }: FormPreviewProps = $props();
+	let { schema, userData, onSubmit }: FormPreviewProps = $props();
 
 	// Form container reference for PDF generation
 	let formContainer: HTMLDivElement;
@@ -165,6 +166,7 @@
 
 				// Save PDF
 				pdf.save('form.pdf');
+				onSubmit?.();
 			} catch (error) {
 				console.error('Error generating PDF:', error);
 			} finally {
@@ -183,7 +185,7 @@
 	{#if schema.layout?.sections && schema.layout.sections.length > 0}
 		<div class="space-y-6">
 			{#each schema.layout.sections as section, sectionIndex (sectionIndex)}
-				<div class="flex flex-row flex-wrap items-start space-y-4 print:break-inside-avoid">
+				<div class="flex flex-row flex-wrap items-start gap-2 space-y-4">
 					{#each section as item, itemIndex (itemIndex)}
 						{@const parsedItem = parseSectionItem(item)}
 						{#if parsedItem}
@@ -204,7 +206,7 @@
 											typeof value === 'boolean'
 										);
 									}}
-									<div class="inline-block min-w-[200px] md:min-w-[250px]">
+									<div class="inline-block min-w-[200px] md:min-w-[250px] print:break-inside-avoid">
 										<FieldRenderer
 											{field}
 											disabled={isDisabled()}

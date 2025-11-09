@@ -150,5 +150,7 @@
 	"heading": "כותרת",
 	"indent": "הזחה",
 	"title": "כותרת",
-	"description": "תיאור"
+	"description": "תיאור",
+	"form_submited_successfuly": "טופס נשלח בהצלחה",
+	"thank_you": "תודה לך!"
 }
