@@ -5,6 +5,7 @@
 	import Menu from '$lib/components/menu/menu.svelte';
 	import type { MenuActionItem, MenuConfiguration } from '$lib/models/menu';
 	import UserMenuTrigger from './user-menu-trigger.svelte';
+	import { resolve } from '$app/paths';
 	const session = authClient.useSession();
 	const user = $derived($session?.data?.user);
 	const showIfUser = (currentUser: typeof user) => {
@@ -52,15 +53,15 @@
 				break;
 			}
 			case 'signin': {
-				goto('/signin');
+				goto(resolve('/signin'));
 				break;
 			}
 			case 'signup': {
-				goto('/signup');
+				goto(resolve('/signup'));
 				break;
 			}
 			case 'user': {
-				goto('/user');
+				goto(resolve('/user'));
 				break;
 			}
 		}

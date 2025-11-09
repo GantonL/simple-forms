@@ -1,3 +1,4 @@
 export enum AppCustomEventType {
-	Delete = 'delete'
+	Delete = 'delete',
+	Edit = 'edit'
 }

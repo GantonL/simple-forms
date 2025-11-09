@@ -8,6 +8,8 @@
 	import { toast } from 'svelte-sonner';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { type AppCustomEvent } from '$lib/models/common';
+	import Menu from '../menu/menu.svelte';
+	import { menuConfiguration } from './configurations/menu';
 	let { data, onEvent }: { data: UserForm; onEvent: (event: AppCustomEvent<UserForm>) => void } =
 		$props();
 
@@ -18,18 +20,21 @@
 			toast.success(t.get('common.link_copied_to_clipboard'));
 		});
 	}
-
-	function onDelete() {
-		onEvent({ type: AppCustomEventType.Delete, data });
-	}
 </script>
 
 <Card.Root class="flex-column flex justify-between">
-	<Card.Header>
-		<Card.Title class="flex flex-row items-center gap-2">
-			<span>{data.name}</span>
-		</Card.Title>
-		<Card.Description>{data.description}</Card.Description>
+	<Card.Header class="flex flex-row justify-between">
+		<div class="flex flex-col items-start gap-2">
+			<Card.Title class="flex flex-row items-center gap-2">
+				<span>{data.name}</span>
+			</Card.Title>
+			<Card.Description>{data.description}</Card.Description>
+		</div>
+		<Menu
+			configuration={menuConfiguration}
+			rawData={data}
+			event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
+		/>
 	</Card.Header>
 	<Card.Footer class="align-items flex flex-row gap-2">
 		<Button class="flex flex-row items-center gap-2" onclick={onCopy}>
@@ -39,10 +44,6 @@
 		<Button variant="outline" class="flex flex-row items-center gap-2">
 			<Eye size={12} />
 			<span>{$t('common.view')}</span>
-		</Button>
-		<Button variant="destructive" class="flex flex-row items-center gap-2" onclick={onDelete}>
-			<Trash2 size={12} />
-			<span>{$t('common.delete')}</span>
 		</Button>
 	</Card.Footer>
 </Card.Root>
