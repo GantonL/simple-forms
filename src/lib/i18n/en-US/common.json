@@ -152,5 +152,9 @@
 	"title": "Title",
 	"description": "Description",
 	"form_submited_successfuly": "Form submited successfuly",
-	"thank_you": "Thanks you!"
+	"thank_you": "Thanks you!",
+	"cancel": "Cancel",
+	"confirm": "Confirm",
+	"are_you_sure": "Are you sure?",
+	"delete_user_form_confirm_message": "This cannot be undone. Deleting the form will also prevent them from accessing the link you provided them"
 }

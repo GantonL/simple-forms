@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { DELETE } from '$lib/api/helpers/request';
+	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormTemplateCard from '$lib/components/form-template-card/form-template-card.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
@@ -12,19 +13,27 @@
 	let userForms: UserForm[] = $derived(page.data.userForms);
 	const templates: FormTemplate[] = $derived(page.data.templates);
 
+	let alertDelete = $state(false);
+	let onDeleteForm = $state(() => {});
+	let deleteInProgress = $state(false);
+
 	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
 		switch (event.type) {
 			case AppCustomEventType.Delete: {
-				deleteForm(event.data!.id);
+				onDeleteForm = () => deleteForm(event.data!.id);
+				setTimeout(() => (alertDelete = true));
 			}
 		}
 	}
 
 	async function deleteForm(id: number) {
+		deleteInProgress = true;
 		const deletedRes = await DELETE<unknown, { deleted: UserForm }>(`${UsersForms}/${id}`, {});
 		if (deletedRes?.deleted?.id === id) {
 			userForms = userForms.filter((uf) => uf.id !== id);
 		}
+		alertDelete = false;
+		deleteInProgress = false;
 	}
 </script>
 
@@ -42,3 +51,16 @@
 		{/each}
 	</div>
 </BasePage>
+
+<AppAlertDialog
+	title="common.are_you_sure"
+	description="common.delete_user_form_confirm_message"
+	bind:open={alertDelete}
+	cancel={{ title: 'common.cancel' }}
+	action={{
+		title: 'common.delete',
+		class: 'bg-destructive/30 text-destructive hover:text-foreground',
+		disabled: deleteInProgress
+	}}
+	onAction={onDeleteForm}
+></AppAlertDialog>

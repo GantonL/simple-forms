@@ -152,5 +152,9 @@
 	"title": "כותרת",
 	"description": "תיאור",
 	"form_submited_successfuly": "טופס נשלח בהצלחה",
-	"thank_you": "תודה לך!"
+	"thank_you": "תודה לך!",
+	"cancel": "ביטול",
+	"confirm": "אישור",
+	"are_you_sure": "האם אתם בטוחים?",
+	"delete_user_form_confirm_message": "פעולה זו תמחק את הטופס ולא ניתן יהיה לשחזרו. משתמשים שקיבלו קישור לטופס זה לא יוכלו לגשת אליו יותר"
 }

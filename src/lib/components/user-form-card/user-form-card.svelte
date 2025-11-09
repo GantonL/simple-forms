@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Eye, Link, Trash2 } from '@lucide/svelte';
+	import { Eye, Link } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { getPublicFormLink, copyToClipboard } from '$lib/client/utils';

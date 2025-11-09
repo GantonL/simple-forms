@@ -30,7 +30,7 @@
         "@tailwindcss/vite": "^4.0.0",
         "@tanstack/table-core": "^8.21.3",
         "@vitest/browser": "^3.2.3",
-        "bits-ui": "^2.8.6",
+        "bits-ui": "^2.11.0",
         "clsx": "^2.1.1",
         "drizzle-kit": "0.30.0",
         "eslint": "^9.18.0",
