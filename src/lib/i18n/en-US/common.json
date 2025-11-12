@@ -118,8 +118,6 @@
 		"submitting": "Creating...",
 		"agree": "I agree",
 		"preview": "Preview",
-		"preview_title": "Form Preview",
-		"preview_description": "This is how your form will appear when printed or saved as PDF",
 		"close_preview": "Close Preview",
 		"reset": "Reset"
 	},

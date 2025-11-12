@@ -11,13 +11,7 @@
 		CardHeader,
 		CardTitle
 	} from '$lib/components/ui/card';
-	import {
-		Dialog,
-		DialogContent,
-		DialogDescription,
-		DialogHeader,
-		DialogTitle
-	} from '$lib/components/ui/dialog';
+	import { Dialog, DialogContent } from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
 	import { type UserForm, type FormTemplate } from '$lib/server/database/schemas/form';
 	import type { UserFormData } from '$lib/models/user-form-data';
@@ -30,7 +24,6 @@
 	import { resolve } from '$app/paths';
 	import { Label } from '$lib/components/ui/label';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import { direction } from '$lib/stores';
 
 	const template: FormTemplate = $derived(page.data.template);
 
@@ -83,6 +76,10 @@
 			fields: {}
 		};
 	}
+
+	function handleCancel() {
+		history.back();
+	}
 </script>
 
 <BasePage title="common.create" description="seo.description">
@@ -115,9 +112,6 @@
 			<UserFormBuilder schema={template.schema} bind:userData />
 		</CardContent>
 		<CardFooter class="flex justify-between gap-4">
-			<Button variant="outline" onclick={handleReset} disabled={isSubmitting}>
-				{$t('common.form_builder.reset')}
-			</Button>
 			<div class="flex gap-2">
 				<Button variant="secondary" onclick={handlePreview} disabled={isSubmitting}>
 					{$t('common.form_builder.preview')}
@@ -133,16 +127,20 @@
 					<span>{$t('common.form_builder.create_form')}</span>
 				</Button>
 			</div>
+			<div class="flex gap-2">
+				<Button variant="outline" onclick={handleReset} disabled={isSubmitting}>
+					{$t('common.form_builder.reset')}
+				</Button>
+				<Button variant="ghost" onclick={handleCancel} disabled={isSubmitting}>
+					{$t('common.cancel')}
+				</Button>
+			</div>
 		</CardFooter>
 	</Card>
 
 	<!-- Preview Dialog -->
 	<Dialog open={showPreview} onOpenChange={(open) => (showPreview = open)}>
-		<DialogContent class="max-h-[90vh] max-w-5xl overflow-y-auto">
-			<DialogHeader dir={$direction === 'lr' ? 'ltr' : 'rtl'}>
-				<DialogTitle>{$t('common.form_builder.preview_title')}</DialogTitle>
-				<DialogDescription>{$t('common.form_builder.preview_description')}</DialogDescription>
-			</DialogHeader>
+		<DialogContent class="max-h-[90svh] max-w-5xl overflow-y-auto">
 			<FormPreview schema={template.schema} {userData} />
 		</DialogContent>
 	</Dialog>
