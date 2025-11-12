@@ -3,6 +3,7 @@
 	import { DELETE } from '$lib/api/helpers/request';
 	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
+	import FormPreviewDialog from '$lib/components/form-preview/form-preview-dialog.svelte';
 	import FormTemplateCard from '$lib/components/form-template-card/form-template-card.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
@@ -16,12 +17,20 @@
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
 	let deleteInProgress = $state(false);
+	let showPreview = $state(false);
+	let previewData = $state<UserForm>();
 
 	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
 		switch (event.type) {
 			case AppCustomEventType.Delete: {
 				onDeleteForm = () => deleteForm(event.data!.id);
 				setTimeout(() => (alertDelete = true));
+				break;
+			}
+			case AppCustomEventType.View: {
+				showPreview = true;
+				previewData = event.data;
+				break;
 			}
 		}
 	}
@@ -64,3 +73,9 @@
 	}}
 	onAction={onDeleteForm}
 ></AppAlertDialog>
+
+<FormPreviewDialog
+	bind:show={showPreview}
+	schema={templates.find((t) => previewData!.template_id === t.id)!.schema}
+	data={previewData!.data!}
+/>

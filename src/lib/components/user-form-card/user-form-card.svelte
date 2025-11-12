@@ -20,6 +20,10 @@
 			toast.success(t.get('common.link_copied_to_clipboard'));
 		});
 	}
+
+	function onView() {
+		onEvent({ type: AppCustomEventType.View, data });
+	}
 </script>
 
 <Card.Root class="flex-column flex justify-between">
@@ -41,7 +45,7 @@
 			<Link size={12} />
 			<span>{$t('common.copy_link')}</span>
 		</Button>
-		<Button variant="outline" class="flex flex-row items-center gap-2">
+		<Button variant="outline" class="flex flex-row items-center gap-2" onclick={onView}>
 			<Eye size={12} />
 			<span>{$t('common.view')}</span>
 		</Button>

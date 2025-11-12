@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import UserFormBuilder from '$lib/components/user-form-builder/user-form-builder.svelte';
-	import FormPreview from '$lib/components/form-preview/form-preview.svelte';
 	import {
 		Card,
 		CardContent,
@@ -11,7 +10,6 @@
 		CardHeader,
 		CardTitle
 	} from '$lib/components/ui/card';
-	import { Dialog, DialogContent } from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
 	import { type UserForm, type FormTemplate } from '$lib/server/database/schemas/form';
 	import type { UserFormData } from '$lib/models/user-form-data';
@@ -24,6 +22,7 @@
 	import { resolve } from '$app/paths';
 	import { Label } from '$lib/components/ui/label';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import FormPreviewDialog from '$lib/components/form-preview/form-preview-dialog.svelte';
 
 	const template: FormTemplate = $derived(page.data.template);
 
@@ -137,11 +136,6 @@
 			</div>
 		</CardFooter>
 	</Card>
-
-	<!-- Preview Dialog -->
-	<Dialog open={showPreview} onOpenChange={(open) => (showPreview = open)}>
-		<DialogContent class="max-h-[90svh] max-w-5xl overflow-y-auto">
-			<FormPreview schema={template.schema} {userData} />
-		</DialogContent>
-	</Dialog>
 </BasePage>
+
+<FormPreviewDialog bind:show={showPreview} schema={template.schema} data={userData} />

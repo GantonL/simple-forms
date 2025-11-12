@@ -12,9 +12,10 @@
 		schema: FormTemplateSchema;
 		userData: UserFormData;
 		onSubmit?: (data?: string) => void;
+		mode?: 'demo';
 	};
 
-	let { schema, userData, onSubmit }: FormPreviewProps = $props();
+	let { schema, userData, onSubmit, mode }: FormPreviewProps = $props();
 
 	// Form container reference for PDF generation
 	let formContainer: HTMLDivElement;
@@ -226,15 +227,22 @@
 </div>
 
 <!-- Submit Button -->
-<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
-	<Button onclick={generatePdf} disabled={isGeneratingPdf || !isFormValid} size="lg" class="w-full">
-		{#if isGeneratingPdf}
-			{$t('common.generating')}...
-		{:else}
-			{$t('common.submit')}
-		{/if}
-	</Button>
-</div>
+{#if mode !== 'demo'}
+	<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
+		<Button
+			onclick={generatePdf}
+			disabled={isGeneratingPdf || !isFormValid}
+			size="lg"
+			class="w-full"
+		>
+			{#if isGeneratingPdf}
+				{$t('common.generating')}...
+			{:else}
+				{$t('common.submit')}
+			{/if}
+		</Button>
+	</div>
+{/if}
 
 <style>
 	@media print {
