@@ -19,6 +19,7 @@
 	let deleteInProgress = $state(false);
 	let showPreview = $state(false);
 	let previewData = $state<UserForm>();
+	let previewSchema = $state<FormTemplate['schema']>();
 
 	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
 		switch (event.type) {
@@ -30,6 +31,7 @@
 			case AppCustomEventType.View: {
 				showPreview = true;
 				previewData = event.data;
+				previewSchema = templates.find((t) => previewData?.template_id === t.id)?.schema;
 				break;
 			}
 		}
@@ -74,8 +76,6 @@
 	onAction={onDeleteForm}
 ></AppAlertDialog>
 
-<FormPreviewDialog
-	bind:show={showPreview}
-	schema={templates.find((t) => previewData!.template_id === t.id)!.schema}
-	data={previewData!.data!}
-/>
+{#if previewData && previewSchema}
+	<FormPreviewDialog bind:show={showPreview} schema={previewSchema!} data={previewData.data!} />
+{/if}
