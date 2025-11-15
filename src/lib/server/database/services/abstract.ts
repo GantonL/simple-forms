@@ -1,19 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SQL } from 'drizzle-orm';
 import { type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { type PgTable } from 'drizzle-orm/pg-core';
+import { type PgTable, type SelectedFields } from 'drizzle-orm/pg-core';
 import { eq, and, count } from 'drizzle-orm';
 
 export const MAX_FIND_LIMIT = 100;
 export const MAX_INSERT_LIMIT = 100;
 export const MAX_DELETE_LIMIT = 100;
 
-export interface DeleteQueryOptions {
+export interface BaseQueryOptions {
 	limit: number;
 }
-export interface QueryOptions extends DeleteQueryOptions {
+export interface QueryOptions extends BaseQueryOptions {
 	offset?: number;
 	orderBy?: SQL | SQL[];
+	select?: SelectedFields;
+	innerJoin?: {
+		table: PgTable;
+		condition: SQL;
+	};
 }
 
 export type WhereCondition<T> = SQL<unknown> | ((table: T) => SQL<unknown>);
@@ -72,8 +77,11 @@ export class AbstractService<
 		where?: WhereCondition<TTable> | WhereCondition<TTable>[],
 		options?: QueryOptions
 	): Promise<TSelect[]> {
-		let baseQuery = this.db.select().from(this.table as any);
+		let baseQuery = this.db.select(options?.select ?? undefined).from(this.table as any);
 
+		if (options?.innerJoin) {
+			baseQuery.innerJoin(options.innerJoin.table, options.innerJoin.condition);
+		}
 		// Apply WHERE conditions
 		if (where) {
 			baseQuery = this.buildWhereQueries(baseQuery, where);
@@ -162,7 +170,7 @@ export class AbstractService<
 	 */
 	async deleteWhere(
 		where: WhereCondition<TTable> | WhereCondition<TTable>[],
-		options?: DeleteQueryOptions
+		options?: BaseQueryOptions
 	): Promise<number> {
 		let baseQuery = this.db.delete(this.table);
 

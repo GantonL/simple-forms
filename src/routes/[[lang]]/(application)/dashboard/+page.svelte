@@ -5,69 +5,53 @@
 	import { t } from '$lib/i18n';
 	import type { ColumnDef } from '@tanstack/table-core';
 	import { page } from '$app/state';
-	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
+	import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
 
-	const templates: Record<FormTemplate['id'], FormTemplate> = $derived(page.data.templates);
 	const forms: UserForm[] = $derived(page.data.forms);
-	interface FormSubmission {
-		id: number;
-		formName: string;
-		submittedBy: string;
-		submittedAt: Date;
-		status: string;
-	}
 
-	// Mock data for form submissions
 	const submissions: FormSubmission[] = [
 		{
 			id: 1,
-			formName: 'Contact Form',
-			submittedBy: 'john@example.com',
-			submittedAt: new Date('2024-01-15'),
-			status: 'new'
+			createdAt: new Date('2024-01-15'),
+			storage_url: 'https://file-location.com',
+			user_form_id: 1
 		},
 		{
 			id: 2,
-			formName: 'Survey 2024',
-			submittedBy: 'jane@example.com',
-			submittedAt: new Date('2024-01-14'),
-			status: 'reviewed'
+			createdAt: new Date('2024-01-15'),
+			storage_url: 'https://file-location.com',
+			user_form_id: 1
 		},
 		{
 			id: 3,
-			formName: 'Registration Form',
-			submittedBy: 'bob@example.com',
-			submittedAt: new Date('2024-01-13'),
-			status: 'new'
+			createdAt: new Date('2024-01-15'),
+			storage_url: 'https://file-location.com',
+			user_form_id: 1
+		},
+		{
+			id: 4,
+			createdAt: new Date('2024-01-15'),
+			storage_url: 'https://file-location.com',
+			user_form_id: 1
 		}
 	];
 
 	// Define columns for submissions table
 	const columns: ColumnDef<FormSubmission>[] = [
 		{
-			accessorKey: 'id',
-			header: 'common.id',
-			cell: (info) => info.getValue()
-		},
-		{
 			accessorKey: 'formName',
 			header: 'common.form_name',
 			cell: (info) => info.getValue()
 		},
 		{
-			accessorKey: 'submittedBy',
-			header: 'common.submitted_by',
-			cell: (info) => info.getValue()
-		},
-		{
-			accessorKey: 'submittedAt',
-			header: 'common.submitted_at',
+			accessorKey: 'createdAt',
+			header: 'common.created_at',
 			cell: (info) => new Date(info.getValue() as Date).toLocaleDateString()
 		},
 		{
-			accessorKey: 'status',
-			header: 'common.status',
-			cell: (info) => info.getValue()
+			accessorKey: 'storage_url',
+			header: 'common.address',
+			cell: (info) => {}
 		}
 	];
 </script>
@@ -86,10 +70,7 @@
 						<Card.Content>
 							<div class="space-y-2">
 								<p class="text-sm">
-									{$t('common.submissions')}: {userForm.submissions}
-								</p>
-								<p class="text-muted-foreground text-sm">
-									{$t('common.created')}: {new Date(userForm.createdAt).toLocaleDateString()}
+									{$t('common.submissions')}: {userForm.submissions ?? 0}
 								</p>
 							</div>
 						</Card.Content>

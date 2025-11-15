@@ -156,5 +156,10 @@
 	"cancel": "Cancel",
 	"confirm": "Confirm",
 	"are_you_sure": "Are you sure?",
-	"delete_user_form_confirm_message": "This cannot be undone. Deleting the form will also prevent them from accessing the link you provided them"
+	"delete_user_form_confirm_message": "This cannot be undone. Deleting the form will also prevent them from accessing the link you provided them",
+	"submissions": "Submissions",
+	"form_update_success": "Form updated successfully",
+	"form_update_failed": "Form update failed",
+	"your_active_forms": "Your active forms",
+	"form_submissions": "Form submissions"
 }

@@ -1,3 +1,4 @@
+import { FormSubmissionTable, UserFormTable } from '$lib/server/database/schemas/form';
 import {
 	Service as service,
 	getUrlFilters,
@@ -7,10 +8,21 @@ import {
 	getBodyFilters
 } from '$lib/server/database/services/form-submissions';
 import { json, type RequestHandler } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
 
 export const GET: RequestHandler = async ({ url }) => {
 	const filters = getUrlFilters(url);
 	const options = getUrlOptions(url);
+	options.select = {
+		id: FormSubmissionTable.id,
+		createAt: FormSubmissionTable.createdAt,
+		storageUrl: FormSubmissionTable.storage_url,
+		userFormName: UserFormTable.name
+	};
+	options.innerJoin = {
+		table: UserFormTable,
+		condition: eq(FormSubmissionTable.user_form_id, UserFormTable.id)
+	};
 	const items = await service.find(filters, options);
 	return json(items);
 };

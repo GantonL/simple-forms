@@ -34,7 +34,7 @@ export const UserFormTable = pgTable('user_form', {
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
 	public_link_identifier: uuid('public_link_identifier').defaultRandom(),
-	submissions: integer('submissions'),
+	submissions: integer('submissions').notNull().default(0),
 	data: jsonb('data').$type<UserFormData>()
 });
 
@@ -46,7 +46,6 @@ export const FormSubmissionTable = pgTable('form_submission', {
 	user_form_id: integer('user_form_id')
 		.notNull()
 		.references(() => UserFormTable.id),
-	data: jsonb('data').notNull(),
 	storage_url: text('storage_url'),
 	createdAt: timestamp('created_at').defaultNow().notNull()
 });

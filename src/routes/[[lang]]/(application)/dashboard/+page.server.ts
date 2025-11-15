@@ -28,6 +28,5 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 	}
 
 	response.templates = templates;
-	console.log(response);
 	return response;
 };
