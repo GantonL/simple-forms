@@ -60,7 +60,7 @@ export const PUT = async <D, F, R>(
 	options?: CreateUpdateDeleteOptions
 ): Promise<R> => {
 	options = createPutBody(data, filters, options);
-	const reponse = await baseRequest(url, 'DELETE', options);
+	const reponse = await baseRequest(url, 'PUT', options);
 	return reponse as R;
 };
 

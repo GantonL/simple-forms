@@ -95,11 +95,22 @@ export const buildCreateCandidates = (candidates: NewUserForm[]): NewUserForm[] 
 	return newUsers;
 };
 
-type UpdateUserFormData = Pick<UserFormTableInsert, 'submissions'>;
+type UpdateUserFormData = Partial<
+	Pick<UserFormTableInsert, 'submissions' | 'data' | 'description' | 'name'>
+>;
 export const buildUpdateData = (updateData: UpdateUserFormData): UpdateUserFormData => {
 	const validatedUpdate: UpdateUserFormData = {};
 	if (updateData?.submissions) {
 		validatedUpdate.submissions = updateData.submissions;
+	}
+	if (updateData?.data) {
+		validatedUpdate.data = updateData.data;
+	}
+	if (updateData?.description) {
+		validatedUpdate.description = updateData.description;
+	}
+	if (updateData?.name) {
+		validatedUpdate.name = updateData.name;
 	}
 	return validatedUpdate;
 };

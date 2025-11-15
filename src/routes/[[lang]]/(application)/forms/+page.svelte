@@ -31,6 +31,10 @@
 				setTimeout(() => (alertDelete = true));
 				break;
 			}
+			case AppCustomEventType.Edit: {
+				goto(resolve(`/forms/edit?${SearchParams.FormId}=${event.data?.id}`));
+				break;
+			}
 		}
 	}
 
