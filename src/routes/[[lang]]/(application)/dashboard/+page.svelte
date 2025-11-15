@@ -3,55 +3,40 @@
 	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { t } from '$lib/i18n';
-	import type { ColumnDef } from '@tanstack/table-core';
 	import { page } from '$app/state';
 	import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
+	import { tableConfiguration, columns } from './configurations';
 
 	const forms: UserForm[] = $derived(page.data.forms);
 
-	const submissions: FormSubmission[] = [
+	const submissions: (FormSubmission & { formName: string })[] = [
 		{
 			id: 1,
 			createdAt: new Date('2024-01-15'),
 			storage_url: 'https://file-location.com',
-			user_form_id: 1
+			user_form_id: 1,
+			formName: 'form 1'
 		},
 		{
 			id: 2,
 			createdAt: new Date('2024-01-15'),
 			storage_url: 'https://file-location.com',
-			user_form_id: 1
+			user_form_id: 1,
+			formName: 'form 2'
 		},
 		{
 			id: 3,
 			createdAt: new Date('2024-01-15'),
 			storage_url: 'https://file-location.com',
-			user_form_id: 1
+			user_form_id: 1,
+			formName: 'form 3'
 		},
 		{
 			id: 4,
 			createdAt: new Date('2024-01-15'),
 			storage_url: 'https://file-location.com',
-			user_form_id: 1
-		}
-	];
-
-	// Define columns for submissions table
-	const columns: ColumnDef<FormSubmission>[] = [
-		{
-			accessorKey: 'formName',
-			header: 'common.form_name',
-			cell: (info) => info.getValue()
-		},
-		{
-			accessorKey: 'createdAt',
-			header: 'common.created_at',
-			cell: (info) => new Date(info.getValue() as Date).toLocaleDateString()
-		},
-		{
-			accessorKey: 'storage_url',
-			header: 'common.address',
-			cell: (info) => {}
+			user_form_id: 1,
+			formName: 'form 4'
 		}
 	];
 </script>
@@ -82,7 +67,7 @@
 		<!-- Form Submissions Table Section -->
 		<section>
 			<h2 class="mb-4 text-2xl font-bold">{$t('common.form_submissions')}</h2>
-			<AppDataTable data={submissions} {columns} />
+			<AppDataTable data={submissions} {columns} configuration={tableConfiguration} />
 		</section>
 	</div>
 </BasePage>

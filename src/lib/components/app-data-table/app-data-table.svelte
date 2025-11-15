@@ -221,12 +221,14 @@
 {#snippet header()}
 	<div class="flex flex-row justify-between gap-2">
 		<div class="flex flex-row items-center gap-2">
-			<Button {disabled} variant="outline" onclick={() => addData && addData()}>
-				<div class="flex flex-row items-center gap-2">
-					<Plus />
-					<span class:hidden={sidebar.isMobile}>{$t('common.add')}</span>
-				</div>
-			</Button>
+			{#if !configuration?.hideAddDataAction}
+				<Button {disabled} variant="outline" onclick={() => addData && addData()}>
+					<div class="flex flex-row items-center gap-2">
+						<Plus />
+						<span class:hidden={sidebar.isMobile}>{$t('common.add')}</span>
+					</div>
+				</Button>
+			{/if}
 			{#if configuration?.bulkActions && (table.getIsSomePageRowsSelected() || table.getIsAllPageRowsSelected() || table.getIsAllRowsSelected())}
 				<Menu
 					{disabled}
