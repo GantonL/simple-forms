@@ -92,89 +92,92 @@
 
 	// Generate PDF from the form container
 	const generatePdf = async () => {
-		if (!formContainer || isGeneratingPdf || !html2canvas || !jsPDF) return;
+		return new Promise((resolve, reject) => {
+			if (!formContainer || !html2canvas || !jsPDF) resolve(undefined);
+			setTimeout(async () => {
+				try {
+					// Render the form container to canvas with html2canvas-pro (supports oklch)
+					const canvas = await html2canvas(formContainer, {
+						scale: 2,
+						useCORS: true,
+						logging: false,
+						backgroundColor: '#ffffff'
+					});
 
-		isGeneratingPdf = true;
+					// Get canvas dimensions
+					const imgWidth = 210; // A4 width in mm
+					const pageHeight = 297; // A4 height in mm
+					const imgHeight = (canvas.height * imgWidth) / canvas.width;
+					const margin = 5; // mm
+					const availableWidth = imgWidth - 2 * margin;
+					const availableHeight = pageHeight - 2 * margin;
 
-		setTimeout(async () => {
-			try {
-				// Render the form container to canvas with html2canvas-pro (supports oklch)
-				const canvas = await html2canvas(formContainer, {
-					scale: 2,
-					useCORS: true,
-					logging: false,
-					backgroundColor: '#ffffff'
-				});
+					// Convert canvas to image
+					const imgData = canvas.toDataURL('image/jpeg', 0.98);
 
-				// Get canvas dimensions
-				const imgWidth = 210; // A4 width in mm
-				const pageHeight = 297; // A4 height in mm
-				const imgHeight = (canvas.height * imgWidth) / canvas.width;
-				const margin = 5; // mm
-				const availableWidth = imgWidth - 2 * margin;
-				const availableHeight = pageHeight - 2 * margin;
+					// Create PDF
+					const pdf = new jsPDF({
+						unit: 'mm',
+						format: 'a4',
+						orientation: 'portrait'
+					});
 
-				// Convert canvas to image
-				const imgData = canvas.toDataURL('image/jpeg', 0.98);
-
-				// Create PDF
-				const pdf = new jsPDF({
-					unit: 'mm',
-					format: 'a4',
-					orientation: 'portrait'
-				});
-
-				// Add image to PDF with margins
-				if (imgHeight <= availableHeight) {
-					// Single page
-					pdf.addImage(
-						imgData,
-						'JPEG',
-						margin,
-						margin,
-						availableWidth,
-						(canvas.height * availableWidth) / canvas.width
-					);
-				} else {
-					// Multi-page
-					let heightLeft = imgHeight;
-					let position = 0;
-
-					pdf.addImage(
-						imgData,
-						'JPEG',
-						margin,
-						margin,
-						availableWidth,
-						(canvas.height * availableWidth) / canvas.width
-					);
-					heightLeft -= availableHeight;
-
-					while (heightLeft > 0) {
-						position = heightLeft - imgHeight;
-						pdf.addPage();
+					// Add image to PDF with margins
+					if (imgHeight <= availableHeight) {
+						// Single page
 						pdf.addImage(
 							imgData,
 							'JPEG',
 							margin,
-							position + margin,
+							margin,
+							availableWidth,
+							(canvas.height * availableWidth) / canvas.width
+						);
+					} else {
+						// Multi-page
+						let heightLeft = imgHeight;
+						let position = 0;
+
+						pdf.addImage(
+							imgData,
+							'JPEG',
+							margin,
+							margin,
 							availableWidth,
 							(canvas.height * availableWidth) / canvas.width
 						);
 						heightLeft -= availableHeight;
-					}
-				}
 
-				// Save PDF
-				pdf.save('form.pdf');
-				onSubmit?.();
-			} catch (error) {
-				console.error('Error generating PDF:', error);
-			} finally {
-				isGeneratingPdf = false;
-			}
+						while (heightLeft > 0) {
+							position = heightLeft - imgHeight;
+							pdf.addPage();
+							pdf.addImage(
+								imgData,
+								'JPEG',
+								margin,
+								position + margin,
+								availableWidth,
+								(canvas.height * availableWidth) / canvas.width
+							);
+							heightLeft -= availableHeight;
+						}
+					}
+					resolve(pdf);
+				} catch (error) {
+					console.error('Error generating PDF:', error);
+					reject(error);
+				}
+			});
 		});
 	};
+
+	async function handleSubmission() {
+		isGeneratingPdf = true;
+		const pdf = await generatePdf();
+		pdf.save('form.pdf');
+		isGeneratingPdf = false;
+		onSubmit?.();
+	}
 </script>
 
 <div
@@ -230,7 +233,7 @@
 {#if mode !== 'demo'}
 	<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
 		<Button
-			onclick={generatePdf}
+			onclick={handleSubmission}
 			disabled={isGeneratingPdf || !isFormValid}
 			size="lg"
 			class="w-full"
