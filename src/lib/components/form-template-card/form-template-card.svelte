@@ -4,13 +4,15 @@
 	import { Eye, FilePlus2, LayoutTemplate } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
-	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
-	import { SearchParams } from '$lib/enums/search-params';
-	let { data }: { data: FormTemplate } = $props();
+	import { type AppCustomEvent } from '$lib/models/common';
+	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
+	let {
+		data,
+		onEvent
+	}: { data: FormTemplate; onEvent: (event: AppCustomEvent<FormTemplate>) => void } = $props();
 
 	function onCreate() {
-		goto(resolve(`/forms/create?${SearchParams.TemplateId}=${data.id}`));
+		onEvent({ type: AppCustomEventType.Create, data });
 	}
 </script>
 
@@ -26,10 +28,6 @@
 		<Button class="flex flex-row items-center gap-2" onclick={onCreate}>
 			<FilePlus2 size={12} />
 			<span>{$t('common.create')}</span>
-		</Button>
-		<Button variant="outline" class="flex flex-row items-center gap-2">
-			<Eye size={12} />
-			<span>{$t('common.view')}</span>
 		</Button>
 	</Card.Footer>
 </Card.Root>

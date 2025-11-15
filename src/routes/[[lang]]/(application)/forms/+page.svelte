@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { DELETE } from '$lib/api/helpers/request';
 	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
@@ -7,6 +9,7 @@
 	import FormTemplateCard from '$lib/components/form-template-card/form-template-card.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
+	import { SearchParams } from '$lib/enums/search-params';
 	import { t } from '$lib/i18n';
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
@@ -28,10 +31,18 @@
 				setTimeout(() => (alertDelete = true));
 				break;
 			}
+		}
+	}
+
+	function onFormTemplateCardEvent(event: AppCustomEvent<FormTemplate>) {
+		switch (event.type) {
+			case AppCustomEventType.Create: {
+				goto(resolve(`/forms/create?${SearchParams.TemplateId}=${event.data?.id}`));
+				break;
+			}
 			case AppCustomEventType.View: {
 				showPreview = true;
-				previewData = event.data;
-				previewSchema = templates.find((t) => previewData?.template_id === t.id)?.schema;
+				previewSchema = event.data?.schema;
 				break;
 			}
 		}
@@ -58,7 +69,7 @@
 	<h2 class="text-xl">{$t('common.available_templates')}</h2>
 	<div class="grid w-full grid-cols-3 gap-2">
 		{#each templates as template (template.id)}
-			<FormTemplateCard data={template} />
+			<FormTemplateCard data={template} onEvent={onFormTemplateCardEvent} />
 		{/each}
 	</div>
 </BasePage>

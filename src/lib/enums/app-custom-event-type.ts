@@ -1,5 +1,6 @@
 export enum AppCustomEventType {
 	Delete = 'delete',
 	Edit = 'edit',
-	View = 'view'
+	View = 'view',
+	Create = 'create'
 }
