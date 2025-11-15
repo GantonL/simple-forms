@@ -1,4 +1,4 @@
-import { inArray, type Column } from 'drizzle-orm';
+import { eq, inArray, type Column } from 'drizzle-orm';
 import { FormSubmissionTable, type FormSubmissionInsert } from '../schemas/form';
 import type { WhereCondition } from './abstract';
 import { provider } from './provider';
@@ -8,11 +8,14 @@ import {
 	getUrlOptionsUtil,
 	type BodyFiltersUtil
 } from './utils';
+import { SearchParams } from '$lib/enums/search-params';
 
 export const Service = provider.getFactory().getService(FormSubmissionTable);
 
 export const getUrlFilters = (url: URL): WhereCondition<typeof FormSubmissionTable>[] => {
-	return getUrlFiltersUtil(url, { searchColumns: [] });
+	const baseUrlFilters = getUrlFiltersUtil(url, { searchColumns: [] });
+	const serviceUrlFilters = getServiveUrlFilters(url);
+	return [...baseUrlFilters, ...serviceUrlFilters];
 };
 
 type FormSubmissionFilters = BodyFiltersUtil & {
@@ -76,4 +79,14 @@ export const buildUpdateData = (updateData: UpdateFormSubmissionData): UpdateFor
 		validatedUpdate.storage_url = updateData.storage_url;
 	}
 	return validatedUpdate;
+};
+
+const getServiveUrlFilters = (url: URL): WhereCondition<typeof FormSubmissionTable>[] => {
+	const searchParams = url.searchParams;
+	const fid = searchParams.get(SearchParams.FormId);
+	const conditions: WhereCondition<typeof FormSubmissionTable>[] = [];
+	if (fid) {
+		conditions.push(eq(FormSubmissionTable.user_form_id, Number(fid)));
+	}
+	return conditions;
 };

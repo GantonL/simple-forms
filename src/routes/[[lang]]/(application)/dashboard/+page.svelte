@@ -9,36 +9,9 @@
 
 	const forms: UserForm[] = $derived(page.data.forms);
 
-	const submissions: (FormSubmission & { formName: string })[] = [
-		{
-			id: 1,
-			createdAt: new Date('2024-01-15'),
-			storage_url: 'https://file-location.com',
-			user_form_id: 1,
-			formName: 'form 1'
-		},
-		{
-			id: 2,
-			createdAt: new Date('2024-01-15'),
-			storage_url: 'https://file-location.com',
-			user_form_id: 1,
-			formName: 'form 2'
-		},
-		{
-			id: 3,
-			createdAt: new Date('2024-01-15'),
-			storage_url: 'https://file-location.com',
-			user_form_id: 1,
-			formName: 'form 3'
-		},
-		{
-			id: 4,
-			createdAt: new Date('2024-01-15'),
-			storage_url: 'https://file-location.com',
-			user_form_id: 1,
-			formName: 'form 4'
-		}
-	];
+	const submissions: (FormSubmission & { userFormName: string })[] = $derived(
+		page.data.submissions
+	);
 </script>
 
 <BasePage title="common.dashboard" description="seo.description">

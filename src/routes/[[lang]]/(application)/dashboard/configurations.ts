@@ -11,12 +11,12 @@ export const tableConfiguration: TableConfiguration<FormSubmission> = {
 
 export const columns: ColumnDef<FormSubmission>[] = [
 	{
-		accessorKey: 'formName',
+		accessorKey: 'userFormName',
 		header: 'common.form_name',
 		cell: (info) => info.getValue()
 	},
 	{
-		accessorKey: 'createdAt',
+		accessorKey: 'createAt',
 		header: 'common.created_at',
 		cell: (info) => new Date(info.getValue() as Date).toLocaleDateString()
 	},
