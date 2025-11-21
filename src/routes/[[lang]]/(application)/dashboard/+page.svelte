@@ -34,6 +34,10 @@
 		totalItems = forms.find((f) => f.id === id)?.submissions ?? 0;
 		fetchSubmissionsInProgress = false;
 	}
+
+	async function onPageIndexChanged(e) {
+		console.log(e);
+	}
 </script>
 
 <BasePage title="common.dashboard" description="seo.description">
@@ -68,12 +72,16 @@
 		<!-- Form Submissions Table Section -->
 		<section>
 			<h2 class="mb-4 text-2xl font-bold">{$t('common.form_submissions')}</h2>
-			<AppDataTable
-				data={submissions}
-				{columns}
-				{configuration}
-				isLoading={fetchSubmissionsInProgress}
-			/>
+			{#key totalItems}
+				<AppDataTable
+					data={submissions}
+					{columns}
+					{configuration}
+					isLoading={fetchSubmissionsInProgress}
+					disabled={fetchSubmissionsInProgress}
+					pageIndexChanged={onPageIndexChanged}
+				/>
+			{/key}
 		</section>
 	</div>
 </BasePage>
