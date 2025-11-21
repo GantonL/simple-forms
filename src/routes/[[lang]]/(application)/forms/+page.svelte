@@ -32,7 +32,7 @@
 				goto(resolve(`/forms/edit?${SearchParams.FormId}=${event.data?.id}`));
 				break;
 			}
-			case AppCustomEventType.View: {
+			case AppCustomEventType.Open: {
 				goto(resolve(`/forms/${event.data?.id}`));
 				break;
 			}

@@ -120,7 +120,7 @@
 	}
 </script>
 
-<BasePage title="common.create" description="seo.description">
+<BasePage title="common.{componentMode}" description="seo.description">
 	<Card class="w-full">
 		<CardHeader>
 			<CardTitle

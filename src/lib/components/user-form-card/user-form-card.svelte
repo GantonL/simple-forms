@@ -22,7 +22,7 @@
 	}
 
 	function onOpen() {
-		onEvent?.({ type: AppCustomEventType.View, data });
+		onEvent?.({ type: AppCustomEventType.Open, data });
 	}
 </script>
 

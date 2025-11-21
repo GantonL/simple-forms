@@ -29,4 +29,6 @@
 	});
 </script>
 
-{@render children?.()}
+<div class="min-h-svh w-full">
+	{@render children?.()}
+</div>
