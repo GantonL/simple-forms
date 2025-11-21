@@ -26,7 +26,7 @@ export const AppRoutes: GroupedRoutes[] = [
 				icon: LayoutDashboard
 			},
 			{
-				label: 'common.forms',
+				label: 'common.my_forms',
 				path: '/forms',
 				icon: FileSignature
 			},

@@ -6,16 +6,13 @@
 	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormPreviewDialog from '$lib/components/form-preview/form-preview-dialog.svelte';
-	import FormTemplateCard from '$lib/components/form-template-card/form-template-card.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { SearchParams } from '$lib/enums/search-params';
-	import { t } from '$lib/i18n';
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
 	import { UsersForms } from '../../../api';
 	let userForms: UserForm[] = $derived(page.data.userForms);
-	const templates: FormTemplate[] = $derived(page.data.templates);
 
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
@@ -38,20 +35,6 @@
 		}
 	}
 
-	function onFormTemplateCardEvent(event: AppCustomEvent<FormTemplate>) {
-		switch (event.type) {
-			case AppCustomEventType.Create: {
-				goto(resolve(`/forms/create?${SearchParams.TemplateId}=${event.data?.id}`));
-				break;
-			}
-			case AppCustomEventType.View: {
-				showPreview = true;
-				previewSchema = event.data?.schema;
-				break;
-			}
-		}
-	}
-
 	async function deleteForm(id: number) {
 		deleteInProgress = true;
 		const deletedRes = await DELETE<unknown, { deleted: UserForm }>(`${UsersForms}/${id}`, {});
@@ -64,16 +47,9 @@
 </script>
 
 <BasePage title="common.forms" description="seo.description">
-	<h2 class="text-xl">{$t('common.your_forms')}</h2>
 	<div class="grid w-full grid-cols-3 gap-2">
 		{#each userForms as userForm (userForm.id)}
 			<UserFormCard data={userForm} onEvent={onUserCardEvent} />
-		{/each}
-	</div>
-	<h2 class="text-xl">{$t('common.available_templates')}</h2>
-	<div class="grid w-full grid-cols-3 gap-2">
-		{#each templates as template (template.id)}
-			<FormTemplateCard data={template} onEvent={onFormTemplateCardEvent} />
 		{/each}
 	</div>
 </BasePage>

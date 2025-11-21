@@ -105,8 +105,7 @@
 		}
 	},
 	"templates_raw": "Templates",
-	"available_templates": "Available templates",
-	"your_forms": "Your forms",
+	"my_forms": "My forms",
 	"create": "Create",
 	"form_builder": {
 		"title": "Create Your Form",

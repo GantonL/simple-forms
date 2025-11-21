@@ -105,8 +105,7 @@
 		}
 	},
 	"templates_raw": "תבניות",
-	"available_templates": "תבניות זמינות לבחירה",
-	"your_forms": "הטפסים שלך",
+	"my_forms": "הטפסים שלי",
 	"create": "יצירה",
 	"form_builder": {
 		"title": "צור את הטופס שלך",
