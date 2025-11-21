@@ -6,11 +6,13 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const response: {
-		forms: UserForm[] | null;
-		submissions: FormSubmission[] | null;
+		forms: UserForm[];
+		submissions: FormSubmission[];
+		totalSubmissions: number;
 	} = {
-		submissions: null,
-		forms: null
+		submissions: [],
+		forms: [],
+		totalSubmissions: 0
 	};
 	const userId = locals.user.id;
 	const userForms = await GET<UserForm[]>(`${UsersForms}?${SearchParams.UserId}=${userId}`, {
@@ -26,6 +28,6 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		{ fetch }
 	);
 	response.submissions = submissions;
-	console.log(submissions);
+	response.totalSubmissions = userForms[0].submissions ?? 0;
 	return response;
 };

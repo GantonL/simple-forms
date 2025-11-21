@@ -3,15 +3,37 @@
 	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { t } from '$lib/i18n';
-	import { page } from '$app/state';
 	import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
-	import { tableConfiguration, columns } from './configurations';
+	import { columns, tableConfiguration } from './configurations';
+	import { GET } from '$lib/api/helpers/request';
+	import { FormsSubmissions } from '../../../api';
+	import { SearchParams } from '$lib/enums/search-params';
+	import { page } from '$app/state';
 
-	const forms: UserForm[] = $derived(page.data.forms);
+	type DisplaySubmissions = FormSubmission & { userFormName: string };
+	const forms: UserForm[] = page.data.forms;
+	let submissions: DisplaySubmissions[] = $state(page.data.submissions);
+	let totalItems = $state(forms[0]?.submissions ?? 0);
+	let fetchSubmissionsInProgress = $state(false);
+	let selectedFormId = $state(forms[0]?.id);
+	let configuration = $derived({
+		...tableConfiguration,
+		serverSide: {
+			...tableConfiguration.serverSide,
+			totalItems
+		}
+	});
 
-	const submissions: (FormSubmission & { userFormName: string })[] = $derived(
-		page.data.submissions
-	);
+	async function onUserFormCardClick(id: UserForm['id']) {
+		selectedFormId = id;
+		fetchSubmissionsInProgress = true;
+		const subs = await GET<DisplaySubmissions[]>(
+			`${FormsSubmissions}?${SearchParams.FormId}=${id}`
+		);
+		submissions = subs;
+		totalItems = forms.find((f) => f.id === id)?.submissions ?? 0;
+		fetchSubmissionsInProgress = false;
+	}
 </script>
 
 <BasePage title="common.dashboard" description="seo.description">
@@ -21,9 +43,15 @@
 			<h2 class="mb-4 text-2xl font-bold">{$t('common.your_active_forms')}</h2>
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 				{#each forms as userForm (userForm.id)}
-					<Card.Root class="p-6">
+					<Card.Root
+						class="cursor-pointer border-[3px] {selectedFormId === userForm.id
+							? 'border-primary'
+							: ''}"
+						onclick={() => onUserFormCardClick(userForm.id)}
+					>
 						<Card.Header>
 							<Card.Title>{userForm.name}</Card.Title>
+							<Card.Description>{userForm.description}</Card.Description>
 						</Card.Header>
 						<Card.Content>
 							<div class="space-y-2">
@@ -40,7 +68,12 @@
 		<!-- Form Submissions Table Section -->
 		<section>
 			<h2 class="mb-4 text-2xl font-bold">{$t('common.form_submissions')}</h2>
-			<AppDataTable data={submissions} {columns} configuration={tableConfiguration} />
+			<AppDataTable
+				data={submissions}
+				{columns}
+				{configuration}
+				isLoading={fetchSubmissionsInProgress}
+			/>
 		</section>
 	</div>
 </BasePage>

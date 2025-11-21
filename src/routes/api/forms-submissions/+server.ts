@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	const options = getUrlOptions(url);
 	options.select = {
 		id: FormSubmissionTable.id,
-		createAt: FormSubmissionTable.createdAt,
+		createdAt: FormSubmissionTable.createdAt,
 		storageUrl: FormSubmissionTable.storage_url,
 		userFormName: UserFormTable.name
 	};
