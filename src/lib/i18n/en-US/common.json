@@ -104,6 +104,7 @@
 			"description": "The signee details at the top, generic content, signature and approver detailes"
 		}
 	},
+	"templates_raw": "Templates",
 	"available_templates": "Available templates",
 	"your_forms": "Your forms",
 	"create": "Create",
