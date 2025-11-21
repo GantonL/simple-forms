@@ -3,7 +3,7 @@ import type { TableConfiguration } from '$lib/models/table';
 import type { FormSubmission } from '$lib/server/database/schemas/form';
 import type { ColumnDef } from '@tanstack/table-core';
 
-export const tableConfiguration: TableConfiguration = {
+export const tableConfiguration: TableConfiguration<FormSubmission> = {
 	serverSide: {
 		enabled: true,
 		manualPagination: true

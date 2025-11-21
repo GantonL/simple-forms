@@ -161,5 +161,6 @@
 	"form_update_success": "Form updated successfully",
 	"form_update_failed": "Form update failed",
 	"your_active_forms": "Your active forms",
-	"form_submissions": "Form submissions"
+	"form_submissions": "Form submissions",
+	"open": "Open"
 }

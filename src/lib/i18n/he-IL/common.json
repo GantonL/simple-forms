@@ -160,5 +160,6 @@
 	"form_update_success": "עדכון הטופס הושלם בהצלחה",
 	"form_update_failed": "עדכון הטופס נכשל",
 	"your_active_forms": "טפסים הפעילים שלך",
-	"form_submissions": "טפסים שנחתמו או הוגשו"
+	"form_submissions": "טפסים שנחתמו או הוגשו",
+	"open": "פתיחה"
 }

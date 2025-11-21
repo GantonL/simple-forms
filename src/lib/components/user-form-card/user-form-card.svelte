@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Eye, Link } from '@lucide/svelte';
+	import { File, Link } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { getPublicFormLink, copyToClipboard } from '$lib/client/utils';
@@ -21,8 +21,8 @@
 		});
 	}
 
-	function onView() {
-		onEvent({ type: AppCustomEventType.View, data });
+	function onOpen() {
+		onEvent?.({ type: AppCustomEventType.View, data });
 	}
 </script>
 
@@ -45,9 +45,9 @@
 			<Link size={12} />
 			<span>{$t('common.copy_link')}</span>
 		</Button>
-		<Button variant="outline" class="flex flex-row items-center gap-2" onclick={onView}>
-			<Eye size={12} />
-			<span>{$t('common.view')}</span>
+		<Button variant="secondary" class="flex flex-row items-center gap-2" onclick={onOpen}>
+			<File size={12} />
+			<span>{$t('common.open')}</span>
 		</Button>
 	</Card.Footer>
 </Card.Root>
