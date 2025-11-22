@@ -7,7 +7,8 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const userId = locals.user.id;
 	const userForms = await GET<UserForm[]>(`${UsersForms}?${SearchParams.UserId}=${userId}`, {
-		fetch
+		fetch,
+		orderBy: '-submissions'
 	});
 	return { userForms };
 };

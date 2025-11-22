@@ -5,12 +5,15 @@ import type { FormSubmission } from '$lib/server/database/schemas/form';
 import { ExternalLink } from '@lucide/svelte';
 import type { ColumnDef } from '@tanstack/table-core';
 
+export const DEFAULT_ORDER_BY = '-createdAt';
+
 export const tableConfiguration: TableConfiguration<FormSubmission> = {
 	serverSide: {
 		enabled: true,
 		manualPagination: true
 	},
-	hideAddDataAction: true
+	hideAddDataAction: true,
+	pageSize: 10
 };
 
 export const columns: ColumnDef<FormSubmission>[] = [

@@ -3,6 +3,7 @@ import { SearchParams } from '$lib/enums/search-params';
 import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
 import { FormsSubmissions, UsersForms } from '../../../../api';
 import type { PageServerLoad } from './$types';
+import { DEFAULT_ORDER_BY } from './configurations';
 
 export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 	const userId = locals.user.id;
@@ -14,7 +15,7 @@ export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 	);
 	const submissions = await GET<FormSubmission[]>(
 		`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}`,
-		{ fetch }
+		{ fetch, orderBy: DEFAULT_ORDER_BY }
 	);
 	return { userForm, submissions };
 };

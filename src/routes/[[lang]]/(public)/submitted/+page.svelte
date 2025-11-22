@@ -6,8 +6,8 @@
 </script>
 
 <BasePage title="common.forms" description="seo.description">
-	<div class="flex min-h-svh flex-col items-start">
-		<Card.Root class="mt-[25%]">
+	<div class="mt-[5%] flex flex-col items-center">
+		<Card.Root>
 			<Card.Header>
 				<div class="flex flex-col items-center justify-center gap-4">
 					<CheckCircle size={24} class="text-primary" />
