@@ -105,7 +105,9 @@
 		}
 	},
 	"templates_raw": "תבניות",
+	"templates_description": "צרו את הטפסים שלכם מתוך תבניות מוכנות מראש",
 	"my_forms": "הטפסים שלי",
+	"my_forms_description": "כאן ניתן לבצע פעולות שונות על הטפסים שלכם כגון צפיה, עריכה ומחיקה",
 	"create": "יצירה",
 	"form_builder": {
 		"title": "צור את הטופס שלך",
@@ -161,5 +163,6 @@
 	"form_update_failed": "עדכון הטופס נכשל",
 	"your_active_forms": "טפסים הפעילים שלך",
 	"form_submissions": "טפסים שנחתמו או הוגשו",
-	"open": "פתיחה"
+	"open": "פתיחה",
+	"user_form_description": "מידע כללי על הטופס ופירוט כל החתימות וההגשות"
 }

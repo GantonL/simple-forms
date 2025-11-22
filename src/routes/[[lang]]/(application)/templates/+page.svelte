@@ -6,6 +6,7 @@
 	import FormTemplateCard from '$lib/components/form-template-card/form-template-card.svelte';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { SearchParams } from '$lib/enums/search-params';
+	import { t } from '$lib/i18n';
 	import { type AppCustomEvent } from '$lib/models/common';
 	import { type FormTemplate } from '$lib/server/database/schemas/form';
 	const templates = $state(page.data.templates);
@@ -21,6 +22,10 @@
 </script>
 
 <BasePage title="common.templates_raw" description="seo.description">
+	{#snippet header()}
+		<h2 class="text-2xl font-bold">{$t('common.templates_raw')}</h2>
+		<p class="text-lg font-light">{$t('common.templates_description')}</p>
+	{/snippet}
 	<div class="grid w-full grid-cols-3 gap-2">
 		{#each templates as template (template.id)}
 			<FormTemplateCard data={template} onEvent={onFormTemplateCardEvent} />

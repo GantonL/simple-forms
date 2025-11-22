@@ -9,6 +9,7 @@
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { SearchParams } from '$lib/enums/search-params';
+	import { t } from '$lib/i18n';
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
 	import { UsersForms } from '../../../api';
@@ -51,6 +52,10 @@
 </script>
 
 <BasePage title="common.forms" description="seo.description">
+	{#snippet header()}
+		<h2 class="text-2xl font-bold">{$t('common.my_forms')}</h2>
+		<p class="text-lg font-light">{$t('common.my_forms_description')}</p>
+	{/snippet}
 	<div class="grid w-full grid-cols-3 gap-2">
 		{#each userForms as userForm (userForm.id)}
 			<UserFormCard data={userForm} onEvent={onUserCardEvent} />

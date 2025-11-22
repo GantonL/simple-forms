@@ -19,6 +19,9 @@
 </script>
 
 <BasePage title="common.forms" description="seo.description">
-	<h2 class="mb-4 text-2xl font-bold">{$t('common.form_submissions')}</h2>
+	{#snippet header()}
+		<h2 class="text-2xl font-bold">{userForm.name}</h2>
+		<p class="text-lg font-light">{$t('common.user_form_description')}</p>
+	{/snippet}
 	<AppDataTable data={submissions} {columns} {configuration} />
 </BasePage>

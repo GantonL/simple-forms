@@ -105,7 +105,9 @@
 		}
 	},
 	"templates_raw": "Templates",
+	"templates_description": "Create your forms from premade templates",
 	"my_forms": "My forms",
+	"my_forms_description": "Here you can act on your forms, edit, delete & watch",
 	"create": "Create",
 	"form_builder": {
 		"title": "Create Your Form",
@@ -162,5 +164,6 @@
 	"form_update_failed": "Form update failed",
 	"your_active_forms": "Your active forms",
 	"form_submissions": "Form submissions",
-	"open": "Open"
+	"open": "Open",
+	"user_form_description": "General info about the form, and all of its submissions"
 }
