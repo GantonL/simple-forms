@@ -7,7 +7,7 @@
 	import type { TableConfiguration } from '$lib/models/table';
 	import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
 	import { FormsSubmissions } from '../../../../api';
-	import { columns, tableConfiguration } from './configurations';
+	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
 	const userForm: UserForm = $state(page.data.userForm);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
 	let configuration = $derived({
@@ -18,15 +18,24 @@
 		} as TableConfiguration<FormSubmission>['serverSide']
 	});
 	let pageSize = $derived(configuration.pageSize ?? 10);
-	let pageIndex = $state(0);
 	let fetchInProgress = $state(false);
 
 	async function onPageIndexChaged(newIndex: number) {
-		pageIndex = newIndex;
+		getSubmissionsPage(newIndex);
+	}
+
+	async function onPageSizeChanged(newSize: number) {
+		pageSize = newSize;
+		getSubmissionsPage(0);
+	}
+
+	async function getSubmissionsPage(index: number) {
+		if (fetchInProgress) return;
 		fetchInProgress = true;
 		const page = await GET<FormSubmission[]>(FormsSubmissions, {
 			limit: pageSize,
-			offset: pageIndex * pageSize
+			offset: index * pageSize,
+			orderBy: DEFAULT_ORDER_BY
 		}).finally(() => (fetchInProgress = false));
 		submissions = page;
 	}
@@ -43,6 +52,7 @@
 			{columns}
 			{configuration}
 			pageIndexChanged={onPageIndexChaged}
+			pageSizeChanged={onPageSizeChanged}
 			isLoading={fetchInProgress}
 			disabled={fetchInProgress}
 		/>
