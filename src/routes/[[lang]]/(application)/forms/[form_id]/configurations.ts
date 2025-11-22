@@ -1,6 +1,8 @@
+import { renderComponent } from '$lib/components/ui/data-table';
 import { locale } from '$lib/i18n';
 import type { TableConfiguration } from '$lib/models/table';
 import type { FormSubmission } from '$lib/server/database/schemas/form';
+import { ExternalLink } from '@lucide/svelte';
 import type { ColumnDef } from '@tanstack/table-core';
 
 export const tableConfiguration: TableConfiguration<FormSubmission> = {
@@ -27,6 +29,13 @@ export const columns: ColumnDef<FormSubmission>[] = [
 	},
 	{
 		accessorKey: 'storageUrl',
-		header: 'link'
+		id: 'storageUrl',
+		header: '',
+		cell: ({ row }) => {
+			return renderComponent(ExternalLink, {
+				size: 16,
+				onclick: () => window.open(row.getValue('storageUrl'), '_blank')
+			});
+		}
 	}
 ];
