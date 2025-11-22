@@ -36,6 +36,7 @@ export const columns: ColumnDef<FormSubmission>[] = [
 		header: '',
 		cell: ({ row }) => {
 			return renderComponent(ExternalLink, {
+				class: 'cursor-pointer',
 				size: 16,
 				onclick: () => window.open(row.getValue('storageUrl'), '_blank')
 			});
