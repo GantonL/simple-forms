@@ -11,7 +11,7 @@
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
 		userData: UserFormData;
-		onSubmit?: (data?: string) => void;
+		onSubmit?: (file: File) => void;
 		mode?: 'demo';
 	};
 
@@ -175,8 +175,13 @@
 		isGeneratingPdf = true;
 		const pdf = await generatePdf();
 		pdf.save('form.pdf');
+		const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
+		const pdfFile = new File([pdfBlob], 'form.pdf', {
+			type: 'application/pdf',
+			lastModified: new Date().getTime()
+		});
 		isGeneratingPdf = false;
-		onSubmit?.();
+		onSubmit?.(pdfFile);
 	}
 </script>
 
