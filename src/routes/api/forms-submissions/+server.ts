@@ -1,8 +1,4 @@
-import {
-	FormSubmissionTable,
-	UserFormTable,
-	type UserForm
-} from '$lib/server/database/schemas/form';
+import { FormSubmissionTable, UserFormTable } from '$lib/server/database/schemas/form';
 import {
 	Service as service,
 	getUrlFilters,
@@ -36,7 +32,7 @@ export const GET: RequestHandler = async ({ url }) => {
 export const POST: RequestHandler = async ({ request }) => {
 	const data = await request.formData();
 	const user_form_id = Number(data.get('user_form_id'));
-	const file = data.get('file');
+	const file = data.get('file') as File;
 	const userForm = await UserFormsService.findById(user_form_id);
 	if (!userForm) {
 		error(404, { message: 'item_not_found' });
