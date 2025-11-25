@@ -4,6 +4,6 @@ import { FormsTemplates } from '../../../api';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const templates = await GET<FormTemplate[]>(FormsTemplates, { fetch });
+	const templates = GET<FormTemplate[]>(FormsTemplates, { fetch });
 	return { templates };
 };
