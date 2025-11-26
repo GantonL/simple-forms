@@ -25,5 +25,11 @@ export const auth = betterAuth({
 			clientSecret: env.GOOGLE_CLIENT_SECRET as string
 		}
 	},
-	plugins: [sveltekitCookies(getRequestEvent)]
+	plugins: [sveltekitCookies(getRequestEvent)],
+	session: {
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60 // Cache duration in seconds
+		}
+	}
 });
