@@ -56,7 +56,7 @@
 		<h2 class="text-2xl font-bold">{$t('common.my_forms')}</h2>
 		<p class="text-lg font-light">{$t('common.my_forms_description')}</p>
 	{/snippet}
-	<div class="grid w-full grid-cols-3 gap-2">
+	<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
 		{#each userForms as userForm (userForm.id)}
 			<UserFormCard data={userForm} onEvent={onUserCardEvent} />
 		{/each}

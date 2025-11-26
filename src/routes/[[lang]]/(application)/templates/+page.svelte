@@ -28,7 +28,7 @@
 		<h2 class="text-2xl font-bold">{$t('common.templates_raw')}</h2>
 		<p class="text-lg font-light">{$t('common.templates_description')}</p>
 	{/snippet}
-	<div class="grid w-full grid-cols-3 gap-2">
+	<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
 		{#await data.templates}
 			{@render SkeletonFormTemplateCard()}
 			{@render SkeletonFormTemplateCard()}
