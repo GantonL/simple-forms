@@ -8,27 +8,15 @@
 	type FieldRendererProps = {
 		field: Field;
 		value: string | number | boolean | string[] | undefined;
-		mode?: 'default' | 'display';
-		disabled?: boolean;
+		mode?: 'default' | 'display' | 'build';
 		onChange?: (newValue: FieldRendererProps['value']) => FieldRendererProps['value'];
 	};
 
-	let {
-		field,
-		value = $bindable(),
-		mode = 'default',
-		disabled,
-		onChange
-	}: FieldRendererProps = $props();
-
-	$effect.pre(() => {
-		if (disabled !== null || disabled !== undefined) {
-			field.disabled = disabled;
-		}
-	});
+	let { field, value = $bindable(), mode = 'default', onChange }: FieldRendererProps = $props();
+	const disabled = $derived(field.disabled && mode !== 'build');
 </script>
 
-<div class="space-y-2" class:opacity-70={field.disabled} class:pointer-events-none={field.disabled}>
+<div class="space-y-2" class:opacity-70={disabled} class:pointer-events-none={disabled}>
 	<Label for={field.id}>
 		{$t(field.label)}
 		{#if field.required && !field.disabled && mode === 'default'}
@@ -37,12 +25,12 @@
 	</Label>
 
 	{#if field.type === 'text' || field.type === 'email' || field.type === 'number' || field.type === 'tel'}
-		{#if mode === 'default'}
+		{#if mode === 'default' || mode === 'build'}
 			<Input
 				id={field.id}
 				type={field.type}
 				bind:value
-				disabled={field.disabled}
+				{disabled}
 				required={field.required}
 				placeholder={$t(field.label)}
 				onchange={() => onChange?.(value)}
@@ -51,11 +39,11 @@
 			<span class="w-fit">{value}</span>
 		{/if}
 	{:else if field.type === 'textarea'}
-		{#if mode === 'default'}
+		{#if mode === 'default' || mode === 'build'}
 			<textarea
 				id={field.id}
 				bind:value
-				disabled={field.disabled}
+				{disabled}
 				required={field.required}
 				placeholder={$t(field.label)}
 				class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
@@ -65,12 +53,12 @@
 			<span class="w-fit">{value}</span>
 		{/if}
 	{:else if field.type === 'date'}
-		{#if mode === 'default'}
+		{#if mode === 'default' || mode === 'build'}
 			<Input
 				id={field.id}
 				type="date"
 				bind:value
-				disabled={field.disabled}
+				{disabled}
 				required={field.required}
 				class="w-36"
 				onchange={() => onChange?.(value)}
@@ -82,9 +70,10 @@
 		<SignaturePad
 			fieldId={field.id}
 			bind:value={value as string | undefined}
-			disabled={field.disabled}
+			{disabled}
 			required={field.required}
 			onChange={() => onChange?.(value)}
+			{mode}
 		/>
 	{/if}
 </div>

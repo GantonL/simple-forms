@@ -17,6 +17,7 @@
 		required?: boolean;
 		disabled?: boolean;
 		onChange?: (newValue: string) => void;
+		mode?: 'display';
 	};
 
 	let {
@@ -24,7 +25,8 @@
 		value = $bindable(),
 		required = false,
 		disabled = false,
-		onChange
+		onChange,
+		mode
 	}: SignaturePadProps = $props();
 
 	let open = $state(false);
@@ -61,7 +63,8 @@
 
 	const handleClear = () => {
 		signaturePad?.clear();
-		onChange?.('');
+		value = '';
+		onChange?.(value);
 	};
 
 	const handleSave = () => {
@@ -89,6 +92,11 @@
 			signaturePad = null;
 		}
 	};
+
+	const handleDelete = () => {
+		value = undefined;
+		onChange?.('');
+	};
 </script>
 
 <div id={fieldId} class="flex items-center gap-2">
@@ -96,7 +104,7 @@
 		<!-- Display existing signature -->
 		<div class="flex flex-1 items-center gap-2">
 			<img src={value} alt="Signature" class="h-20 rounded border border-gray-300 bg-white px-2" />
-			{#if !disabled}
+			{#if !disabled && mode !== 'display'}
 				<div class="flex flex-col gap-2">
 					<Button
 						type="button"
@@ -111,7 +119,7 @@
 						type="button"
 						variant="outline"
 						size="icon"
-						onclick={() => (value = undefined)}
+						onclick={handleDelete}
 						aria-label={$t('common.delete')}
 					>
 						<Trash class="h-4 w-4" />

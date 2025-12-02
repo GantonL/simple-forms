@@ -82,7 +82,7 @@
 			</div>
 			<Separator />
 			{#each schema.fields as field (field)}
-				<FieldRenderer {field} bind:value={userData.fields![field.id]} />
+				<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
 			{/each}
 		</div>
 	{/if}

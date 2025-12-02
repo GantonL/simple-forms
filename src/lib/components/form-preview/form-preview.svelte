@@ -5,22 +5,24 @@
 	import { t } from '$lib/i18n';
 	import { direction } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
 
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
 		userData: UserFormData;
-		onSubmit?: (file: File) => void;
+		onSubmit?: (file: File) => Promise<void>;
 		mode?: 'demo';
 	};
 
-	let { schema, userData, onSubmit, mode }: FormPreviewProps = $props();
+	let { schema, userData: initialUserData, onSubmit, mode }: FormPreviewProps = $props();
 
 	// Form container reference for PDF generation
+	let userData = $state(initialUserData);
 	let formContainer: HTMLDivElement;
 	let isGeneratingPdf = $state(false);
 	let isFormValid = $state(false);
+	let fieldRendererMode = $derived<'display' | 'default'>(isGeneratingPdf ? 'display' : 'default');
 
 	// Parse section item to determine type
 	type SectionItem = {
@@ -66,11 +68,11 @@
 
 	const handleFormInvalidation = $derived(() => {
 		if (!schema.fields || !userData.fields) return true;
-
 		const allFieldsValid = schema.fields.every((field) => {
 			if (!field.required) return true;
 
 			const value = userData.fields?.[field.id];
+			console.log(value);
 
 			if (
 				value === undefined ||
@@ -173,6 +175,7 @@
 
 	async function handleSubmission() {
 		isGeneratingPdf = true;
+		await tick();
 		const pdf = await generatePdf();
 		pdf.save('form.pdf');
 		const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
@@ -180,8 +183,8 @@
 			type: 'application/pdf',
 			lastModified: new Date().getTime()
 		});
+		await onSubmit?.(pdfFile);
 		isGeneratingPdf = false;
-		onSubmit?.(pdfFile);
 	}
 </script>
 
@@ -207,21 +210,12 @@
 								<!-- Render actual input field -->
 								{@const field = getField(parsedItem.id)}
 								{#if field && userData.fields}
-									{@const isDisabled = (): boolean => {
-										const value = userData.fields![field.id];
-										return (
-											((typeof value === 'string' || Array.isArray(value)) && value.length > 0) ||
-											typeof value === 'number' ||
-											typeof value === 'boolean'
-										);
-									}}
 									<div class="inline-block min-w-[200px] md:min-w-[250px] print:break-inside-avoid">
 										<FieldRenderer
 											{field}
-											disabled={isDisabled()}
 											bind:value={userData.fields[field.id]}
 											onChange={handleFormInvalidation}
-											mode={isGeneratingPdf ? 'display' : 'default'}
+											mode={fieldRendererMode}
 										/>
 									</div>
 								{/if}
