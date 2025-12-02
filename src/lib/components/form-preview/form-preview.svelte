@@ -72,7 +72,6 @@
 			if (!field.required) return true;
 
 			const value = userData.fields?.[field.id];
-			console.log(value);
 
 			if (
 				value === undefined ||
