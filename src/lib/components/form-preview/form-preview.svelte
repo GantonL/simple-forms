@@ -206,6 +206,18 @@
 		const contentWidth = clone.offsetWidth;
 		const pageHeightPx = contentWidth * (287 / 200);
 
+		// Process markdown containers: add data-pdf-item to individual elements
+		const markdownContainers = clone.querySelectorAll('[data-pdf-markdown]');
+		markdownContainers.forEach((container) => {
+			// Find all block-level elements within markdown that should be atomic
+			const blockElements = container.querySelectorAll(
+				'p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, pre'
+			);
+			blockElements.forEach((el) => {
+				(el as HTMLElement).setAttribute('data-pdf-item', 'true');
+			});
+		});
+
 		// Find all atomic items
 		const items = clone.querySelectorAll('[data-pdf-item]');
 
@@ -295,7 +307,7 @@
 							{#if parsedItem.type === 'text'}
 								<!-- Render text content without label -->
 								{#if parsedItem.content}
-									<div data-pdf-item>
+									<div data-pdf-markdown>
 										<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
 									</div>
 								{/if}
