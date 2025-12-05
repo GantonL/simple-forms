@@ -1,3 +1,4 @@
+import type { UserForm } from '$lib/server/database/schemas/form';
 import {
 	Service as service,
 	getUrlFilters,
@@ -15,11 +16,14 @@ export const GET: RequestHandler = async ({ url }) => {
 	return json(items);
 };
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, locals }) => {
 	const { data } = await request.json();
+	data.forEach((item: UserForm) => {
+		item.user_id = locals.user.id;
+	});
 	const itemsToCreate = buildCreateCandidates(data);
 	const created = await service.createMany(itemsToCreate);
-	return json({ created });
+	return json(created);
 };
 
 export const PUT: RequestHandler = async ({ url, request }) => {

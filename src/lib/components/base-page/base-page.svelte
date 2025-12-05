@@ -7,7 +7,12 @@
 	import type { MetaTagsProps } from 'svelte-meta-tags';
 	import type { Snippet } from 'svelte';
 
-	let { title, description, children }: BasePageProps & { children?: Snippet } = $props();
+	let {
+		title,
+		description,
+		children,
+		header
+	}: BasePageProps & { children?: Snippet; header?: Snippet } = $props();
 
 	function setPageMetaTags() {
 		const pageTitle = t.get(title);
@@ -29,4 +34,11 @@
 	});
 </script>
 
-{@render children?.()}
+<div class="min-h-svh w-full">
+	{#if header}
+		<div class="flex flex-col gap-2 pb-4">
+			{@render header()}
+		</div>
+	{/if}
+	{@render children?.()}
+</div>

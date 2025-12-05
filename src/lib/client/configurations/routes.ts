@@ -7,7 +7,8 @@ import {
 	LogIn,
 	Signature,
 	FileSignature,
-	LayoutDashboard
+	LayoutDashboard,
+	BookTemplate
 } from '@lucide/svelte';
 
 export interface GroupedRoutes {
@@ -25,9 +26,20 @@ export const AppRoutes: GroupedRoutes[] = [
 				icon: LayoutDashboard
 			},
 			{
-				label: 'common.forms',
+				label: 'common.my_forms',
 				path: '/forms',
 				icon: FileSignature
+			},
+			{
+				label: 'common.templates_raw',
+				path: '/templates',
+				icon: BookTemplate
+			},
+			{
+				label: 'common.public',
+				path: '/f',
+				hidden: true,
+				authenticationRequired: false
 			}
 		]
 	},

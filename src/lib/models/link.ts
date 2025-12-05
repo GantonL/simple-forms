@@ -5,5 +5,6 @@ export interface Link {
 	label: string;
 	path: string;
 	icon?: Component<IconProps>;
-	authenticationRequired?: boolean; // defaults to true
+	authenticationRequired?: boolean; // defaults to true,
+	hidden?: boolean;
 }

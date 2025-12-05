@@ -1,10 +1,19 @@
 import { mdsvex } from 'mdsvex';
 import adapter from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import rehypeAddClasses from 'rehype-add-classes';
 
 /** @type {import('mdsvex').MdsvexOptions} */
 const mdsvexOptions = {
-	extensions: ['.md']
+	extensions: ['.md'],
+	rehypePlugins: [
+		[
+			rehypeAddClasses,
+			{
+				p: 'print:break-inside-avoid'
+			}
+		]
+	]
 };
 
 /** @type {import('@sveltejs/kit').Config} */

@@ -20,6 +20,9 @@
 		},
 		"500": {
 			"description": "משהו השתבש"
+		},
+		"400": {
+			"description": "בקשה לא תקינה"
 		}
 	},
 	"manage_cookies_preferences": "ניהול העדפות עוגיות",
@@ -58,6 +61,7 @@
 	"user": "משתמש",
 	"add": "הוספה",
 	"view": "תצוגה",
+	"edit": "עריכה",
 	"page": "עמוד",
 	"delete": "מחיקה",
 	"actions": "פעולות",
@@ -94,9 +98,72 @@
 		"generic_consent_form": {
 			"name": "טופס הסכמה כללי",
 			"description": "כולל בלוקים פשוטים של טקסט, פרטי משתתף ומאשר וחתימותיהם"
+		},
+		"simple_consent_form": {
+			"name": "טופס הסכמה פשוט",
+			"description": "פרטי הנחתם בחלק עליון, תוכן כללי, חתימת המשתתף וחתימת המאשר"
 		}
 	},
-	"available_templates": "תבניות זמינות לבחירה",
-	"your_forms": "הטפסים שלך",
-	"create": "יצירה"
+	"templates_raw": "תבניות",
+	"templates_description": "צרו את הטפסים שלכם מתוך תבניות מוכנות מראש",
+	"my_forms": "הטפסים שלי",
+	"my_forms_description": "כאן ניתן לבצע פעולות שונות על הטפסים שלכם כגון צפיה, עריכה ומחיקה",
+	"create": "יצירה",
+	"form_builder": {
+		"title": "צור את הטופס שלך",
+		"edit_title": "עדכן את הטופס שלך",
+		"description": "התאם אישית את תבנית הטופס על ידי מילוי המידע שלך",
+		"editable_text_blocks": "תוכן טקסט",
+		"editable_text_blocks_description": "התאם אישית את תוכן הטקסט שיופיע בטופס שלך",
+		"form_fields": "שדות טופס",
+		"form_fields_description": "מלא את המידע הנדרש עבור הטופס שלך",
+		"create_form": "צור טופס",
+		"edit_form": "שמור טופס",
+		"agree": "אני מסכים",
+		"preview": "תצוגה מקדימה",
+		"close_preview": "סגור תצוגה מקדימה",
+		"reset": "איפוס"
+	},
+	"link_copied_to_clipboard": "קישור הועתק ללוח",
+	"copy_link": "העתקת קישור",
+	"form_name": "שם הטופס",
+	"form_name_placeholder": "שם קצר שמתאר את הטופס בצורה נוחה",
+	"form_description": "תיאור הטופס",
+	"form_description_placeholder": "הוסיפו תיאור מפורט של הטופס",
+	"signature_field": {
+		"add_signature": "הוסף חתימה",
+		"edit_signature": "ערוך חתימה",
+		"clear": "נקה",
+		"save": "שמור",
+		"cancel": "ביטול",
+		"signature_pad_title": "חתמו כאן"
+	},
+	"submit": "שליחה",
+	"generating": "יוצר",
+	"bold": "מודגש",
+	"italic": "נטוי",
+	"underline": "קו תחתון",
+	"code": "קוד",
+	"link": "קישור",
+	"center": "ממורכז",
+	"bulletList": "רשימה מנוקדת",
+	"numberedList": "רשימה ממוספרת",
+	"heading": "כותרת",
+	"indent": "הזחה",
+	"title": "כותרת",
+	"description": "תיאור",
+	"form_submited_successfuly": "טופס נשלח בהצלחה",
+	"thank_you": "תודה לך!",
+	"cancel": "ביטול",
+	"confirm": "אישור",
+	"are_you_sure": "האם אתם בטוחים?",
+	"delete_user_form_confirm_message": "פעולה זו תמחק את הטופס ולא ניתן יהיה לשחזרו. משתמשים שקיבלו קישור לטופס זה לא יוכלו לגשת אליו יותר",
+	"submissions": "הגשות",
+	"form_update_success": "עדכון הטופס הושלם בהצלחה",
+	"form_update_failed": "עדכון הטופס נכשל",
+	"your_active_forms": "טפסים הפעילים שלך",
+	"form_submissions": "טפסים שנחתמו או הוגשו",
+	"open": "פתיחה",
+	"user_form_description": "מידע כללי על הטופס ופירוט כל החתימות וההגשות",
+	"failed_to_create_signed_url": "יצירת קישור חתום נכשלה"
 }

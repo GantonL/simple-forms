@@ -20,6 +20,9 @@
 		},
 		"500": {
 			"description": "Something went wrong"
+		},
+		"400": {
+			"description": "Bad request"
 		}
 	},
 	"manage_cookies_preferences": "Manage cookies preferences",
@@ -58,6 +61,7 @@
 	"user": "User",
 	"add": "Add",
 	"view": "View",
+	"edit": "Edit",
 	"page": "Page",
 	"delete": "Delete",
 	"actions": "Actions",
@@ -94,9 +98,73 @@
 		"generic_consent_form": {
 			"name": "Generic consent",
 			"description": "Includes basic text blocks, participant and approver details and signatures"
+		},
+		"simple_consent_form": {
+			"name": "Simple consent form",
+			"description": "The signee details at the top, generic content, signature and approver detailes"
 		}
 	},
-	"available_templates": "Available templates",
-	"your_forms": "Your forms",
-	"create": "Create"
+	"templates_raw": "Templates",
+	"templates_description": "Create your forms from premade templates",
+	"my_forms": "My forms",
+	"my_forms_description": "Here you can act on your forms, edit, delete & watch",
+	"create": "Create",
+	"form_builder": {
+		"title": "Create Your Form",
+		"description": "Customize the form template by filling in your information",
+		"editable_text_blocks": "Text Content",
+		"editable_text_blocks_description": "Customize the text content that will appear in your form",
+		"form_fields": "Form Fields",
+		"form_fields_description": "Fill in the required information for your form",
+		"create_form": "Create Form",
+		"edit_form": "Edit Form",
+		"submitting": "Creating...",
+		"saving": "Saving...",
+		"agree": "I agree",
+		"preview": "Preview",
+		"close_preview": "Close Preview",
+		"reset": "Reset"
+	},
+	"link_copied_to_clipboard": "Link copied to clipboard",
+	"copy_link": "Copy link",
+	"form_name": "Form name",
+	"form_name_placeholder": "Give your form a descriptive name",
+	"form_description": "Form description",
+	"form_description_placeholder": "Add a detailed description",
+	"signature_field": {
+		"add_signature": "Add Signature",
+		"edit_signature": "Edit Signature",
+		"clear": "Clear",
+		"save": "Save",
+		"cancel": "Cancel",
+		"signature_pad_title": "Sign Here"
+	},
+	"submit": "Submit",
+	"generating": "Generating",
+	"bold": "Bold",
+	"italic": "Italic",
+	"underline": "Underline",
+	"code": "Code",
+	"link": "Link",
+	"center": "Center",
+	"bulletList": "Bullet List",
+	"numberedList": "Numbered List",
+	"heading": "Heading",
+	"indent": "Indent",
+	"title": "Title",
+	"description": "Description",
+	"form_submited_successfuly": "Form submited successfuly",
+	"thank_you": "Thanks you!",
+	"cancel": "Cancel",
+	"confirm": "Confirm",
+	"are_you_sure": "Are you sure?",
+	"delete_user_form_confirm_message": "This cannot be undone. Deleting the form will also prevent them from accessing the link you provided them",
+	"submissions": "Submissions",
+	"form_update_success": "Form updated successfully",
+	"form_update_failed": "Form update failed",
+	"your_active_forms": "Your active forms",
+	"form_submissions": "Form submissions",
+	"open": "Open",
+	"user_form_description": "General info about the form, and all of its submissions",
+	"failed_to_create_signed_url": "Failed to create signed url"
 }

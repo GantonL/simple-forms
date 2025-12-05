@@ -1,6 +1,7 @@
 interface BaseRequestOptions {
 	fetch?: typeof fetch;
 	headers?: RequestInit['headers'];
+	autoHeaders?: boolean;
 }
 interface BaseFilters {
 	searchTerm?: string;
@@ -43,6 +44,18 @@ export const POST = async <D, R>(
 	return reponse as R;
 };
 
+export const FormDataPOST = async <R>(
+	url: string,
+	data: FormData,
+	options: CreateUpdateDeleteOptions = {
+		autoHeaders: true
+	}
+): Promise<R> => {
+	options = createFormDataPostBody(data, options);
+	const reponse = await baseRequest(url, 'POST', options);
+	return reponse as R;
+};
+
 export const DELETE = async <F, R>(
 	url: string,
 	filters: F,
@@ -60,7 +73,7 @@ export const PUT = async <D, F, R>(
 	options?: CreateUpdateDeleteOptions
 ): Promise<R> => {
 	options = createPutBody(data, filters, options);
-	const reponse = await baseRequest(url, 'DELETE', options);
+	const reponse = await baseRequest(url, 'PUT', options);
 	return reponse as R;
 };
 
@@ -71,12 +84,15 @@ const baseRequest = async (
 ) => {
 	return new Promise((resolve, reject) => {
 		const executeFetch = options?.fetch ?? fetch;
+		const headers = !options?.autoHeaders
+			? {
+					...baseHeaders,
+					...options?.headers
+				}
+			: undefined;
 		executeFetch(url, {
 			method,
-			headers: {
-				...baseHeaders,
-				...options?.headers
-			},
+			headers,
 			body: options?.body
 		})
 			.then(async (res) => {
@@ -127,6 +143,14 @@ const createPostBody = (data: unknown, options?: CreateUpdateDeleteOptions) => {
 	const response: CreateUpdateDeleteOptions = {
 		...options,
 		body: JSON.stringify({ data })
+	};
+	return response;
+};
+
+const createFormDataPostBody = (data: FormData, options?: CreateUpdateDeleteOptions) => {
+	const response: CreateUpdateDeleteOptions = {
+		...options,
+		body: data
 	};
 	return response;
 };

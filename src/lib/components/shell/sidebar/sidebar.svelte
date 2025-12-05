@@ -9,6 +9,7 @@
 	import type { AvailableLocals } from '$lib/enums/available-locales';
 	import { onMount } from 'svelte';
 	import SidebarUser from './sidebar-user.svelte';
+	import { resolve } from '$app/paths';
 
 	let currentPath = $derived(page.url.pathname);
 	let side = $state<'right' | 'left'>('left');
@@ -54,10 +55,12 @@
 							<Sidebar.MenuItem>
 								<Sidebar.MenuButton isActive={currentPath.startsWith(item.path)}>
 									{#snippet child({ props })}
-										<a href={item.path} {...props} onclick={onSidebarLink}>
-											<item.icon />
-											<span>{$t(item.label)}</span>
-										</a>
+										{#if !item.hidden}
+											<a href={resolve(item.path)} {...props} onclick={onSidebarLink}>
+												<item.icon />
+												<span>{$t(item.label)}</span>
+											</a>
+										{/if}
 									{/snippet}
 								</Sidebar.MenuButton>
 							</Sidebar.MenuItem>

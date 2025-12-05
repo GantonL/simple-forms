@@ -1,6 +1,6 @@
 {
-  "id": "6c210d48-ef10-4e39-8642-52c3798f9e48",
-  "prevId": "673ac5b8-1b48-4b07-afd2-e851cec01ed1",
+  "id": "72b1be50-4751-4204-b0a3-c37fdb30866c",
+  "prevId": "b1cc3ac6-0de3-4700-b823-a823a8ff9041",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -93,15 +93,15 @@
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -169,25 +169,25 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "session_token_unique": {
           "name": "session_token_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "token"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -250,10 +250,10 @@
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -352,15 +352,15 @@
         "form_submission_user_form_id_user_form_id_fk": {
           "name": "form_submission_user_form_id_user_form_id_fk",
           "tableFrom": "form_submission",
-          "tableTo": "user_form",
           "columnsFrom": [
             "user_form_id"
           ],
+          "tableTo": "user_form",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -412,10 +412,10 @@
       "uniqueConstraints": {
         "form_template_key_unique": {
           "name": "form_template_key_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "key"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -444,6 +444,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -470,6 +482,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -477,28 +495,28 @@
         "user_form_user_id_user_id_fk": {
           "name": "user_form_user_id_user_id_fk",
           "tableFrom": "user_form",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "user_form_template_id_form_template_id_fk": {
           "name": "user_form_template_id_form_template_id_fk",
           "tableFrom": "user_form",
-          "tableTo": "form_template",
           "columnsFrom": [
             "template_id"
           ],
+          "tableTo": "form_template",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -510,10 +528,10 @@
   },
   "enums": {},
   "schemas": {},
+  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
-  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

@@ -17,4 +17,5 @@ export interface TableConfiguration<T> {
 		totalItems?: number;
 		manualPagination?: boolean;
 	};
+	hideAddDataAction?: boolean;
 }

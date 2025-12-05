@@ -1,4 +1,4 @@
-import { eq, inArray, type Column } from 'drizzle-orm';
+import { eq, inArray, type SQL, sql, type Column } from 'drizzle-orm';
 import { UserFormTable, type UserFormTableInsert } from '../schemas/form';
 import type { WhereCondition } from './abstract';
 import { provider } from './provider';
@@ -77,23 +77,41 @@ export const getUrlOptions = (url: URL) => {
 	return getUrlOptionsUtil(url, UserFormTable);
 };
 
-type NewUserForm = Pick<UserFormTableInsert, 'user_id' | 'template_id'>;
+type NewUserForm = Pick<
+	UserFormTableInsert,
+	'user_id' | 'template_id' | 'data' | 'name' | 'description' | 'submissions'
+>;
 export const buildCreateCandidates = (candidates: NewUserForm[]): NewUserForm[] => {
 	const newUsers: NewUserForm[] = [];
 	candidates.forEach((candidate) => {
 		newUsers.push({
 			user_id: candidate.user_id,
-			template_id: candidate.template_id
+			template_id: candidate.template_id,
+			data: candidate.data,
+			name: candidate.name,
+			description: candidate.description,
+			submissions: 0
 		});
 	});
 	return newUsers;
 };
 
-type UpdateUserFormData = Pick<UserFormTableInsert, 'submissions'>;
+type UpdateUserFormData = Partial<
+	Pick<UserFormTableInsert, 'data' | 'description' | 'name'> & { submissions?: SQL }
+>;
 export const buildUpdateData = (updateData: UpdateUserFormData): UpdateUserFormData => {
 	const validatedUpdate: UpdateUserFormData = {};
 	if (updateData?.submissions) {
-		validatedUpdate.submissions = updateData.submissions;
+		validatedUpdate.submissions = sql`${UserFormTable.submissions} + 1`;
+	}
+	if (updateData?.data) {
+		validatedUpdate.data = updateData.data;
+	}
+	if (updateData?.description) {
+		validatedUpdate.description = updateData.description;
+	}
+	if (updateData?.name) {
+		validatedUpdate.name = updateData.name;
 	}
 	return validatedUpdate;
 };
