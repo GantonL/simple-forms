@@ -23,7 +23,7 @@ function isRouteRequiresAuthentication(path: string): boolean {
 	return !!AppRoutes.find((group) => {
 		return group.children.find((child) => {
 			return (
-				(child.path.includes(path) || path.includes(child.path)) &&
+				(path.startsWith(child.path) || child.path.startsWith(path)) &&
 				child.authenticationRequired !== false
 			);
 		});

@@ -97,79 +97,159 @@
 			if (!formContainer || !html2canvas || !jsPDF) resolve(undefined);
 			setTimeout(async () => {
 				try {
-					// Render the form container to canvas with html2canvas-pro (supports oklch)
-					const canvas = await html2canvas(formContainer, {
-						scale: 2,
-						useCORS: true,
-						logging: false,
-						backgroundColor: '#ffffff'
-					});
+					// Prepare DOM for PDF generation (smart pagination)
+					const { clone, cleanup } = await prepareDomForPdf(formContainer);
 
-					// Get canvas dimensions
-					const imgWidth = 210; // A4 width in mm
-					const pageHeight = 297; // A4 height in mm
-					const imgHeight = (canvas.height * imgWidth) / canvas.width;
-					const margin = 5; // mm
-					const availableWidth = imgWidth - 2 * margin;
-					const availableHeight = pageHeight - 2 * margin;
+					try {
+						// Render the form container to canvas with html2canvas-pro (supports oklch)
+						const canvas = await html2canvas(clone, {
+							scale: 2,
+							useCORS: true,
+							logging: false,
+							backgroundColor: '#ffffff',
+							windowWidth: formContainer.scrollWidth,
+							windowHeight: clone.scrollHeight
+						});
 
-					// Convert canvas to image
-					const imgData = canvas.toDataURL('image/jpeg', 0.98);
+						// Get canvas dimensions
+						const imgWidth = 210; // A4 width in mm
+						const pageHeight = 297; // A4 height in mm
+						const margin = 5; // mm
+						const availableWidth = imgWidth - 2 * margin;
+						const availableHeight = pageHeight - 2 * margin;
+						const imgHeight = (canvas.height * availableWidth) / canvas.width;
 
-					// Create PDF
-					const pdf = new jsPDF({
-						unit: 'mm',
-						format: 'a4',
-						orientation: 'portrait'
-					});
+						// Convert canvas to image
+						const imgData = canvas.toDataURL('image/jpeg', 0.98);
 
-					// Add image to PDF with margins
-					if (imgHeight <= availableHeight) {
-						// Single page
-						pdf.addImage(
-							imgData,
-							'JPEG',
-							margin,
-							margin,
-							availableWidth,
-							(canvas.height * availableWidth) / canvas.width
-						);
-					} else {
-						// Multi-page
-						let heightLeft = imgHeight;
-						let position = 0;
+						// Create PDF
+						const pdf = new jsPDF({
+							unit: 'mm',
+							format: 'a4',
+							orientation: 'portrait'
+						});
 
-						pdf.addImage(
-							imgData,
-							'JPEG',
-							margin,
-							margin,
-							availableWidth,
-							(canvas.height * availableWidth) / canvas.width
-						);
-						heightLeft -= availableHeight;
+						// Add image to PDF with margins
+						if (imgHeight <= availableHeight) {
+							// Single page
+							pdf.addImage(imgData, 'JPEG', margin, margin, availableWidth, imgHeight);
+						} else {
+							// Multi-page PDF generation
+							let position = 0;
+							let heightLeft = imgHeight;
 
-						while (heightLeft > 0) {
-							position = heightLeft - imgHeight;
-							pdf.addPage();
-							pdf.addImage(
-								imgData,
-								'JPEG',
-								margin,
-								position + margin,
-								availableWidth,
-								(canvas.height * availableWidth) / canvas.width
-							);
+							// Add the first page
+							pdf.addImage(imgData, 'JPEG', margin, margin, availableWidth, imgHeight);
 							heightLeft -= availableHeight;
+							position -= availableHeight;
+
+							// Add subsequent pages as long as there is content left
+							while (heightLeft > 0) {
+								pdf.addPage();
+								// The `position` is negative, which shifts the image upwards on the new page,
+								// effectively showing the next slice of the content.
+								pdf.addImage(imgData, 'JPEG', margin, position + margin, availableWidth, imgHeight);
+								heightLeft -= availableHeight;
+								position -= availableHeight;
+							}
 						}
+						resolve(pdf);
+					} finally {
+						cleanup();
 					}
-					resolve(pdf);
 				} catch (error) {
 					console.error('Error generating PDF:', error);
 					reject(error);
 				}
 			});
 		});
+	};
+
+	const prepareDomForPdf = async (sourceElement: HTMLElement) => {
+		// Clone the element
+		const clone = sourceElement.cloneNode(true) as HTMLElement;
+
+		// Set styles to ensure it renders correctly but is hidden
+		clone.style.position = 'absolute';
+		clone.style.left = '-9999px';
+		clone.style.top = '0';
+		clone.style.width = `${sourceElement.offsetWidth}px`;
+		clone.style.height = 'auto';
+		clone.style.zIndex = '-1';
+		// Ensure background is white
+		clone.style.backgroundColor = '#ffffff';
+
+		document.body.appendChild(clone);
+
+		// Wait for render
+		await tick();
+		// Small delay to ensure layout is stable (sometimes images/fonts take a moment)
+		await new Promise((r) => setTimeout(r, 100));
+
+		// Calculate page height in pixels
+		// A4: 210mm x 297mm
+		// Margins: 5mm
+		// Content area: 200mm x 287mm
+		// Ratio: 287 / 200
+		const contentWidth = clone.offsetWidth;
+		const pageHeightPx = contentWidth * (287 / 200);
+
+		// Find all atomic items
+		const items = clone.querySelectorAll('[data-pdf-item]');
+
+		let currentOffset = 0;
+
+		// We need to iterate and insert spacers.
+		// Note: inserting spacers changes the positions of subsequent items,
+		// so we must re-measure or track the accumulated offset.
+		// However, flex/grid layouts might behave complexly.
+		// The safest way is to re-measure, but that's O(N^2).
+		// Given N is small (number of fields), it's probably fine.
+		// But let's try to be efficient: we only care about the top position relative to the container.
+
+		// Actually, since we are modifying the DOM, `getBoundingClientRect` will update.
+		// Let's iterate.
+		for (let i = 0; i < items.length; i++) {
+			const item = items[i] as HTMLElement;
+			const rect = item.getBoundingClientRect();
+			const containerRect = clone.getBoundingClientRect();
+
+			const itemTop = rect.top - containerRect.top;
+			const itemHeight = rect.height;
+			const itemBottom = itemTop + itemHeight;
+
+			// Check which page this item starts on
+			const startPage = Math.floor(itemTop / pageHeightPx);
+			// Check which page this item ends on
+			const endPage = Math.floor(itemBottom / pageHeightPx);
+
+			// If it crosses a page boundary
+			if (startPage !== endPage) {
+				// Calculate how much space we need to push it to the next page
+				const nextPageStart = (startPage + 1) * pageHeightPx;
+				const spacerHeight = nextPageStart - itemTop;
+
+				// Create spacer
+				const spacer = document.createElement('div');
+				spacer.style.height = `${spacerHeight}px`;
+				spacer.style.width = '100%';
+				spacer.style.display = 'block';
+				spacer.setAttribute('data-pdf-spacer', 'true');
+
+				// Insert before item
+				// Note: item.parentNode should be the flex container
+				if (item.parentNode) {
+					item.parentNode.insertBefore(spacer, item);
+				}
+			}
+		}
+
+		return {
+			clone,
+			cleanup: () => {
+				document.body.removeChild(clone);
+			}
+		};
 	};
 
 	async function handleSubmission() {
@@ -203,13 +283,18 @@
 							{#if parsedItem.type === 'text'}
 								<!-- Render text content without label -->
 								{#if parsedItem.content}
-									<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
+									<div data-pdf-item>
+										<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
+									</div>
 								{/if}
 							{:else if parsedItem.type === 'field'}
 								<!-- Render actual input field -->
 								{@const field = getField(parsedItem.id)}
 								{#if field && userData.fields}
-									<div class="inline-block min-w-[200px] md:min-w-[250px] print:break-inside-avoid">
+									<div
+										class="inline-block min-w-[200px] md:min-w-[250px] print:break-inside-avoid"
+										data-pdf-item
+									>
 										<FieldRenderer
 											{field}
 											bind:value={userData.fields[field.id]}
@@ -251,6 +336,9 @@
 			color-adjust: exact;
 			-webkit-print-color-adjust: exact;
 			print-color-adjust: exact;
+		}
+		p {
+			page-break-inside: avoid;
 		}
 	}
 </style>
