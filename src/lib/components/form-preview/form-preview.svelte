@@ -31,8 +31,8 @@
 		content?: string;
 	};
 
-	let html2canvas;
-	let jsPDF;
+	let html2canvas: any;
+	let jsPDF: any;
 
 	onMount(async () => {
 		const [html2canvasModule, jsPDFModule] = await Promise.all([
@@ -153,6 +153,18 @@
 								position -= availableHeight;
 							}
 						}
+
+						// Add footer to all pages
+						const totalPages = pdf.getNumberOfPages();
+						const dateStr = new Date().toLocaleDateString();
+						for (let i = 1; i <= totalPages; i++) {
+							pdf.setPage(i);
+							pdf.setFontSize(10);
+							pdf.setTextColor(150);
+							const text = `${i} / ${totalPages} | ${dateStr}`;
+							pdf.text(text, imgWidth / 2, pageHeight - 10, { align: 'center' });
+						}
+
 						resolve(pdf);
 					} finally {
 						cleanup();
@@ -255,7 +267,7 @@
 	async function handleSubmission() {
 		isGeneratingPdf = true;
 		await tick();
-		const pdf = await generatePdf();
+		const pdf = (await generatePdf()) as any;
 		pdf.save('form.pdf');
 		const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
 		const pdfFile = new File([pdfBlob], 'form.pdf', {
@@ -333,9 +345,8 @@
 <style>
 	@media print {
 		* {
-			color-adjust: exact;
-			-webkit-print-color-adjust: exact;
 			print-color-adjust: exact;
+			-webkit-print-color-adjust: exact;
 		}
 		p {
 			page-break-inside: avoid;
