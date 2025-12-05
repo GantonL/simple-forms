@@ -43,5 +43,8 @@ export default defineConfig({
 				}
 			}
 		]
+	},
+	optimizeDeps: {
+		exclude: ['html2canvas-pro', 'jspdf']
 	}
 });
