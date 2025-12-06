@@ -7,6 +7,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onMount, tick } from 'svelte';
 	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
+	import { AppName } from '$lib/api/configurations/common';
 
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
@@ -154,15 +155,24 @@
 							}
 						}
 
-						// Add footer to all pages
+						// Add header and footer to all pages
 						const totalPages = pdf.getNumberOfPages();
 						const dateStr = new Date().toLocaleDateString();
+
 						for (let i = 1; i <= totalPages; i++) {
 							pdf.setPage(i);
+							pdf.setFont('NotoSans'); // Use Hebrew-supporting font
 							pdf.setFontSize(10);
 							pdf.setTextColor(150);
-							const text = `${i} / ${totalPages} | ${dateStr}`;
-							pdf.text(text, imgWidth / 2, pageHeight - 10, { align: 'center' });
+
+							// Add header (app name on the far end based on direction)
+							const headerAlign = $direction === 'lr' ? 'right' : 'left';
+							const headerX = $direction === 'lr' ? imgWidth - margin : margin;
+							pdf.text(AppName, headerX, margin, { align: headerAlign });
+
+							// Add footer (page number and date centered)
+							const footerText = `${i} / ${totalPages} | ${dateStr}`;
+							pdf.text(footerText, imgWidth / 2, pageHeight - 10, { align: 'center' });
 						}
 
 						resolve(pdf);
@@ -205,6 +215,18 @@
 		// Ratio: 287 / 200
 		const contentWidth = clone.offsetWidth;
 		const pageHeightPx = contentWidth * (287 / 200);
+
+		// Process markdown containers: add data-pdf-item to individual elements
+		const markdownContainers = clone.querySelectorAll('[data-pdf-markdown]');
+		markdownContainers.forEach((container) => {
+			// Find all block-level elements within markdown that should be atomic
+			const blockElements = container.querySelectorAll(
+				'p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote, pre'
+			);
+			blockElements.forEach((el) => {
+				(el as HTMLElement).setAttribute('data-pdf-item', 'true');
+			});
+		});
 
 		// Find all atomic items
 		const items = clone.querySelectorAll('[data-pdf-item]');
@@ -295,7 +317,7 @@
 							{#if parsedItem.type === 'text'}
 								<!-- Render text content without label -->
 								{#if parsedItem.content}
-									<div data-pdf-item>
+									<div data-pdf-markdown>
 										<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
 									</div>
 								{/if}
