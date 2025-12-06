@@ -7,6 +7,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onMount, tick } from 'svelte';
 	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
+	import { AppName } from '$lib/api/configurations/common';
 
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
@@ -154,15 +155,24 @@
 							}
 						}
 
-						// Add footer to all pages
+						// Add header and footer to all pages
 						const totalPages = pdf.getNumberOfPages();
 						const dateStr = new Date().toLocaleDateString();
+
 						for (let i = 1; i <= totalPages; i++) {
 							pdf.setPage(i);
+							pdf.setFont('NotoSans'); // Use Hebrew-supporting font
 							pdf.setFontSize(10);
 							pdf.setTextColor(150);
-							const text = `${i} / ${totalPages} | ${dateStr}`;
-							pdf.text(text, imgWidth / 2, pageHeight - 10, { align: 'center' });
+
+							// Add header (app name on the far end based on direction)
+							const headerAlign = $direction === 'lr' ? 'right' : 'left';
+							const headerX = $direction === 'lr' ? imgWidth - margin : margin;
+							pdf.text(AppName, headerX, margin, { align: headerAlign });
+
+							// Add footer (page number and date centered)
+							const footerText = `${i} / ${totalPages} | ${dateStr}`;
+							pdf.text(footerText, imgWidth / 2, pageHeight - 10, { align: 'center' });
 						}
 
 						resolve(pdf);
