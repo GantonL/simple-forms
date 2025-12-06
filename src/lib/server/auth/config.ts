@@ -4,7 +4,7 @@ import { betterAuth } from 'better-auth';
 import { account, session, user, verification } from '../database/schemas/auth';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
-import { env } from '$env/dynamic/private';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -21,8 +21,8 @@ export const auth = betterAuth({
 	},
 	socialProviders: {
 		google: {
-			clientId: env.GOOGLE_CLIENT_ID as string,
-			clientSecret: env.GOOGLE_CLIENT_SECRET as string
+			clientId: GOOGLE_CLIENT_ID,
+			clientSecret: GOOGLE_CLIENT_SECRET
 		}
 	},
 	plugins: [sveltekitCookies(getRequestEvent)],
