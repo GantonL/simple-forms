@@ -1,4 +1,4 @@
-import { SUPABAE_API_KEY, SUPBASE_PROJECT_URL } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { createClient } from '@supabase/supabase-js';
 
-export const client = createClient(SUPBASE_PROJECT_URL, SUPABAE_API_KEY);
+export const client = createClient(env.SUPBASE_PROJECT_URL, env.SUPABAE_API_KEY);
