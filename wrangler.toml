@@ -5,4 +5,4 @@ compatibility_flags = ["nodejs_compat"]
 
 [assets]
 binding = "ASSETS"
-directory = "".svelte-kit/cloudflare"
+directory = ".svelte-kit/cloudflare"
