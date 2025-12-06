@@ -15,6 +15,7 @@ export async function handle({ event, resolve }): Promise<Response> {
 	} else if (isRouteRequiresAuthentication(requestedPath)) {
 		redirect(302, `/signin?ref=${requestedPath}`);
 	}
+	event.locals.authHandler = auth.handler;
 	return svelteKitHandler({ event, resolve, auth, building });
 }
 

@@ -8,6 +8,7 @@ declare global {
 		interface Locals {
 			session: Session;
 			user: User;
+			authHandler: (...args) => Response;
 		}
 		// interface PageData {}
 		// interface PageState {}
