@@ -88,8 +88,8 @@ export const buildCreateCandidates = (candidates: NewUserForm[]): NewUserForm[] 
 			user_id: candidate.user_id,
 			template_id: candidate.template_id,
 			data: candidate.data,
-			name: candidate.name,
-			description: candidate.description,
+			name: candidate.name ?? '',
+			description: candidate.description ?? '',
 			submissions: 0
 		});
 	});
@@ -107,10 +107,10 @@ export const buildUpdateData = (updateData: UpdateUserFormData): UpdateUserFormD
 	if (updateData?.data) {
 		validatedUpdate.data = updateData.data;
 	}
-	if (updateData?.description) {
+	if (updateData?.description !== undefined) {
 		validatedUpdate.description = updateData.description;
 	}
-	if (updateData?.name) {
+	if (updateData?.name !== undefined) {
 		validatedUpdate.name = updateData.name;
 	}
 	return validatedUpdate;
