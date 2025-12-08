@@ -1,6 +1,6 @@
 {
-  "id": "72b1be50-4751-4204-b0a3-c37fdb30866c",
-  "prevId": "b1cc3ac6-0de3-4700-b823-a823a8ff9041",
+  "id": "9923a649-8961-47d9-8d8b-970cb23afc01",
+  "prevId": "54b31327-c3e3-4b43-a7db-548e6cacc72c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -327,12 +327,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "data": {
-          "name": "data",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
         "storage_url": {
           "name": "storage_url",
           "type": "text",
@@ -481,7 +475,8 @@
           "name": "submissions",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": 0
         },
         "data": {
           "name": "data",

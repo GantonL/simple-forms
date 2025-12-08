@@ -49,7 +49,6 @@ CREATE TABLE "verification" (
 CREATE TABLE "form_submission" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_form_id" integer NOT NULL,
-	"data" jsonb NOT NULL,
 	"storage_url" text,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
@@ -72,7 +71,7 @@ CREATE TABLE "user_form" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"public_link_identifier" uuid DEFAULT gen_random_uuid(),
-	"submissions" integer,
+	"submissions" integer DEFAULT 0 NOT NULL,
 	"data" jsonb
 );
 --> statement-breakpoint

@@ -1,5 +1,5 @@
 {
-  "id": "b1cc3ac6-0de3-4700-b823-a823a8ff9041",
+  "id": "54b31327-c3e3-4b43-a7db-548e6cacc72c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -327,12 +327,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "data": {
-          "name": "data",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        },
         "storage_url": {
           "name": "storage_url",
           "type": "text",
@@ -481,7 +475,8 @@
           "name": "submissions",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": 0
         },
         "data": {
           "name": "data",
