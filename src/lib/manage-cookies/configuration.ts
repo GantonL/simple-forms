@@ -19,13 +19,6 @@ export const CookieManagerConfiguration: ManageCookiesConfiguration = {
 			accepted: true,
 			description: 'common.analytics_cookies_description',
 			cookies: ['_ga', '_gtm']
-		},
-		{
-			name: 'advertising',
-			optional: true,
-			accepted: true,
-			description: 'common.advertising_cookies_description',
-			cookies: ['advertising-cookie']
 		}
 	]
 };

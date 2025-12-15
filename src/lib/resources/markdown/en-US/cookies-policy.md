@@ -1,14 +1,14 @@
 ---
 title: Cookies Policy
 description: Application cookies policy.
-date: '2025-7-7'
+date: '2025-07-07'
 ---
 
 # Cookies Policy
 
 ## Introduction
 
-This Cookies Policy explains how we use cookies and similar technologies when you visit our website. By using our website, you consent to our use of cookies as described in this policy.
+This Cookies Policy explains how we use cookies and similar technologies when you visit this application. By using this application, you consent to our use of cookies as described in this policy.
 
 ## What Are Cookies?
 
@@ -38,11 +38,17 @@ We use cookies for the following purposes:
 
 ## Cookie Management
 
-You can control cookies through your browser settings:
+You have control over your cookie preferences. You can manage these through your browser settings or by using our dedicated cookie consent banner.
 
-1. **Browser Controls**: Most browsers allow you to refuse cookies or delete existing ones
-2. **Privacy Settings**: You can adjust privacy settings to block third-party cookies
-3. **Cookie Preferences**: Use our cookie banner to manage your preferences
+1.  **Cookie Consent Banner**: Upon your first visit, you will be presented with a banner where you can:
+    *   **Accept All Cookies**: Consent to the use of all cookie categories (Essential, Analytics, Functional).
+    *   **Reject All Cookies**: Decline the use of Analytics and Functional cookies. Essential cookies may still be used as they are necessary for the core functionality of this application.
+    *   **Customize Preferences**: Select which categories of cookies (Analytics, Functional) you wish to allow.
+    Your choices are remembered, and you can change them at any time by accessing the cookie banner or through your browser settings.
+
+2.  **Browser Controls**: Most browsers allow you to refuse cookies entirely, or to delete existing cookies. Consult your browser's help section for instructions.
+
+3.  **Privacy Settings**: You may be able to adjust privacy settings in your browser to block third-party cookies.
 
 ## Third-Party Cookies
 
