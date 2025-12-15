@@ -38,7 +38,7 @@
 	}
 </script>
 
-<BasePage title="common.sign" description="seo.description">
+<BasePage title={form.name} description={form.description ?? 'seo.description'}>
 	{#if schema && form.data}
 		<FormPreview {schema} userData={form.data!} onSubmit={onFormSubmitted} />
 	{/if}

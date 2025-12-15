@@ -12,14 +12,20 @@ export const Breadcrumbs = {
 		{
 			'@type': 'ListItem',
 			position: 2,
-			name: 'Example',
-			item: `${BaseDemoUrl}/example`
+			name: 'Dashboard',
+			item: `${BaseDemoUrl}/dashboard`
 		},
 		{
 			'@type': 'ListItem',
 			position: 3,
-			name: 'Settings',
-			item: `${BaseDemoUrl}/settings`
+			name: 'Forms',
+			item: `${BaseDemoUrl}/forms`
+		},
+		{
+			'@type': 'ListItem',
+			position: 4,
+			name: 'Templates',
+			item: `${BaseDemoUrl}/templates`
 		}
 	]
 };
@@ -29,42 +35,42 @@ export const FAQ = {
 	mainEntity: [
 		{
 			'@type': 'Question',
-			name: 'Does this template include internationalization (i18n) support?',
+			name: 'How do I create a form?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Yes, the template includes full i18n support with route-based locale detection and RTL/LTR direction handling.'
+				text: 'Navigate to the Templates page, select a form template, customize the fields, and save. Your form will be ready to share via a public link.'
 			}
 		},
 		{
 			'@type': 'Question',
-			name: 'Are shadcn-svelte components integrated?',
+			name: 'How do I share a form for signatures?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Yes, shadcn-svelte components are fully integrated with Tailwind CSS v4 for modern UI development.'
+				text: 'Each form has a unique public link that can be shared with anyone. Recipients can fill out and sign the form without needing an account.'
 			}
 		},
 		{
 			'@type': 'Question',
-			name: 'Does the template support SEO and structured data?',
+			name: 'Can I track form submissions?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Yes, it includes store-based SEO metadata management and structured data configurations with examples.'
+				text: 'Yes, all form submissions are tracked in real-time. You can view submission details, signatures, and download completed forms from your dashboard.'
 			}
 		},
 		{
 			'@type': 'Question',
-			name: 'Is there built-in state management?',
+			name: 'Are the forms secure?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Yes, the template uses centralized Svelte stores for global state management with TypeScript support.'
+				text: 'Yes, all forms and submissions are securely stored with encryption. Public links are unique and can only be accessed by those who have the link.'
 			}
 		},
 		{
 			'@type': 'Question',
-			name: 'Are authentication and database abstraction features included?',
+			name: 'Can I edit a form after creating it?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Coming soon - these features are planned for the roadmap.'
+				text: 'Yes, you can edit form settings, update fields, and manage distribution options at any time from the forms management page.'
 			}
 		}
 	]

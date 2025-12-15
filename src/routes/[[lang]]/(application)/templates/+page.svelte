@@ -21,7 +21,7 @@
 	}
 </script>
 
-<BasePage title="common.templates_raw" description="seo.description">
+<BasePage title="common.templates_raw" description="seo.pages.templates.description">
 	{#snippet header()}
 		<h2 class="text-2xl font-bold">{$t('common.templates_raw')}</h2>
 		<p class="text-lg font-light">{$t('common.templates_description')}</p>

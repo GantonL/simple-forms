@@ -51,7 +51,7 @@
 	}
 </script>
 
-<BasePage title="common.forms" description="seo.description">
+<BasePage title="common.forms" description="seo.pages.forms.description">
 	{#snippet header()}
 		<h2 class="text-2xl font-bold">{$t('common.my_forms')}</h2>
 		<p class="text-lg font-light">{$t('common.my_forms_description')}</p>

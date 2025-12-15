@@ -41,7 +41,7 @@
 	}
 </script>
 
-<BasePage title="common.forms" description="seo.description">
+<BasePage title="common.forms" description="seo.pages.form_detail.description">
 	{#snippet header()}
 		<h2 class="text-2xl font-bold">{userForm.name}</h2>
 		<p class="text-lg font-light">{$t('common.user_form_description')}</p>

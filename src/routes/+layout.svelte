@@ -18,17 +18,18 @@
 
 	onMount(() => {
 		locale.subscribe((seletedLocale) => {
-			updateDirection(seletedLocale as AvailableLocals);
+			updateDirectionAndLang(seletedLocale as AvailableLocals);
 		});
 	});
 
-	function updateDirection(locale: AvailableLocals) {
-		if (!locale) {
+	function updateDirectionAndLang(selectedLocale: AvailableLocals) {
+		if (!selectedLocale) {
 			return;
 		}
 		if (document) {
-			const dir = directionMap[locale] ?? $direction;
+			const dir = directionMap[selectedLocale] ?? $direction;
 			document.dir = dir === 'lr' ? 'ltr' : 'rtl';
+			document.documentElement.lang = selectedLocale;
 			direction.set(dir);
 		}
 	}
@@ -36,5 +37,5 @@
 
 <Toaster expand={true} richColors={true} dir={$direction === 'lr' ? 'ltr' : 'rtl'} />
 <SEO data={mergedMetaTags} />
-<ModeWatcher />
+<ModeWatcher defaultMode="light" />
 {@render children?.()}

@@ -1,11 +1,35 @@
 {
-	"description": "A Sveltekit FullStack application template",
+	"description": "Create, manage, and distribute digital forms with easy signature collection. Professional form management system with public sharing links and real-time tracking.",
 	"pages": {
-		"example": {
-			"description": "An example page that renders scrollable dummy text"
+		"home": {
+			"description": "Simple Forms - Create professional forms from templates, distribute via public links, and collect signatures easily. Start managing your forms today."
 		},
-		"settings": {
-			"description": "General application settings"
+		"signin": {
+			"description": "Sign in to your Simple Forms account to manage your forms, view submissions, and track signatures."
+		},
+		"dashboard": {
+			"description": "Your dashboard overview - manage forms, view recent submissions, and access all your form templates in one place."
+		},
+		"forms": {
+			"description": "Browse and manage all your forms. Create new forms from templates, share public links, and track submissions."
+		},
+		"form_detail": {
+			"description": "View form details, manage submissions, and share your form via public link for signature collection."
+		},
+		"form_create": {
+			"description": "Create a new form from available templates. Customize fields and generate a shareable link for signature collection."
+		},
+		"form_edit": {
+			"description": "Edit your form settings, update fields, and manage distribution options."
+		},
+		"templates": {
+			"description": "Browse available form templates. Choose from pre-designed forms to quickly create and deploy your documents."
+		},
+		"user": {
+			"description": "Manage your profile settings, preferences, and account information."
+		},
+		"submitted": {
+			"description": "Form submitted successfully. Thank you for completing this form."
 		},
 		"accessibility_statement": {
 			"description": "Information about accessibility features and compliance"

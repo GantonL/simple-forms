@@ -120,7 +120,10 @@
 	}
 </script>
 
-<BasePage title="common.{componentMode}" description="seo.description">
+<BasePage
+	title="common.{componentMode}"
+	description="seo.pages.form_{componentMode}.description"
+>
 	<Card class="w-full">
 		<CardHeader>
 			<CardTitle

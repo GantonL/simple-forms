@@ -5,7 +5,7 @@
 	import { CheckCircle } from '@lucide/svelte';
 </script>
 
-<BasePage title="common.forms" description="seo.description">
+<BasePage title="common.forms" description="seo.pages.submitted.description">
 	<div class="mt-[5%] flex flex-col items-center">
 		<Card.Root>
 			<Card.Header>
