@@ -12,7 +12,7 @@ export const getDirection = (locale: AvailableLocals): DirectionSetting => {
 };
 export const AppName: string = 'Simple Forms';
 export const SupportEmail: string = 'support@simple-forms.com';
-export const BaseUrl: string = 'https://simple-forms.com';
+export const BaseUrl: string = 'https://simple-forms.up.railway.app/';
 export const BaseDemoUrl: string = 'https://ssv5.templates.guylahav.com/';
 export const Author: string = 'Guy Lahav';
 export const TwitterUsername: string = '@myusername';
