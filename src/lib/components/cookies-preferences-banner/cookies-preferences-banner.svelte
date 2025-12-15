@@ -20,7 +20,7 @@
 		cookieSetRequest({
 			[CookieManagerConfiguration['user-preference-cookie-name']]: JSON.stringify(preferences)
 		});
-		toast.success('Cookie preferences saved');
+		toast.success($t('common.cookie_preferences_saved_toast'));
 		removeBanner();
 	}
 
@@ -43,10 +43,9 @@
 			</div>
 		</Card.Title>
 		<Card.Description>
-			By clicking “Accept all cookies”, you agree Simple Forms can store cookies on your device and
-			disclose information in accordance with our
+			{$t('common.cookie_banner_description')}
 			<a href="/policies/cookies" class="inderline-offset-2 text-muted-foreground underline"
-				>Cookie Policy.</a
+				>{$t('common.cookie_policy_link_text')}</a
 			>
 		</Card.Description>
 	</Card.Header>

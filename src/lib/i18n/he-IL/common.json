@@ -39,7 +39,7 @@
 	"advertising": "פירסום",
 	"cookie_preferences": "העדפות עוגיות",
 	"accept_all_cookies": "קבלת כל העוגיות",
-	"necessary_cookies_only": "עוכיות הכרחיות בלבד",
+	"necessary_cookies_only": "עוגיות הכרחיות בלבד",
 	"manage_preferences": "ניהול העדפות",
 	"application": "אפליקציה",
 	"site": "אתר",
@@ -165,5 +165,8 @@
 	"form_submissions": "טפסים שנחתמו או הוגשו",
 	"open": "פתיחה",
 	"user_form_description": "מידע כללי על הטופס ופירוט כל החתימות וההגשות",
-	"failed_to_create_signed_url": "יצירת קישור חתום נכשלה"
+	"failed_to_create_signed_url": "יצירת קישור חתום נכשלה",
+	"cookie_banner_description": "על ידי לחיצה על ״קבל את כל העוגיות״, אתה מסכים ש'טפסים פשוטים' תוכל לאחסן עוגיות במכשירך ולחשוף מידע בהתאם ל",
+	"cookie_policy_link_text": "מדיניות העוגיות שלנו.",
+	"cookie_preferences_saved_toast": "העדפות העוגיות נשמרו"
 }
