@@ -17,9 +17,9 @@ VALUES (
       { "id": "participant_phone", "label": "templates.labels.phone_number", "type": "text", "required": true },
       { "id": "participant_signature", "label": "templates.labels.signature", "type": "signature", "required": true },
       { "id": "participant_date", "label": "templates.labels.date", "type": "date", "required": true },
-      { "id": "researcher_name", "label": "templates.labels.researcher_name", "type": "text" },
-      { "id": "researcher_signature", "label": "templates.labels.researcher_signature", "type": "signature" },
-      { "id": "researcher_date", "label": "templates.labels.researcher_date", "type": "date" }
+      { "id": "researcher_name", "label": "templates.labels.researcher_name", "type": "text", "disabled": true },
+      { "id": "researcher_signature", "label": "templates.labels.researcher_signature", "type": "signature", "disabled": true },
+      { "id": "researcher_date", "label": "templates.labels.researcher_date", "type": "date", "disabled": true }
     ],
     "layout": {
       "sections": [
