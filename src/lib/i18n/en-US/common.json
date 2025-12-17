@@ -102,6 +102,10 @@
 		"simple_consent_form": {
 			"name": "Simple consent form",
 			"description": "The signee details at the top, generic content, signature and approver detailes"
+		},
+		"simple_research_consent_form": {
+			"name": "Simple research consent form",
+			"description": "The signee details at the top, generic content, signature and researcher detailes"
 		}
 	},
 	"templates_raw": "Templates",

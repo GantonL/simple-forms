@@ -7,7 +7,8 @@
 		"introduction": "Introduction",
 		"terms": "Terms and Conditions",
 		"confirmation": "Confirmation",
-		"admin_statement": "Administrator Section"
+		"admin_statement": "Administrator Section",
+		"researcher_statement": "Researcher Section"
 	},
 	"content": {
 		"content": "Your amazing form content",
@@ -15,7 +16,8 @@
 		"introduction": "This form outlines the terms and conditions for participation. Please read carefully before signing.",
 		"terms": "By signing this form, you agree to the following terms and conditions:\n\n1. You have read and understood all information provided\n2. You consent to participate voluntarily\n3. You understand that you may withdraw at any time\n4. Your personal information will be handled according to our privacy policy",
 		"confirmation": "I hereby confirm that I have read, understood, and agree to all the terms and conditions outlined above.",
-		"admin_statement": "Administrator Approval: This form has been reviewed and approved by the administrator."
+		"admin_statement": "Administrator Approval: This form has been reviewed and approved by the administrator.",
+		"researcher_statement": "Researcher Approval: This form has been reviewed and approved by the researcher."
 	},
 	"labels": {
 		"full_name": "Full Name",
@@ -26,6 +28,9 @@
 		"date": "Date",
 		"admin_name": "Administrator Name",
 		"admin_signature": "Administrator Signature",
-		"admin_date": "Administrator Date"
+		"admin_date": "Administrator Date",
+		"researcher_name": "Researcher Name",
+		"researcher_signature": "Researcher Signature",
+		"researcher_date": "Researcher Date"
 	}
 }
