@@ -1,24 +1,29 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { File, Link } from '@lucide/svelte';
+	import { File, Link, LoaderCircle } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
-	import { getPublicFormLink, copyToClipboard } from '$lib/client/utils';
+	import { copyToClipboard } from '$lib/client/utils';
 	import { toast } from 'svelte-sonner';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { type AppCustomEvent } from '$lib/models/common';
 	import Menu from '../menu/menu.svelte';
 	import { menuConfiguration } from './configurations/menu';
+	import { GET } from '$lib/api/helpers/request';
+	import { UsersForms } from '../../../routes/api';
 	let { data, onEvent }: { data: UserForm; onEvent: (event: AppCustomEvent<UserForm>) => void } =
 		$props();
+	let copyInProgress = $state(false);
 
-	function onCopy() {
+	async function onCopy() {
+		copyInProgress = true;
 		if (!data.public_link_identifier) return;
-		const link = getPublicFormLink(data.public_link_identifier);
+		const link = await GET<string>(`${UsersForms}/${data.id}/public-link`);
 		copyToClipboard(link).then(() => {
 			toast.success(t.get('common.link_copied_to_clipboard'));
 		});
+		copyInProgress = false;
 	}
 
 	function onOpen() {
@@ -41,8 +46,12 @@
 		/>
 	</Card.Header>
 	<Card.Footer class="align-items flex flex-row gap-2">
-		<Button class="flex flex-row items-center gap-2" onclick={onCopy}>
-			<Link size={12} />
+		<Button class="flex flex-row items-center gap-2" onclick={onCopy} disabled={copyInProgress}>
+			{#if copyInProgress}
+				<LoaderCircle size={12} class="animate-spin" />
+			{:else}
+				<Link size={12} />
+			{/if}
 			<span>{$t('common.copy_link')}</span>
 		</Button>
 		<Button variant="secondary" class="flex flex-row items-center gap-2" onclick={onOpen}>
