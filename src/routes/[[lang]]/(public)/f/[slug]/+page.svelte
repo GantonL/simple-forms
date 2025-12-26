@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { FormDataPOST, POST, PUT } from '$lib/api/helpers/request';
+	import { POST, PUT } from '$lib/api/helpers/request';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormPreview from '$lib/components/form-preview/form-preview.svelte';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
