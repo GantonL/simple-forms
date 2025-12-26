@@ -45,11 +45,15 @@
 			}
 
 			// Upload file directly to Supabase
+			const buffer = await file.arrayBuffer();
 			const uploadResponse = await fetch(urlResponse.uploadUrl, {
 				method: 'PUT',
-				body: file,
+				mode: 'cors',
+				credentials: 'omit',
+				body: buffer,
 				headers: {
-					'Content-Type': file.type
+					'Content-Type': file.type,
+					'Content-Length': buffer.byteLength.toString()
 				}
 			});
 
