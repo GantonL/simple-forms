@@ -7,8 +7,6 @@ import {
 	buildUpdateData,
 	getBodyFilters
 } from '$lib/server/database/services/form-submissions';
-import { Service as UserFormsService } from '$lib/server/database/services/user-form';
-import { uploadFile } from '$lib/server/storage';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
@@ -30,19 +28,13 @@ export const GET: RequestHandler = async ({ url }) => {
 };
 
 export const POST: RequestHandler = async ({ request }) => {
-	const data = await request.formData();
-	const user_form_id = Number(data.get('user_form_id'));
-	const file = data.get('file') as File;
-	const userForm = await UserFormsService.findById(user_form_id);
-	if (!userForm) {
-		error(404, { message: 'item_not_found' });
+	const { data } = await request.json();
+	const { user_form_id, storage_url } = data;
+
+	if (!user_form_id || !storage_url) {
+		error(400, { message: 'missing_required_fields' });
 	}
-	const path = `${userForm.user_id}/${user_form_id}/${crypto.randomUUID()}`;
-	const uploadRes = await uploadFile(file, path);
-	if (!uploadRes || uploadRes.error !== null) {
-		error(500, { message: 'upload_failed' });
-	}
-	const storage_url = uploadRes.data?.path ?? path;
+
 	const newSubmissionData = [{ user_form_id, storage_url }];
 	const itemsToCreate = buildCreateCandidates(newSubmissionData);
 	const created = await service.createMany(itemsToCreate);
