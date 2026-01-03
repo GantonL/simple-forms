@@ -2,46 +2,38 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { GET, POST, PUT } from '$lib/api/helpers/request';
+	import { POST, PUT } from '$lib/api/helpers/request';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormPreview from '$lib/components/form-preview/form-preview.svelte';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { BaseUrl, FormsSubmissions, UploadUrl, UsersForms } from '../../../../api';
+	import { toast } from 'svelte-sonner';
+	import {
+		FormsSubmissions,
+		RemoteBrowserServiceCreatePdf,
+		UploadUrl,
+		UsersForms
+	} from '../../../../api';
 
 	const form: UserForm = $derived(page.data.form);
 	const schema: FormTemplate['schema'] = $derived(page.data.schema);
 
 	async function onFormSubmitted() {
-		const submitRes = await requestRemotePdfCapture();
+		// const submitRes = await createNewSubmission(file);
+		const submitRes = await requestFormSubmissionCreation();
 		if (submitRes) {
 			goto(resolve('/submitted'));
 		} else {
-			// error message
+			toast.error('submission failed');
 		}
 	}
 
-	async function requestRemotePdfCapture() {
-		const baseUrl = await GET<string>(BaseUrl);
-		const body = JSON.stringify({
-			url: `${baseUrl}/r/${form.public_link_identifier}`,
-			webhookUrl: `${baseUrl}/webhooks/forms/${form.id}/submision`,
-			containerClass: 'form',
-			options: {}
-		});
-		const uploadResponse = await fetch(import.meta.env.VITE_PDF_SERVICE_URL, {
-			method: 'POST',
-			body
-		}).catch((e) => {
-			console.log('error requesting pdf creation', e);
-			return;
-		});
-
-		if (!uploadResponse?.ok) {
-			console.error('Upload failed');
-			return false;
-		}
-
-		return true;
+	async function requestFormSubmissionCreation() {
+		if (!form.public_link_identifier) return;
+		const createPdfRequest = await POST<string, { success: boolean }>(
+			RemoteBrowserServiceCreatePdf,
+			form.public_link_identifier
+		);
+		return createPdfRequest;
 	}
 
 	async function createNewSubmission(file: File) {
