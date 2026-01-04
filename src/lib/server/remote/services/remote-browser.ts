@@ -5,7 +5,9 @@ const baseUrl = `http://${BROWSER_SERVICE_HOST}:${BROWSER_SERVICE_PORT}`;
 function createPdfParameters(parameters: { formPublicLinkIndentifier: string; formId: number }) {
 	return {
 		url: `${BASE_APP_URL}/r/${parameters.formPublicLinkIndentifier}`,
-		webhookUrl: `${BASE_APP_URL}/api/webhooks/forms/${parameters.formId}/process`,
+		webhook: {
+			url: `${BASE_APP_URL}/api/webhooks/forms/${parameters.formId}/process`
+		},
 		containerClass: 'form',
 		options: {
 			margin: {

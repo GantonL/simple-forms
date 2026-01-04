@@ -5,6 +5,15 @@ import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form
 
 export const POST: RequestHandler = async ({ request, params, fetch: internalFetch }) => {
 	const form = await request.formData();
+
+	const success = form.get('success');
+	if (!success) {
+		// TODO handle failed submisions
+		const error = form.get('errorCode');
+		const message = form.get('errorMessage');
+		console.error('Failed response from remote browser service', error, message);
+	}
+
 	const file = form.get('file') as File;
 
 	if (!file) {
