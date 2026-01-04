@@ -2,10 +2,10 @@ import { BASE_APP_URL, BROWSER_SERVICE_HOST, BROWSER_SERVICE_PORT } from '$env/s
 
 const baseUrl = `http://${BROWSER_SERVICE_HOST}:${BROWSER_SERVICE_PORT}`;
 
-function createPdfParameters(parameters: { formPublicLinkIndentifier: string }) {
+function createPdfParameters(parameters: { formPublicLinkIndentifier: string; formId: number }) {
 	return {
 		url: `${BASE_APP_URL}/r/${parameters.formPublicLinkIndentifier}`,
-		webhookUrl: `${BASE_APP_URL}/api/webhooks/forms/process`,
+		webhookUrl: `${BASE_APP_URL}/api/webhooks/forms/${parameters.formId}/process`,
 		containerClass: 'form',
 		options: {
 			margin: {
@@ -20,6 +20,7 @@ function createPdfParameters(parameters: { formPublicLinkIndentifier: string }) 
 
 export const requestPdfCreation = async (parameters: {
 	formPublicLinkIndentifier: string;
+	formId: number;
 }): Promise<boolean> => {
 	const res = await fetch(`${baseUrl}/pdf`, {
 		method: 'POST',
