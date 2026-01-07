@@ -7,19 +7,28 @@
 	import { Button } from '$lib/components/ui/button';
 	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
 
+	type FieldRendererMode = 'default' | 'display';
+
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
 		userData: UserFormData;
 		onSubmit?: (data: UserFormData) => Promise<void>;
 		mode?: 'demo';
+		forceFieldRendererMode?: FieldRendererMode;
 	};
 
-	let { schema, userData: initialUserData, onSubmit, mode }: FormPreviewProps = $props();
+	let {
+		schema,
+		userData: initialUserData,
+		onSubmit,
+		mode,
+		forceFieldRendererMode
+	}: FormPreviewProps = $props();
 
 	let userData = $state(initialUserData);
 	let isGeneratingPdf = $state(false);
 	let isFormValid = $state(false);
-	let fieldRendererMode = $derived<'display' | 'default'>(isGeneratingPdf ? 'display' : 'default');
+	let fieldRendererMode = $derived<FieldRendererMode>(isGeneratingPdf ? 'display' : 'default');
 
 	type SectionItem = {
 		type: 'text' | 'field';
@@ -113,7 +122,7 @@
 											{field}
 											bind:value={userData.fields[field.id]}
 											onChange={handleFormInvalidation}
-											mode={fieldRendererMode}
+											mode={forceFieldRendererMode ?? fieldRendererMode}
 										/>
 									</div>
 								{/if}

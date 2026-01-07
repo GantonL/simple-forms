@@ -8,5 +8,5 @@
 </script>
 
 {#if schema && form.data}
-	<FormPreview {schema} userData={form.data!} />
+	<FormPreview {schema} userData={form.data!} forceFieldRendererMode="display" />
 {/if}
