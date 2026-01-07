@@ -1,0 +1,68 @@
+{
+	"hero": {
+		"headline": "Create, Share & Collect Signatures",
+		"subheadline": "Professional form management made simple. Build forms from templates, share instantly, and track every signature.",
+		"cta_primary": "Get Started",
+		"cta_secondary": "View Templates"
+	},
+	"features": {
+		"title": "Everything You Need for Digital Forms",
+		"subtitle": "Streamline your workflow with powerful yet simple tools",
+		"template_based": {
+			"title": "Template-Based Creation",
+			"description": "Choose from pre-built templates and customize them to your needs. No design skills required."
+		},
+		"instant_sharing": {
+			"title": "Instant Public Links",
+			"description": "Generate shareable links in seconds. Recipients can sign forms without creating an account."
+		},
+		"signature_collection": {
+			"title": "Secure Signatures",
+			"description": "Collect digital signatures with full tracking. Know exactly who signed and when."
+		},
+		"real_time_tracking": {
+			"title": "Real-Time Tracking",
+			"description": "Monitor submissions as they happen. Access all your signed forms in one dashboard."
+		}
+	},
+	"how_it_works": {
+		"title": "How It Works",
+		"subtitle": "Get your forms signed in three simple steps",
+		"step1": {
+			"title": "Choose a Template",
+			"description": "Select from our library of professional form templates or start from scratch."
+		},
+		"step2": {
+			"title": "Customize & Share",
+			"description": "Add your content, customize fields, and generate a public link to share with anyone."
+		},
+		"step3": {
+			"title": "Collect & Track",
+			"description": "Recipients sign your form online. You get instant notifications and can track all submissions."
+		}
+	},
+	"benefits": {
+		"title": "Why Simple Forms?",
+		"no_account": {
+			"title": "No Account Required for Signers",
+			"description": "Your recipients don't need to sign up. Just share the link and they can sign immediately."
+		},
+		"save_time": {
+			"title": "Save Time & Paper",
+			"description": "Go digital. No more printing, scanning, or chasing signatures. Everything happens online."
+		},
+		"organized": {
+			"title": "Stay Organized",
+			"description": "All your forms and submissions in one place. Search, filter, and export with ease."
+		},
+		"compliant": {
+			"title": "Professional & Compliant",
+			"description": "Built for businesses and organizations that need reliable, trackable form management."
+		}
+	},
+	"final_cta": {
+		"title": "Ready to Simplify Your Forms?",
+		"description": "Join organizations already using Simple Forms to streamline their signature collection.",
+		"button": "Start Creating Forms"
+	}
+}
