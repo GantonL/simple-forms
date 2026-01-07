@@ -10,7 +10,7 @@
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
 		userData: UserFormData;
-		onSubmit?: () => Promise<void>;
+		onSubmit?: (data: UserFormData) => Promise<void>;
 		mode?: 'demo';
 	};
 
@@ -77,7 +77,7 @@
 
 	async function handleSubmission() {
 		isGeneratingPdf = true;
-		await onSubmit?.();
+		await onSubmit?.(userData);
 		isGeneratingPdf = false;
 	}
 </script>

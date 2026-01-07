@@ -1,7 +1,15 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { FormsSubmissions, UploadUrl, UsersForms } from '../../../..';
-import { POST as InternalPostRequest, PUT as InternalPutRequest } from '$lib/api/helpers/request';
-import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
+import { FormsSubmissions, FormSubmissionCandidateData, UploadUrl, UsersForms } from '../../../..';
+import {
+	POST as InternalPostRequest,
+	PUT as InternalPutRequest,
+	DELETE as InternalDeleteRequest
+} from '$lib/api/helpers/request';
+import type {
+	FormSubmission,
+	FormSubmissionCandidateDataSelect,
+	UserForm
+} from '$lib/server/database/schemas/form';
 
 export const POST: RequestHandler = async ({ request, params, fetch: internalFetch }) => {
 	const form = await request.formData();
@@ -65,6 +73,25 @@ export const POST: RequestHandler = async ({ request, params, fetch: internalFet
 	);
 
 	const result = !!submitted?.created;
+	if (result) {
+		const submissionCandidateDataId = form.get('submissionCandidateDataId');
+		if (submissionCandidateDataId) {
+			const deleteDataCandidateRes = await InternalDeleteRequest<
+				unknown,
+				FormSubmissionCandidateDataSelect
+			>(
+				`${FormSubmissionCandidateData}/${submissionCandidateDataId}`,
+				{},
+				{ fetch: internalFetch }
+			);
+			if (!deleteDataCandidateRes) {
+				console.error('Submission candidate data was not deleted');
+			}
+		} else {
+			console.error('No submission candidate data id found');
+		}
+	}
+
 	if (result) {
 		InternalPutRequest<Pick<UserForm, 'submissions'>, unknown, { updated: UserForm }>(
 			`${UsersForms}/${params.id}`,

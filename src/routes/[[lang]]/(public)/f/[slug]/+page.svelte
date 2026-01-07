@@ -5,15 +5,30 @@
 	import { POST } from '$lib/api/helpers/request';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormPreview from '$lib/components/form-preview/form-preview.svelte';
-	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
+	import type {
+		FormSubmissionCandidateDataSelect,
+		FormTemplate,
+		UserForm
+	} from '$lib/server/database/schemas/form';
 	import { toast } from 'svelte-sonner';
-	import { RemoteBrowserServiceCreatePdf } from '../../../../api';
+	import { FormSubmissionCandidateData, RemoteBrowserServiceCreatePdf } from '../../../../api';
+	import type { UserFormData } from '$lib/models/user-form-data';
 
 	const form: UserForm = $derived(page.data.form);
 	const schema: FormTemplate['schema'] = $derived(page.data.schema);
 
-	async function onFormSubmitted() {
-		const submitRes = await requestFormSubmissionCreation();
+	async function onFormSubmitted(data: UserFormData) {
+		const submissionCandidateData = await POST<
+			{ user_form_id: number; data: UserFormData },
+			{ created: FormSubmissionCandidateDataSelect[] }
+		>(FormSubmissionCandidateData, {
+			user_form_id: form.id,
+			data: data
+		});
+		if (!submissionCandidateData.created?.length || !submissionCandidateData.created[0]?.id) {
+			toast.error('Could not complete process, internal server error');
+		}
+		const submitRes = await requestFormSubmissionCreation(submissionCandidateData.created[0].id);
 		if (submitRes) {
 			goto(resolve('/submitted'));
 		} else {
@@ -21,15 +36,21 @@
 		}
 	}
 
-	async function requestFormSubmissionCreation() {
+	async function requestFormSubmissionCreation(submissionCandidateDataId: number) {
 		if (!form.public_link_identifier) return;
 		const createPdfRequest = await POST<
-			{ formPublicLinkIndentifier: string; formId: number; formName: string },
+			{
+				formPublicLinkIndentifier: string;
+				formId: number;
+				formName: string;
+				submissionCandidateDataId: number;
+			},
 			{ success: boolean }
 		>(RemoteBrowserServiceCreatePdf, {
 			formPublicLinkIndentifier: form.public_link_identifier,
 			formId: form.id,
-			formName: form.name
+			formName: form.name,
+			submissionCandidateDataId
 		});
 		return createPdfRequest;
 	}

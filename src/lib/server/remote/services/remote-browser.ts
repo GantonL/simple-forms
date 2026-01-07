@@ -19,16 +19,20 @@ function createFooterTemplate(): string {
 		</div>
 	`;
 }
-
-function createPdfParameters(parameters: {
+interface CreatePdfParameters {
 	formPublicLinkIndentifier: string;
 	formId: number;
 	formName: string;
-}) {
+	submissionCandidateDataId: number;
+}
+function createPdfParameters(parameters: CreatePdfParameters) {
 	return {
-		url: `${BASE_APP_URL}/r/${parameters.formPublicLinkIndentifier}`,
+		url: `${BASE_APP_URL}/r/${parameters.formPublicLinkIndentifier}?candidateDataId=${parameters.submissionCandidateDataId}`,
 		webhook: {
-			url: `${BASE_APP_URL}/api/webhooks/forms/${parameters.formId}/process`
+			url: `${BASE_APP_URL}/api/webhooks/forms/${parameters.formId}/process`,
+			customPayload: {
+				submissionCandidateDataId: parameters.submissionCandidateDataId
+			}
 		},
 		containerClass: 'form',
 		options: {
@@ -45,17 +49,13 @@ function createPdfParameters(parameters: {
 	};
 }
 
-export const requestPdfCreation = async (parameters: {
-	formPublicLinkIndentifier: string;
-	formId: number;
-	formName: string;
-}): Promise<boolean> => {
+export const requestPdfCreation = async (parameters: CreatePdfParameters): Promise<boolean> => {
 	const res = await fetch(`${baseUrl}/pdf`, {
 		method: 'POST',
 		body: JSON.stringify(createPdfParameters(parameters))
 	});
 	if (!res?.ok) return false;
 	const response = await res.json();
-	console.log(response.message);
+	console.log('[Request PDF creation]', response.message);
 	return true;
 };

@@ -1,11 +1,28 @@
 import { GET } from '$lib/api/helpers/request';
-import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
+import type {
+	FormSubmissionCandidateDataSelect,
+	FormTemplate,
+	UserForm
+} from '$lib/server/database/schemas/form';
 import { error } from '@sveltejs/kit';
-import { FormsTemplates, UsersForms } from '../../../api';
+import { FormsTemplates, FormSubmissionCandidateData, UsersForms } from '../../../api';
 import { SearchParams } from '$lib/enums/search-params';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ params, fetch }) => {
+export const load: PageLoad = async ({ params, fetch, url }) => {
+	const candidateDataId = url.searchParams.get('candidateDataId');
+	if (!candidateDataId) {
+		error(400);
+	}
+	const candidateDataRes = await GET<FormSubmissionCandidateDataSelect>(
+		`${FormSubmissionCandidateData}/${candidateDataId}`,
+		{
+			fetch
+		}
+	);
+	if (!candidateDataRes) {
+		error(400);
+	}
 	const response: { schema: FormTemplate['schema'] | null; form: Pick<UserForm, 'id'> | null } = {
 		schema: null,
 		form: null
@@ -21,6 +38,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	if (!userForm) {
 		error(404);
 	}
+	userForm.data = candidateDataRes.data;
 	response.form = userForm;
 
 	const template = await GET<FormTemplate>(`${FormsTemplates}/${userForm.template_id}`, { fetch });
