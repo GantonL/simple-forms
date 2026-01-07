@@ -24,11 +24,12 @@
 	async function requestFormSubmissionCreation() {
 		if (!form.public_link_identifier) return;
 		const createPdfRequest = await POST<
-			{ formPublicLinkIndentifier: string; formId: number },
+			{ formPublicLinkIndentifier: string; formId: number; formName: string },
 			{ success: boolean }
 		>(RemoteBrowserServiceCreatePdf, {
 			formPublicLinkIndentifier: form.public_link_identifier,
-			formId: form.id
+			formId: form.id,
+			formName: form.name
 		});
 		return createPdfRequest;
 	}

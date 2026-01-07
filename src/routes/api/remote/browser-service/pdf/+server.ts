@@ -6,7 +6,8 @@ export const POST: RequestHandler = async ({ request }) => {
 	const body = JSON.parse(data);
 	const requested = await requestPdfCreation({
 		formPublicLinkIndentifier: body.data.formPublicLinkIndentifier,
-		formId: body.data.formId
+		formId: body.data.formId,
+		formName: body.data.formName
 	});
 	return json({ success: !!requested });
 };

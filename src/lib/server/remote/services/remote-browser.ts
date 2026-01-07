@@ -1,8 +1,30 @@
 import { BASE_APP_URL, BROWSER_SERVICE_HOST, BROWSER_SERVICE_PORT } from '$env/static/private';
+import { AppName } from '$lib/api/configurations/common';
 
 const baseUrl = `http://${BROWSER_SERVICE_HOST}:${BROWSER_SERVICE_PORT}`;
 
-function createPdfParameters(parameters: { formPublicLinkIndentifier: string; formId: number }) {
+function createHeaderTemplate(formName: string): string {
+	return `
+		<div style="width: 100%; font-size: 10px; padding: 8px 20px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; color: #374151;">
+			<div style="font-weight: 600; color: #111827;">${AppName}</div>
+			<div style="color: #6b7280;">${formName}</div>
+		</div>
+	`;
+}
+
+function createFooterTemplate(): string {
+	return `
+		<div style="width: 100%; font-size: 9px; padding: 8px 20px; border-top: 1px solid #e5e7eb; display: flex; justify-content: center; align-items: center; color: #6b7280;">
+			<span class="pageNumber"></span> / <span class="totalPages"></span>
+		</div>
+	`;
+}
+
+function createPdfParameters(parameters: {
+	formPublicLinkIndentifier: string;
+	formId: number;
+	formName: string;
+}) {
 	return {
 		url: `${BASE_APP_URL}/r/${parameters.formPublicLinkIndentifier}`,
 		webhook: {
@@ -10,9 +32,12 @@ function createPdfParameters(parameters: { formPublicLinkIndentifier: string; fo
 		},
 		containerClass: 'form',
 		options: {
+			displayHeaderFooter: true,
+			headerTemplate: createHeaderTemplate(parameters.formName),
+			footerTemplate: createFooterTemplate(),
 			margin: {
-				top: '10mm',
-				bottom: '10mm',
+				top: '25mm',
+				bottom: '20mm',
 				left: '10mm',
 				right: '10mm'
 			}
@@ -23,6 +48,7 @@ function createPdfParameters(parameters: { formPublicLinkIndentifier: string; fo
 export const requestPdfCreation = async (parameters: {
 	formPublicLinkIndentifier: string;
 	formId: number;
+	formName: string;
 }): Promise<boolean> => {
 	const res = await fetch(`${baseUrl}/pdf`, {
 		method: 'POST',
