@@ -5,6 +5,9 @@ import { redirect } from '@sveltejs/kit';
 import { AppRoutes } from '$lib/client/configurations/routes';
 
 export async function handle({ event, resolve }): Promise<Response> {
+	if (event.url.pathname.startsWith('/api/webhooks')) {
+		return resolve(event);
+	}
 	const session = await auth.api.getSession({
 		headers: event.request.headers
 	});
