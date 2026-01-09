@@ -11,7 +11,7 @@ export async function csrfHandle({ event, resolve }) {
 		console.log('Request from origin', origin);
 		const allowedOrigins = [
 			`http://${BROWSER_SERVICE_HOST}:${BROWSER_SERVICE_PORT}`,
-			`https://${BASE_APP_URL}`,
+			BASE_APP_URL,
 			'http://localhost:5173'
 		];
 
