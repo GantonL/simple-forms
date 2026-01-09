@@ -12,6 +12,7 @@ import type {
 } from '$lib/server/database/schemas/form';
 
 export const POST: RequestHandler = async ({ request, params, fetch: internalFetch }) => {
+	console.log('[Form webhook]', 'Requetsed to process a newly created form');
 	const form = await request.formData();
 
 	const success = form.get('success');

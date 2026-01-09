@@ -11,6 +11,12 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params, fetch, url }) => {
 	const candidateDataId = url.searchParams.get('candidateDataId');
+	console.log(
+		'[Form renderer]',
+		'requested to render a form with data.',
+		'Candidate ID:',
+		candidateDataId
+	);
 	if (!candidateDataId) {
 		error(400);
 	}
@@ -20,6 +26,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 			fetch
 		}
 	);
+	console.log('[Form renderer]', 'Candidate data', JSON.stringify(candidateDataRes));
 	if (!candidateDataRes) {
 		error(400);
 	}
