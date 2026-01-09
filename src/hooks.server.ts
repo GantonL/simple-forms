@@ -1,7 +1,7 @@
 import locale from '$lib/hooks/locale';
 import { sequence } from '@sveltejs/kit/hooks';
 import { handle as authHandle } from '$lib/server/auth/handle';
-import { BROWSER_SERVICE_HOST } from '$env/static/private';
+import { BASE_APP_URL, BROWSER_SERVICE_HOST } from '$env/static/private';
 
 export const handle = sequence(csrfHandle, locale, authHandle);
 
@@ -11,7 +11,7 @@ export async function csrfHandle({ event, resolve }) {
 		const origin = event.request.headers.get('origin');
 		const allowedOrigins = [`http://${BROWSER_SERVICE_HOST}`];
 
-		if (!allowedOrigins.includes(origin)) {
+		if (!allowedOrigins.includes(origin) || !BASE_APP_URL.includes(origin)) {
 			return new Response('Forbidden (CSRF)', { status: 403 });
 		}
 	}
