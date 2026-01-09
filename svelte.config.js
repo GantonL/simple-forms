@@ -24,7 +24,7 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		csrf: {
-			trustedOrigins: ['http://remote-browser-service.railway.internal:3001']
+			trustedOrigins: ['http://remote-browser-service.railway.internal:3000']
 		}
 	},
 	extensions: ['.svelte', '.md']
