@@ -10,6 +10,9 @@
 	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
 	const userForm: UserForm = $state(page.data.userForm);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
+	let preProcessedSubmissionsCount: Promise<number> = $state(
+		page.data.preProcessedSubmissionsCount
+	);
 	let configuration = $derived({
 		...tableConfiguration,
 		serverSide: {
@@ -45,6 +48,11 @@
 	{#snippet header()}
 		<h2 class="text-2xl font-bold">{userForm.name}</h2>
 		<p class="text-lg font-light">{$t('common.user_form_description')}</p>
+		{#await preProcessedSubmissionsCount}
+			awaiting pps
+		{:then pps}
+			{pps}
+		{/await}
 	{/snippet}
 	<div class="flex flex-col items-center">
 		<AppDataTable
