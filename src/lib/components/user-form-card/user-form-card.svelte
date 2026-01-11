@@ -20,9 +20,13 @@
 		copyInProgress = true;
 		if (!data.public_link_identifier) return;
 		const link = await GET<string>(`${UsersForms}/${data.id}/public-link`);
-		copyToClipboard(link).then(() => {
-			toast.success(t.get('common.link_copied_to_clipboard'));
-		});
+		copyToClipboard(link)
+			.then(() => {
+				toast.success(t.get('common.link_copied_to_clipboard'));
+			})
+			.catch(() => {
+				toast.success(t.get('common.operation_failed'));
+			});
 		copyInProgress = false;
 	}
 

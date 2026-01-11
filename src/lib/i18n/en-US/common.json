@@ -173,5 +173,6 @@
 	"failed_to_create_signed_url": "Failed to create signed url",
 	"cookie_banner_description": "By clicking “Accept all cookies”, you agree Simple Forms can store cookies on your device and disclose information in accordance with our ",
 	"cookie_policy_link_text": "Cookie Policy.",
-	"cookie_preferences_saved_toast": "Cookie preferences saved"
+	"cookie_preferences_saved_toast": "Cookie preferences saved",
+	"operation_failed": "Operation failed"
 }
