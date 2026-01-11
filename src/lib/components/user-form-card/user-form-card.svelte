@@ -25,7 +25,7 @@
 				toast.success(t.get('common.link_copied_to_clipboard'));
 			})
 			.catch(() => {
-				toast.success(t.get('common.operation_failed'));
+				toast.error(t.get('common.operation_failed'));
 			});
 		copyInProgress = false;
 	}
