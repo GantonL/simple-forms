@@ -1,5 +1,8 @@
 import { eq, inArray, type Column } from 'drizzle-orm';
-import { FormSubmissionTable, type FormSubmissionInsert } from '../schemas/form';
+import {
+	FormSubmissionCandidateDataTable,
+	type FormSubmissionCandidateDataInsert
+} from '../schemas/form';
 import type { WhereCondition } from './abstract';
 import { provider } from './provider';
 import {
@@ -10,9 +13,11 @@ import {
 } from './utils';
 import { SearchParams } from '$lib/enums/search-params';
 
-export const Service = provider.getFactory().getService(FormSubmissionTable);
+export const Service = provider.getFactory().getService(FormSubmissionCandidateDataTable);
 
-export const getUrlFilters = (url: URL): WhereCondition<typeof FormSubmissionTable>[] => {
+export const getUrlFilters = (
+	url: URL
+): WhereCondition<typeof FormSubmissionCandidateDataTable>[] => {
 	const baseUrlFilters = getUrlFiltersUtil(url, { searchColumns: [] });
 	const serviceUrlFilters = getServiceUrlFilters(url);
 	return [...baseUrlFilters, ...serviceUrlFilters];
@@ -22,15 +27,15 @@ type FormSubmissionFilters = BodyFiltersUtil & {
 	userFormIds?: string[];
 };
 const bodyFiltersConfigurations: Record<keyof FormSubmissionFilters, Column> = {
-	ids: FormSubmissionTable.id,
-	userFormIds: FormSubmissionTable.user_form_id
+	ids: FormSubmissionCandidateDataTable.id,
+	userFormIds: FormSubmissionCandidateDataTable.user_form_id
 };
 export const getBodyFilters = (
 	filters: FormSubmissionFilters
-): WhereCondition<typeof FormSubmissionTable>[] => {
+): WhereCondition<typeof FormSubmissionCandidateDataTable>[] => {
 	const baseBodyFilters = getBodyFiltersUtil(filters, bodyFiltersConfigurations);
 	const serviceFilters = getServiceSpecificBodyFilters(filters, bodyFiltersConfigurations);
-	const bodyFilters: WhereCondition<typeof FormSubmissionTable>[] = [
+	const bodyFilters: WhereCondition<typeof FormSubmissionCandidateDataTable>[] = [
 		...baseBodyFilters,
 		...serviceFilters
 	];
@@ -40,8 +45,8 @@ export const getBodyFilters = (
 const getServiceSpecificBodyFilters = (
 	filters: FormSubmissionFilters,
 	configuration: Record<keyof FormSubmissionFilters, Column>
-): WhereCondition<typeof FormSubmissionTable>[] => {
-	const conditions: WhereCondition<typeof FormSubmissionTable>[] = [];
+): WhereCondition<typeof FormSubmissionCandidateDataTable>[] => {
+	const conditions: WhereCondition<typeof FormSubmissionCandidateDataTable>[] = [];
 	for (const key of Object.keys(filters)) {
 		const typedKey = key as keyof BodyFiltersUtil;
 		const value = filters[typedKey];
@@ -57,36 +62,45 @@ const getServiceSpecificBodyFilters = (
 };
 
 export const getUrlOptions = (url: URL) => {
-	return getUrlOptionsUtil(url, FormSubmissionTable);
+	return getUrlOptionsUtil(url, FormSubmissionCandidateDataTable);
 };
 
-type NewFormSubmission = Pick<FormSubmissionInsert, 'user_form_id' | 'storage_url'>;
-export const buildCreateCandidates = (candidates: NewFormSubmission[]): NewFormSubmission[] => {
-	const newUsers: NewFormSubmission[] = [];
+type NewFormSubmissionCandidateData = Pick<
+	FormSubmissionCandidateDataInsert,
+	'user_form_id' | 'data'
+>;
+export const buildCreateCandidates = (
+	candidates: NewFormSubmissionCandidateData[]
+): NewFormSubmissionCandidateData[] => {
+	const newUsers: NewFormSubmissionCandidateData[] = [];
 	candidates.forEach((candidate) => {
 		newUsers.push({
 			user_form_id: candidate.user_form_id,
-			storage_url: candidate.storage_url
+			data: candidate.data
 		});
 	});
 	return newUsers;
 };
 
-type UpdateFormSubmissionData = Pick<FormSubmissionInsert, 'storage_url'>;
-export const buildUpdateData = (updateData: UpdateFormSubmissionData): UpdateFormSubmissionData => {
-	const validatedUpdate: UpdateFormSubmissionData = {};
-	if (updateData?.storage_url) {
-		validatedUpdate.storage_url = updateData.storage_url;
+type FormSubmissionCandidateData = Pick<FormSubmissionCandidateDataInsert, 'data'>;
+export const buildUpdateData = (
+	updateData: FormSubmissionCandidateData
+): FormSubmissionCandidateData => {
+	const validatedUpdate: FormSubmissionCandidateData = {};
+	if (updateData?.data) {
+		validatedUpdate.data = updateData.data;
 	}
 	return validatedUpdate;
 };
 
-const getServiceUrlFilters = (url: URL): WhereCondition<typeof FormSubmissionTable>[] => {
+const getServiceUrlFilters = (
+	url: URL
+): WhereCondition<typeof FormSubmissionCandidateDataTable>[] => {
 	const searchParams = url.searchParams;
 	const fid = searchParams.get(SearchParams.FormId);
-	const conditions: WhereCondition<typeof FormSubmissionTable>[] = [];
+	const conditions: WhereCondition<typeof FormSubmissionCandidateDataTable>[] = [];
 	if (fid) {
-		conditions.push(eq(FormSubmissionTable.user_form_id, Number(fid)));
+		conditions.push(eq(FormSubmissionCandidateDataTable.user_form_id, Number(fid)));
 	}
 	return conditions;
 };

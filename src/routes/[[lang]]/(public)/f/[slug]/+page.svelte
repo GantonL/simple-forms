@@ -2,39 +2,57 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { FormDataPOST, PUT } from '$lib/api/helpers/request';
+	import { POST } from '$lib/api/helpers/request';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import FormPreview from '$lib/components/form-preview/form-preview.svelte';
-	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { FormsSubmissions, UsersForms } from '../../../../api';
+	import type {
+		FormSubmissionCandidateDataSelect,
+		FormTemplate,
+		UserForm
+	} from '$lib/server/database/schemas/form';
+	import { toast } from 'svelte-sonner';
+	import { FormSubmissionCandidateData, RemoteBrowserServiceCreatePdf } from '../../../../api';
+	import type { UserFormData } from '$lib/models/user-form-data';
+
 	const form: UserForm = $derived(page.data.form);
 	const schema: FormTemplate['schema'] = $derived(page.data.schema);
 
-	async function onFormSubmitted(file: File) {
-		const submitRes = await createNewSubmission(file);
+	async function onFormSubmitted(data: UserFormData) {
+		const submissionCandidateData = await POST<
+			{ user_form_id: number; data: UserFormData },
+			{ created: FormSubmissionCandidateDataSelect[] }
+		>(FormSubmissionCandidateData, {
+			user_form_id: form.id,
+			data: data
+		});
+		if (!submissionCandidateData.created?.length || !submissionCandidateData.created[0]?.id) {
+			toast.error('Could not complete process, internal server error');
+		}
+		const submitRes = await requestFormSubmissionCreation(submissionCandidateData.created[0].id);
 		if (submitRes) {
 			goto(resolve('/submitted'));
 		} else {
-			// error message
+			toast.error('submission failed');
 		}
 	}
 
-	async function createNewSubmission(file: File) {
-		const data = new FormData();
-		data.append('user_form_id', String(form.id));
-		data.append('file', file);
-		const submitted = await FormDataPOST<{ created: FormSubmission }>(FormsSubmissions, data);
-		const result = !!submitted?.created;
-		if (result) {
-			PUT<Pick<UserForm, 'submissions'>, unknown, { updated: UserForm }>(
-				`${UsersForms}/${form!.id}`,
-				{
-					submissions: 1
-				},
-				{}
-			);
-		}
-		return result;
+	async function requestFormSubmissionCreation(submissionCandidateDataId: number) {
+		if (!form.public_link_identifier) return;
+		const createPdfRequest = await POST<
+			{
+				formPublicLinkIndentifier: string;
+				formId: number;
+				formName: string;
+				submissionCandidateDataId: number;
+			},
+			{ success: boolean }
+		>(RemoteBrowserServiceCreatePdf, {
+			formPublicLinkIndentifier: form.public_link_identifier,
+			formId: form.id,
+			formName: form.name,
+			submissionCandidateDataId
+		});
+		return createPdfRequest;
 	}
 </script>
 

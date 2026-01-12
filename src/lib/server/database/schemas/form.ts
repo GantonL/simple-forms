@@ -52,3 +52,17 @@ export const FormSubmissionTable = pgTable('form_submission', {
 
 export type FormSubmission = typeof FormSubmissionTable.$inferSelect;
 export type FormSubmissionInsert = typeof FormSubmissionTable.$inferInsert;
+
+export const FormSubmissionCandidateDataTable = pgTable('form_submission_candidate_data', {
+	id: serial('id').primaryKey(),
+	user_form_id: integer('user_form_id')
+		.notNull()
+		.references(() => UserFormTable.id),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	data: jsonb('data').$type<UserFormData>()
+});
+
+export type FormSubmissionCandidateDataSelect =
+	typeof FormSubmissionCandidateDataTable.$inferSelect;
+export type FormSubmissionCandidateDataInsert =
+	typeof FormSubmissionCandidateDataTable.$inferInsert;
