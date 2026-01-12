@@ -15,7 +15,6 @@
 		FolderOpen,
 		Shield
 	} from '@lucide/svelte';
-	import type { ComponentType } from 'svelte';
 
 	function handleGetStarted() {
 		goto(resolve('/signup'));
@@ -94,18 +93,23 @@
 	<div class="flex justify-center">
 		<div class="flex w-full max-w-6xl flex-col gap-16">
 			<!-- Hero Section -->
-			<section class="flex flex-col items-center gap-6 py-12 text-center animate-in fade-in duration-700">
-				<h1 class="text-5xl font-bold tracking-tight max-md:text-4xl animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+			<section class="flex flex-col items-center gap-6 py-12 text-center">
+				<h1 class="text-5xl font-bold tracking-tight max-md:text-4xl">
 					{$t('landing.hero.headline')}
 				</h1>
-				<p class="text-muted-foreground max-w-2xl text-xl animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+				<p class="text-muted-foreground max-w-2xl text-xl">
 					{$t('landing.hero.subheadline')}
 				</p>
-				<div class="flex flex-row gap-4 max-sm:w-full max-sm:flex-col animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+				<div class="flex flex-row gap-4 max-sm:w-full max-sm:flex-col">
 					<Button size="lg" onclick={handleGetStarted} class="transition-all hover:scale-105">
 						{$t('landing.hero.cta_primary')}
 					</Button>
-					<Button size="lg" variant="outline" onclick={handleViewTemplates} class="transition-all hover:scale-105">
+					<Button
+						size="lg"
+						variant="outline"
+						onclick={handleViewTemplates}
+						class="transition-all hover:scale-105"
+					>
 						{$t('landing.hero.cta_secondary')}
 					</Button>
 				</div>
@@ -118,11 +122,13 @@
 					<p class="text-muted-foreground text-lg">{$t('landing.features.subtitle')}</p>
 				</div>
 				<div class="grid grid-cols-2 gap-6 max-md:grid-cols-1">
-					{#each features as feature, i}
-						<Card.Root class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+					{#each features as feature (feature.title)}
+						<Card.Root class="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
 							<Card.Header>
 								<div class="flex items-center gap-3">
-									<div class="bg-primary/10 text-primary p-2 rounded-lg transition-transform duration-300 hover:scale-110">
+									<div
+										class="bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-300 hover:scale-110"
+									>
 										<svelte:component this={feature.icon} size={24} />
 									</div>
 									<Card.Title>{$t(feature.title)}</Card.Title>
@@ -143,14 +149,18 @@
 					<p class="text-muted-foreground text-lg">{$t('landing.how_it_works.subtitle')}</p>
 				</div>
 				<div class="grid grid-cols-3 gap-6 max-md:grid-cols-1">
-					{#each steps as step, i}
-						<div class="flex flex-col items-center gap-4 text-center group">
+					{#each steps as step (step.number)}
+						<div class="group flex flex-col items-center gap-4 text-center">
 							<div
 								class="bg-primary text-primary-foreground flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
 							>
 								{step.number}
 							</div>
-							<h3 class="text-xl font-semibold transition-colors duration-300 group-hover:text-primary">{$t(step.title)}</h3>
+							<h3
+								class="group-hover:text-primary text-xl font-semibold transition-colors duration-300"
+							>
+								{$t(step.title)}
+							</h3>
 							<p class="text-muted-foreground">{$t(step.description)}</p>
 						</div>
 					{/each}
@@ -163,11 +173,13 @@
 					<h2 class="text-3xl font-bold">{$t('landing.benefits.title')}</h2>
 				</div>
 				<div class="grid grid-cols-2 gap-6 max-md:grid-cols-1">
-					{#each benefits as benefit, i}
-						<Card.Root class="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+					{#each benefits as benefit (benefit.title)}
+						<Card.Root class="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
 							<Card.Header>
 								<div class="flex items-center gap-3">
-									<div class="bg-primary/10 text-primary p-2 rounded-lg transition-transform duration-300 hover:scale-110 hover:rotate-6">
+									<div
+										class="bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-300 hover:scale-110 hover:rotate-6"
+									>
 										<svelte:component this={benefit.icon} size={24} />
 									</div>
 									<Card.Title>{$t(benefit.title)}</Card.Title>
@@ -182,7 +194,9 @@
 			</section>
 
 			<!-- Final CTA Section -->
-			<section class="bg-muted flex flex-col items-center gap-6 rounded-lg p-12 text-center transition-all duration-300 hover:shadow-xl">
+			<section
+				class="bg-muted flex flex-col items-center gap-6 rounded-lg p-12 text-center transition-all duration-300 hover:shadow-xl"
+			>
 				<h2 class="text-3xl font-bold">{$t('landing.final_cta.title')}</h2>
 				<p class="text-muted-foreground max-w-2xl text-lg">
 					{$t('landing.final_cta.description')}
