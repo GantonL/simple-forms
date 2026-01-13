@@ -16,7 +16,8 @@
 		$props();
 	let copyInProgress = $state(false);
 
-	async function onCopy() {
+	async function onCopy(event: Event) {
+		event.stopImmediatePropagation();
 		copyInProgress = true;
 		if (!data.public_link_identifier) return;
 		const link = await GET<string>(`${UsersForms}/${data.id}/public-link`);
@@ -35,32 +36,30 @@
 	}
 </script>
 
-<Card.Root class="flex-column flex justify-between">
-	<Card.Header class="flex flex-row justify-between">
-		<div class="flex flex-col items-start gap-2">
-			<Card.Title class="flex flex-row items-center gap-2">
-				<span>{data.name}</span>
-			</Card.Title>
-			<Card.Description>{data.description}</Card.Description>
-		</div>
-		<Menu
-			configuration={menuConfiguration}
-			rawData={data}
-			event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
-		/>
-	</Card.Header>
-	<Card.Footer class="align-items flex flex-row gap-2">
-		<Button class="flex flex-row items-center gap-2" onclick={onCopy} disabled={copyInProgress}>
-			{#if copyInProgress}
-				<LoaderCircle size={12} class="animate-spin" />
-			{:else}
-				<Link size={12} />
-			{/if}
-			<span>{$t('common.copy_link')}</span>
-		</Button>
-		<Button variant="secondary" class="flex flex-row items-center gap-2" onclick={onOpen}>
-			<File size={12} />
-			<span>{$t('common.open')}</span>
-		</Button>
-	</Card.Footer>
-</Card.Root>
+<button class="hover:cursor-pointer" onclick={onOpen}>
+	<Card.Root class="flex-column flex justify-between">
+		<Card.Header class="flex flex-row justify-between">
+			<div class="flex flex-col items-start gap-2">
+				<Card.Title class="flex flex-row items-center gap-2">
+					<span>{data.name}</span>
+				</Card.Title>
+				<Card.Description>{data.description}</Card.Description>
+			</div>
+			<Menu
+				configuration={menuConfiguration}
+				rawData={data}
+				event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
+			/>
+		</Card.Header>
+		<Card.Footer class="align-items flex flex-row gap-2">
+			<Button class="flex flex-row items-center gap-2" onclick={onCopy} disabled={copyInProgress}>
+				{#if copyInProgress}
+					<LoaderCircle size={12} class="animate-spin" />
+				{:else}
+					<Link size={12} />
+				{/if}
+				<span>{$t('common.copy_link')}</span>
+			</Button>
+		</Card.Footer>
+	</Card.Root>
+</button>
