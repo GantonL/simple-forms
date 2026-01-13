@@ -1,63 +1,63 @@
 {
 	"hero": {
-		"headline": "Create, Share & Collect Signatures",
-		"subheadline": "Professional form management made simple. Build forms from templates, share instantly, and track every signature.",
-		"cta_primary": "Get Started",
-		"cta_secondary": "View Templates"
+		"headline": "Digital Forms Management Made Easy",
+		"subheadline": "Streamline your workflow. Create, share, and sign professional forms in minutes.",
+		"cta_primary": "Start for Free",
+		"cta_secondary": "Browse Templates"
 	},
 	"features": {
-		"title": "Everything You Need for Digital Forms",
-		"subtitle": "Streamline your workflow with powerful yet simple tools",
+		"title": "Built for Modern Workflows",
+		"subtitle": "Everything you need to manage documents efficiently",
 		"template_based": {
-			"title": "Template-Based Creation",
-			"description": "Choose from pre-built templates and customize them to your needs. No design skills required."
+			"title": "Smart Templates",
+			"description": "Launch faster with pre-built professional templates or build your own from scratch with our drag-and-drop editor."
 		},
 		"instant_sharing": {
-			"title": "Instant Public Links",
-			"description": "Generate shareable links in seconds. Recipients can sign forms without creating an account."
+			"title": "Share via Link",
+			"description": "Generate a secure public link in one click. Recipients can fill and sign on any device, no login required."
 		},
 		"signature_collection": {
-			"title": "Secure Signatures",
-			"description": "Collect digital signatures with full tracking. Know exactly who signed and when."
+			"title": "Legally Binding",
+			"description": "Collect secure digital signatures with detailed audit trails, including timestamps."
 		},
 		"real_time_tracking": {
-			"title": "Real-Time Tracking",
-			"description": "Monitor submissions as they happen. Access all your signed forms in one dashboard."
+			"title": "Real-Time Dashboard",
+			"description": "Monitor form views and submissions as they happen. Export data or integrate with your favorite tools."
 		}
 	},
 	"how_it_works": {
-		"title": "How It Works",
-		"subtitle": "Get your forms signed in three simple steps",
+		"title": "Get Started in 3 Simple Steps",
+		"subtitle": "From creation to collection in minutes",
 		"step1": {
-			"title": "Choose a Template",
-			"description": "Select from our library of professional form templates or start from scratch."
+			"title": "Select or Create",
+			"description": "Choose from our verified template library or create a custom form tailored to your specific needs."
 		},
 		"step2": {
-			"title": "Customize & Share",
-			"description": "Add your content, customize fields, and generate a public link to share with anyone."
+			"title": "Share Instantly",
+			"description": "Send a direct link to your recipients via email, SMS, or any messaging app. No friction."
 		},
 		"step3": {
-			"title": "Collect & Track",
-			"description": "Recipients sign your form online. You get instant notifications and can track all submissions."
+			"title": "Track & Manage",
+			"description": "Get notified when forms are signed. View, download, and manage all your documents in one secure place."
 		}
 	},
 	"benefits": {
-		"title": "Why Simple Forms?",
+		"title": "Why Choose Simple Forms?",
 		"no_account": {
-			"title": "No Account Required for Signers",
-			"description": "Your recipients don't need to sign up. Just share the link and they can sign immediately."
+			"title": "Frictionless Signing",
+			"description": "Remove barriers. Recipients sign immediately on any device without the hassle of creating an account."
 		},
 		"save_time": {
-			"title": "Save Time & Paper",
-			"description": "Go digital. No more printing, scanning, or chasing signatures. Everything happens online."
+			"title": "Accelerate Workflows",
+			"description": "Automate the signature collection process. Reduce turnaround times from days to minutes with smart reminders."
 		},
 		"organized": {
-			"title": "Stay Organized",
-			"description": "All your forms and submissions in one place. Search, filter, and export with ease."
+			"title": "Centralized Hub",
+			"description": "Keep all your agreements organized. Powerful search and filtering make finding documents a breeze."
 		},
 		"compliant": {
-			"title": "Professional & Compliant",
-			"description": "Built for businesses and organizations that need reliable, trackable form management."
+			"title": "Secure & Compliant",
+			"description": "Enterprise-grade security ensuring your data and signatures are safe, private, and legally valid."
 		}
 	},
 	"final_cta": {
