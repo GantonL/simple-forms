@@ -5,22 +5,18 @@
 	import { DELETE } from '$lib/api/helpers/request';
 	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
-	import FormPreviewDialog from '$lib/components/form-preview/form-preview-dialog.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
 	import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 	import { SearchParams } from '$lib/enums/search-params';
 	import { t } from '$lib/i18n';
 	import { type AppCustomEvent } from '$lib/models/common';
-	import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
+	import type { UserForm } from '$lib/server/database/schemas/form';
 	import { UsersForms } from '../../../api';
 	let userForms: UserForm[] = $derived(page.data.userForms);
 
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
 	let deleteInProgress = $state(false);
-	let showPreview = $state(false);
-	let previewData = $state<UserForm>();
-	let previewSchema = $state<FormTemplate['schema']>();
 
 	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
 		switch (event.type) {
@@ -75,7 +71,3 @@
 	}}
 	onAction={onDeleteForm}
 ></AppAlertDialog>
-
-{#if previewData && previewSchema}
-	<FormPreviewDialog bind:show={showPreview} schema={previewSchema!} data={previewData.data!} />
-{/if}
