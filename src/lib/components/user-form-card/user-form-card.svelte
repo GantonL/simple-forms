@@ -88,7 +88,7 @@
 	<Dialog.Content>
 		<Dialog.Title><h2 class="p-2">{$t('common.copy_link')}</h2></Dialog.Title>
 		<div class="flex flex-row items-center gap-2 rounded-md border p-2 shadow-md" dir="ltr">
-			<p>{copyLink}</p>
+			<p class="break-all">{copyLink}</p>
 			<Button variant="ghost" size="icon" onclick={executeCopy}>
 				{#if copiedError}
 					<X size={14} class="text-destructive" />
