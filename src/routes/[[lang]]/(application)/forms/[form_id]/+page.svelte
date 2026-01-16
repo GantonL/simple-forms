@@ -54,22 +54,24 @@
 	{/snippet}
 	<div class="flex flex-col items-center gap-2">
 		{#await preProcessedSubmissionsCount then count}
-			<Alert.Root variant="destructive" class="max-w-[1200px]">
-				<Alert.Title class="flex flex-row items-center gap-2">
-					<TriangleAlert size={16} />
-					<span>{$t('common.alerts')}</span>
-				</Alert.Title>
-				<Alert.Description
-					><Link
-						link={{
-							label: 'common.x_preprocessed_submissions',
-							labelParams: { count: String(count) },
-							path: `/forms/${userForm.id}/preprocessed-submissions`
-						}}
-						class="hover:underline"
-					></Link>
-				</Alert.Description>
-			</Alert.Root>
+			{#if count}
+				<Alert.Root variant="destructive" class="max-w-[1200px]">
+					<Alert.Title class="flex flex-row items-center gap-2">
+						<TriangleAlert size={16} />
+						<span>{$t('common.alerts')}</span>
+					</Alert.Title>
+					<Alert.Description
+						><Link
+							link={{
+								label: 'common.x_preprocessed_submissions',
+								labelParams: { count: String(count) },
+								path: `/forms/${userForm.id}/preprocessed-submissions`
+							}}
+							class="hover:underline"
+						></Link>
+					</Alert.Description>
+				</Alert.Root>
+			{/if}
 		{/await}
 		<AppDataTable
 			data={submissions}
