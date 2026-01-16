@@ -29,6 +29,13 @@
       "when": 1767817717707,
       "tag": "0003_many_agent_zero",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1768573142058,
+      "tag": "0004_certain_wraith",
+      "breakpoints": true
     }
   ]
 }

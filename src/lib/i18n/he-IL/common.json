@@ -180,5 +180,6 @@
 	"regenerate_form": "יצירת טופס מחדש",
 	"download": "הורדה",
 	"regeneration_success": "טופס נשלח ליצירה מחדש בהצלחה",
-	"regeneration_failed": "שליחת טופס ליצירה מחדש נכשלה"
+	"regeneration_failed": "שליחת טופס ליצירה מחדש נכשלה",
+	"unknown": "לא ידוע"
 }

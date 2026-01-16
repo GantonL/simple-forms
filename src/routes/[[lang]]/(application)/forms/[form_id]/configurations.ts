@@ -4,6 +4,7 @@ import type { FormSubmission } from '$lib/server/database/schemas/form';
 import type { ColumnDef } from '@tanstack/table-core';
 import CreateFormSubmissionLink from './create-form-submission-link.svelte';
 import { defaultDateCell } from '$lib/components/app-data-table/configurations/defaults';
+import { t } from '$lib/i18n';
 
 export const DEFAULT_ORDER_BY = '-createdAt';
 
@@ -18,8 +19,12 @@ export const tableConfiguration: TableConfiguration<FormSubmission> = {
 
 export const columns: ColumnDef<FormSubmission>[] = [
 	{
-		accessorKey: 'userFormName',
-		header: 'common.form_name'
+		accessorKey: 'display_data',
+		header: 'common.signee',
+		cell: ({ row }) => {
+			const signee = row.original?.display_data?.signee ?? t.get('common.unknown');
+			return signee;
+		}
 	},
 	{
 		accessorKey: 'createAt',
