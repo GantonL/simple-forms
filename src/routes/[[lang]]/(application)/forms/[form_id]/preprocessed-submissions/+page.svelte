@@ -9,7 +9,7 @@
 	} from '$lib/server/database/schemas/form';
 	import { columns, tableConfiguration } from './configurations';
 	const userForm: UserForm = $state(page.data.userForm);
-	const preProcessedSubmissions: FormSubmissionCandidateDataSelect[] = $state(
+	let preProcessedSubmissions: FormSubmissionCandidateDataSelect[] = $state(
 		page.data.preProcessedSubmissions
 	);
 </script>

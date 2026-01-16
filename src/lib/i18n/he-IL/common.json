@@ -178,5 +178,7 @@
 	"x_preprocessed_submissions": "{{count}} הגשות שטרם עובדו",
 	"signee": "חתום",
 	"regenerate_form": "יצירת טופס מחדש",
-	"download": "הורדה"
+	"download": "הורדה",
+	"regeneration_success": "טופס נשלח ליצירה מחדש בהצלחה",
+	"regeneration_failed": "שליחת טופס ליצירה מחדש נכשלה"
 }
