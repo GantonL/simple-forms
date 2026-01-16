@@ -175,5 +175,6 @@
 	"cookie_preferences_saved_toast": "העדפות העוגיות נשמרו",
 	"operation_failed": "פעולה נכשלה",
 	"alerts": "התראות",
-	"x_preprocessed_submissions": "{{count}} הגשות שטרם עובדו"
+	"x_preprocessed_submissions": "{{count}} הגשות שטרם עובדו",
+	"signee": "חתום"
 }

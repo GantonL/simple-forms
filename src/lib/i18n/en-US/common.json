@@ -176,5 +176,6 @@
 	"cookie_preferences_saved_toast": "Cookie preferences saved",
 	"operation_failed": "Operation failed",
 	"alerts": "Alerts",
-	"x_preprocessed_submissions": "{{count}} preprocessed submissions"
+	"x_preprocessed_submissions": "{{count}} preprocessed submissions",
+	"signee": "Signee"
 }
