@@ -174,5 +174,12 @@
 	"cookie_banner_description": "By clicking “Accept all cookies”, you agree Simple Forms can store cookies on your device and disclose information in accordance with our ",
 	"cookie_policy_link_text": "Cookie Policy.",
 	"cookie_preferences_saved_toast": "Cookie preferences saved",
-	"operation_failed": "Operation failed"
+	"operation_failed": "Operation failed",
+	"alerts": "Alerts",
+	"x_preprocessed_submissions": "{{count}} preprocessed submissions",
+	"signee": "Signee",
+	"regenerate_form": "Regenerate form",
+	"download": "Download",
+	"regeneration_success": "Successfully sent form for regneration",
+	"regeneration_failed": "Failed to send form for regeneration"
 }

@@ -1,8 +1,19 @@
 import {
 	buildCreateCandidates,
+	getUrlFilters,
+	getUrlOptions,
 	Service as service
 } from '$lib/server/database/services/forms-submissions-candidate-data';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
+import { defaultCreateDateFilter } from './configurations';
+
+export const GET: RequestHandler = async ({ url }) => {
+	const filters = getUrlFilters(url);
+	const options = getUrlOptions(url);
+	filters.push(defaultCreateDateFilter);
+	const items = await service.find(filters, options);
+	return json(items);
+};
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { data: requestData } = await request.json();

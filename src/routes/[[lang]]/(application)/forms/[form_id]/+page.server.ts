@@ -1,7 +1,7 @@
 import { GET } from '$lib/api/helpers/request';
 import { SearchParams } from '$lib/enums/search-params';
 import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
-import { FormsSubmissions, UsersForms } from '../../../../api';
+import { FormsSubmissions, FormSubmissionCandidateData, UsersForms } from '../../../../api';
 import type { PageServerLoad } from './$types';
 import { DEFAULT_ORDER_BY } from './configurations';
 
@@ -17,5 +17,9 @@ export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 		`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}`,
 		{ fetch, orderBy: DEFAULT_ORDER_BY }
 	);
-	return { userForm, submissions };
+	const preProcessedSubmissionsCount = GET<number>(
+		`${FormSubmissionCandidateData}/count?${SearchParams.FormId}=${userForm.id}`,
+		{ fetch }
+	);
+	return { userForm, submissions, preProcessedSubmissionsCount };
 };

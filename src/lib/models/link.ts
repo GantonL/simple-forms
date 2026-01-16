@@ -7,4 +7,5 @@ export interface Link {
 	icon?: Component<IconProps>;
 	authenticationRequired?: boolean; // defaults to true,
 	hidden?: boolean;
+	labelParams?: Record<string, string>;
 }
