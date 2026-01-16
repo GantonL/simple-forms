@@ -60,16 +60,20 @@ export const getUrlOptions = (url: URL) => {
 	return getUrlOptionsUtil(url, FormSubmissionTable);
 };
 
-type NewFormSubmission = Pick<FormSubmissionInsert, 'user_form_id' | 'storage_url'>;
+type NewFormSubmission = Pick<
+	FormSubmissionInsert,
+	'user_form_id' | 'storage_url' | 'display_data'
+>;
 export const buildCreateCandidates = (candidates: NewFormSubmission[]): NewFormSubmission[] => {
-	const newUsers: NewFormSubmission[] = [];
+	const newSubmissions: NewFormSubmission[] = [];
 	candidates.forEach((candidate) => {
-		newUsers.push({
+		newSubmissions.push({
 			user_form_id: candidate.user_form_id,
-			storage_url: candidate.storage_url
+			storage_url: candidate.storage_url,
+			display_data: candidate.display_data
 		});
 	});
-	return newUsers;
+	return newSubmissions;
 };
 
 type UpdateFormSubmissionData = Pick<FormSubmissionInsert, 'storage_url'>;

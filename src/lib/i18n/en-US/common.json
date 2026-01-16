@@ -181,5 +181,6 @@
 	"regenerate_form": "Regenerate form",
 	"download": "Download",
 	"regeneration_success": "Successfully sent form for regneration",
-	"regeneration_failed": "Failed to send form for regeneration"
+	"regeneration_failed": "Failed to send form for regeneration",
+	"unknown": "Unknown"
 }

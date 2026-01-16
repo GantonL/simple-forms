@@ -47,7 +47,8 @@ export const FormSubmissionTable = pgTable('form_submission', {
 		.notNull()
 		.references(() => UserFormTable.id),
 	storage_url: text('storage_url'),
-	createdAt: timestamp('created_at').defaultNow().notNull()
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	display_data: jsonb('display_data').$type<Record<string, unknown>>()
 });
 
 export type FormSubmission = typeof FormSubmissionTable.$inferSelect;

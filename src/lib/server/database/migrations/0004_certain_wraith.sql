@@ -1,0 +1,1 @@
+ALTER TABLE "form_submission" ADD COLUMN "display_data" jsonb;

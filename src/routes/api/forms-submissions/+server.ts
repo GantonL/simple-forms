@@ -17,7 +17,8 @@ export const GET: RequestHandler = async ({ url }) => {
 		id: FormSubmissionTable.id,
 		createdAt: FormSubmissionTable.createdAt,
 		storageUrl: FormSubmissionTable.storage_url,
-		userFormName: UserFormTable.name
+		userFormName: UserFormTable.name,
+		display_data: FormSubmissionTable.display_data
 	};
 	options.innerJoin = {
 		table: UserFormTable,
@@ -29,13 +30,13 @@ export const GET: RequestHandler = async ({ url }) => {
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { data } = await request.json();
-	const { user_form_id, storage_url } = data;
+	const { user_form_id, storage_url, display_data } = data;
 
-	if (!user_form_id || !storage_url) {
+	if (!user_form_id || !storage_url || !display_data) {
 		error(400, { message: 'missing_required_fields' });
 	}
 
-	const newSubmissionData = [{ user_form_id, storage_url }];
+	const newSubmissionData = [{ user_form_id, storage_url, display_data }];
 	const itemsToCreate = buildCreateCandidates(newSubmissionData);
 	const created = await service.createMany(itemsToCreate);
 	return json({ created });

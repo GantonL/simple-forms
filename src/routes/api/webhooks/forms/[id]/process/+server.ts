@@ -3,7 +3,8 @@ import { FormsSubmissions, FormSubmissionCandidateData, UploadUrl, UsersForms } 
 import {
 	POST as InternalPostRequest,
 	PUT as InternalPutRequest,
-	DELETE as InternalDeleteRequest
+	DELETE as InternalDeleteRequest,
+	GET as InternalGetRequest
 } from '$lib/api/helpers/request';
 import type {
 	FormSubmission,
@@ -61,21 +62,27 @@ export const POST: RequestHandler = async ({ request, params, fetch: internalFet
 		return new Response('Upload failed', { status: 500 });
 	}
 
+	const submissionCandidateDataId = form.get('submissionCandidateDataId');
+	const submissionCandidateData = await InternalGetRequest<FormSubmissionCandidateDataSelect>(
+		`${FormSubmissionCandidateData}/${submissionCandidateDataId}`,
+		{ fetch: internalFetch }
+	);
+
 	const submitted = await InternalPostRequest<
-		{ user_form_id: number; storage_url: string },
+		Pick<FormSubmission, 'storage_url' | 'user_form_id' | 'display_data'>,
 		{ created: FormSubmission }
 	>(
 		FormsSubmissions,
 		{
 			user_form_id: Number(params.id),
-			storage_url: uploadUrlResponse.path
+			storage_url: uploadUrlResponse.path,
+			display_data: getDefaultDisplayData(submissionCandidateData.data)
 		},
 		{ fetch: internalFetch }
 	);
 
 	const result = !!submitted?.created;
 	if (result) {
-		const submissionCandidateDataId = form.get('submissionCandidateDataId');
 		if (submissionCandidateDataId) {
 			const deleteDataCandidateRes = await InternalDeleteRequest<
 				unknown,
@@ -105,3 +112,14 @@ export const POST: RequestHandler = async ({ request, params, fetch: internalFet
 	}
 	return new Response(result ? 'success' : 'failed');
 };
+
+function getDefaultDisplayData(
+	data: FormSubmissionCandidateDataSelect['data']
+): FormSubmission['display_data'] {
+	const fields = data!.fields!;
+	const keys = Object.keys(fields);
+	const signeeKey = keys.find((k) => k.includes('full_name') || k.includes('email'));
+	return {
+		signee: fields[signeeKey ?? keys[0]]
+	};
+}
