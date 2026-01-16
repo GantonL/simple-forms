@@ -177,5 +177,7 @@
 	"operation_failed": "Operation failed",
 	"alerts": "Alerts",
 	"x_preprocessed_submissions": "{{count}} preprocessed submissions",
-	"signee": "Signee"
+	"signee": "Signee",
+	"regenerate_form": "Regenerate form",
+	"download": "Download"
 }

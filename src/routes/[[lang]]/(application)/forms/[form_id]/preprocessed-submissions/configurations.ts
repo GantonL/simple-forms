@@ -1,7 +1,9 @@
 import { defaultDateCell } from '$lib/components/app-data-table/configurations/defaults';
+import { renderComponent } from '$lib/components/ui/data-table';
 import type { TableConfiguration } from '$lib/models/table';
 import type { FormSubmissionCandidateDataSelect } from '$lib/server/database/schemas/form';
 import type { ColumnDef } from '@tanstack/table-core';
+import RegeneratePreprocessedSubmission from './regenerate-preprocessed-submission.svelte';
 
 export const DEFAULT_ORDER_BY = '-createdAt';
 
@@ -27,6 +29,16 @@ export const columns: ColumnDef<FormSubmissionCandidateDataSelect>[] = [
 			const keys = Object.keys(fields);
 			const signeeKey = keys.find((k) => k.includes('full_name') || k.includes('email'));
 			return fields[signeeKey ?? keys[0]];
+		}
+	},
+	{
+		accessorKey: 'id',
+		id: 'regenerate',
+		header: '',
+		cell: ({ row }) => {
+			return renderComponent(RegeneratePreprocessedSubmission, {
+				preProcessedSubmission: row.original
+			});
 		}
 	}
 ];

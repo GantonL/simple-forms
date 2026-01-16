@@ -5,6 +5,9 @@
 	import { ExternalLink, LoaderCircle } from '@lucide/svelte';
 	import { SignedUrl } from '../../../../api';
 	import { toast } from 'svelte-sonner';
+	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { t } from '$lib/i18n';
+
 	let { submission }: { submission: FormSubmission } = $props();
 	let inProgress = $state(false);
 
@@ -28,10 +31,17 @@
 	}
 </script>
 
-<Button variant="ghost" size="icon" disabled={inProgress} onclick={createLink}>
-	{#if inProgress}
-		<LoaderCircle size={16} class="animate-spin" />
-	{:else}
-		<ExternalLink size={16} />
-	{/if}
-</Button>
+<Tooltip.Root>
+	<Tooltip.Trigger>
+		<Button variant="ghost" size="icon" disabled={inProgress} onclick={createLink}>
+			{#if inProgress}
+				<LoaderCircle size={16} class="animate-spin" />
+			{:else}
+				<ExternalLink size={16} />
+			{/if}
+		</Button>
+	</Tooltip.Trigger>
+	<Tooltip.Content>
+		{$t('common.download')}
+	</Tooltip.Content>
+</Tooltip.Root>

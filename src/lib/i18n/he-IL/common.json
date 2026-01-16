@@ -176,5 +176,7 @@
 	"operation_failed": "פעולה נכשלה",
 	"alerts": "התראות",
 	"x_preprocessed_submissions": "{{count}} הגשות שטרם עובדו",
-	"signee": "חתום"
+	"signee": "חתום",
+	"regenerate_form": "יצירת טופס מחדש",
+	"download": "הורדה"
 }
