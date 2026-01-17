@@ -130,7 +130,9 @@
 										data-pdf-item
 									>
 										<FieldRenderer
-											{field}
+											field={userData.linkedFields && field.id in userData.linkedFields
+												? { ...field, disabled: true }
+												: field}
 											bind:value={userData.fields[field.id]}
 											onChange={handleFormInvalidation}
 											mode={forceFieldRendererMode ?? fieldRendererMode}

@@ -127,8 +127,9 @@
 		"preview": "תצוגה מקדימה",
 		"close_preview": "סגור תצוגה מקדימה",
 		"reset": "איפוס",
-		"link_to_another_field": "קשר עם שדה אחר",
-		"select_field_to_link": "בחר שדה לקשר"
+		"auto_fill_from_another_field": "מילוי אוטומטי באמצעות שדה אחר",
+		"auto_fill_from_another_field_description": "ניתן להגדיר ששדה מסוים יתמלא אוטומטית בערך של שדה אחר. במקרה כזה, השדה יהיה קריא בלבד ולא יהיה ניתן לעריכה",
+		"select_field": "בחר שדה"
 	},
 	"none": "ללא",
 	"link_copied_to_clipboard": "קישור הועתק ללוח",

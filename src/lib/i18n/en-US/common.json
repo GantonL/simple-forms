@@ -128,8 +128,9 @@
 		"preview": "Preview",
 		"close_preview": "Close Preview",
 		"reset": "Reset",
-		"link_to_another_field": "Link to another field",
-		"select_field_to_link": "Select field to link"
+		"auto_fill_from_another_field": "Auto fill from another field",
+		"auto_fill_from_another_field_description": "You can set a field to be automatically filled with the value of another field. In this case, the field will be read-only and will not be editable.",
+		"select_field": "Select field"
 	},
 	"none": "None",
 	"link_copied_to_clipboard": "Link copied to clipboard",
