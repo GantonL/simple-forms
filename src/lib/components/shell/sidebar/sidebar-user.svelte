@@ -50,14 +50,12 @@
 		switch (event) {
 			case 'signout': {
 				authClient.signOut();
+				goto(resolve('/'));
 				break;
 			}
+			case 'signup':
 			case 'signin': {
 				goto(resolve('/signin'));
-				break;
-			}
-			case 'signup': {
-				goto(resolve('/signup'));
 				break;
 			}
 			case 'user': {
