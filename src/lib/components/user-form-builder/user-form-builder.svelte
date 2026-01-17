@@ -20,9 +20,7 @@
 		userData = $bindable({ editableTextBlocks: {}, fields: {}, linkedFields: {} })
 	}: UserFormBuilderProps = $props();
 
-	// Initialize form state from schema
 	onMount(() => {
-		// Initialize editable text blocks with default content from schema
 		if (schema.editableTextBlocks) {
 			const initialTextBlocks: Record<string, string> = {};
 			schema.editableTextBlocks.forEach((block) => {
@@ -32,7 +30,6 @@
 			userData.editableTextBlocks = initialTextBlocks;
 		}
 
-		// Initialize fields with empty values
 		if (schema.fields) {
 			const initialFields: Record<string, string | number | boolean | string[]> = {};
 			schema.fields.forEach((field) => {
@@ -47,7 +44,6 @@
 			userData.fields = initialFields;
 		}
 
-		// Initialize linked fields
 		if (!userData.linkedFields) {
 			userData.linkedFields = {};
 		}
@@ -89,7 +85,7 @@
 			</div>
 			<Separator />
 			{#each schema.fields as field (field)}
-				<div class="flex flex-row gap-2 items-center">
+				<div class="flex flex-row items-center gap-2">
 					<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
 
 					{#if LINKABLE_FIELD_TYPES.includes(field.type)}

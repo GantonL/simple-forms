@@ -58,8 +58,25 @@
 			</Select.Trigger>
 			<Select.Content dir={$direction === 'lr' ? 'ltr' : 'rtl'}>
 				<Select.Item value="">{$t('common.none')}</Select.Item>
-				{#each availableFields as field}
-					<Select.Item value={field.id} label={$t(field.label)}>{$t(field.label)}</Select.Item>
+				{#each availableFields as field (field.id)}
+					{@const isCircular = linkedFields[field.id] === fieldId}
+					<Tooltip.Root>
+						<Tooltip.Trigger class="w-full">
+							<Select.Item
+								value={field.id}
+								label={$t(field.label)}
+								disabled={isCircular}
+								class={isCircular ? "pointer-events-auto opacity-50" : ""}
+							>
+								{$t(field.label)}
+							</Select.Item>
+						</Tooltip.Trigger>
+						{#if isCircular}
+							<Tooltip.Content>
+								<p>{$t('common.form_builder.circular_dependency_error')}</p>
+							</Tooltip.Content>
+						{/if}
+					</Tooltip.Root>
 				{/each}
 			</Select.Content>
 		</Select.Root>

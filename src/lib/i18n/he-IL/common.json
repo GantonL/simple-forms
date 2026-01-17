@@ -129,7 +129,8 @@
 		"reset": "איפוס",
 		"auto_fill_from_another_field": "מילוי אוטומטי באמצעות שדה אחר",
 		"auto_fill_from_another_field_description": "ניתן להגדיר ששדה מסוים יתמלא אוטומטית בערך של שדה אחר. במקרה כזה, השדה יהיה קריא בלבד ולא יהיה ניתן לעריכה",
-		"select_field": "בחר שדה"
+		"select_field": "בחר שדה",
+		"circular_dependency_error": "לא ניתן לקשר לשדה זה מכיוון שהוא כבר מקושר לשדה הנוכחי"
 	},
 	"none": "ללא",
 	"link_copied_to_clipboard": "קישור הועתק ללוח",
