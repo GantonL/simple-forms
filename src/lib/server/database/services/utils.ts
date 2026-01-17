@@ -1,6 +1,7 @@
 import type { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 import { MAX_FIND_LIMIT, type QueryOptions, type WhereCondition } from './abstract';
 import { ilike, desc, asc, inArray, type SQL, Column } from 'drizzle-orm';
+import { SearchParams } from '$lib/enums/search-params';
 
 export const DEFAULT_LIMIT = 10;
 
@@ -9,7 +10,7 @@ export const getUrlFiltersUtil = <T>(
 	configuration: { searchColumns: Column[] }
 ): WhereCondition<T>[] => {
 	const searchParams = url.searchParams;
-	const query = searchParams.get('q');
+	const query = searchParams.get(SearchParams.SearchTerm);
 
 	if (!query || !configuration?.searchColumns) {
 		return [];

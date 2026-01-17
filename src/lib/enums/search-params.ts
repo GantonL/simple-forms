@@ -3,5 +3,7 @@ export enum SearchParams {
 	PublicLinkIdentifier = 'pli',
 	UserId = 'uid',
 	TemplateId = 'tid',
-	FormId = 'fid'
+	FormId = 'fid',
+	FreeSearch = 'fs',
+	SearchTerm = 'searchTerm'
 }

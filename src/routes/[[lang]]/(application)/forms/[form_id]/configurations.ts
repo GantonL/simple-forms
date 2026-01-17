@@ -14,7 +14,11 @@ export const tableConfiguration: TableConfiguration<FormSubmission> = {
 		manualPagination: true
 	},
 	hideAddDataAction: true,
-	pageSize: 10
+	pageSize: 10,
+	freeSearchFilter: {
+		enabled: true,
+		placeholder: 'common.search'
+	}
 };
 
 export const columns: ColumnDef<FormSubmission>[] = [

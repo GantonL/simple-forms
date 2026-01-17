@@ -22,6 +22,7 @@
 	import { type TableConfiguration } from '$lib/models/table';
 	import Menu from '../menu/menu.svelte';
 	import Combobox from '../combobox/combobox.svelte';
+	import FreeSearch from './free-search.svelte';
 	import { pageSizeOptionsConfiguration } from './configurations/defaults';
 	import { Input } from '../ui/input';
 	import { useSidebar } from '../ui/sidebar';
@@ -48,7 +49,8 @@
 		rowClick,
 		pageSizeChanged,
 		pageIndexChanged,
-		sortingChanged
+		sortingChanged,
+		freeSearchChanged
 	}: DataTableProps<TData, TValue> & {
 		addData?: () => void;
 		bulkActions?: (e: { type: string; data: unknown }) => void;
@@ -56,6 +58,7 @@
 		pageSizeChanged?: (newPageSize: number) => void;
 		pageIndexChanged?: (newPageIndex: number) => void;
 		sortingChanged?: (state: SortingState) => void;
+		freeSearchChanged?: (value: string) => void;
 	} = $props();
 
 	let pageSize = $state(configuration?.pageSize ?? 10);
@@ -65,6 +68,12 @@
 	let rowSelection = $state<RowSelectionState>({});
 	let sortingState = $state(configuration?.sortingState);
 	let sorting = $state<SortingState>(sortingState ?? []);
+
+	$effect.pre(() => {
+		if (configuration?.freeSearchFilter?.enabled) {
+			configuration.freeSearchFilter.initialValue = configuration.freeSearchFilter.initialValue ?? '';
+		}
+	})
 
 	const tableOptions: TableOptions<any> = {
 		get data() {
@@ -162,6 +171,12 @@
 		}
 		table.setPageSize(newPageSize);
 	}
+
+	function onFreeSearchChanged(value: string) {
+		if (freeSearchChanged) {
+			freeSearchChanged(value);
+		}
+	}
 </script>
 
 <div class="flex w-full max-w-[1200px] flex-col gap-2">
@@ -220,7 +235,14 @@
 
 {#snippet header()}
 	<div class="flex flex-row justify-between gap-2">
-		<div class="flex flex-row items-center gap-2">
+		<div class="flex flex-grow flex-row items-center gap-2">
+			{#if configuration?.freeSearchFilter?.enabled}
+				<FreeSearch
+					placeholder={configuration.freeSearchFilter.placeholder}
+					bind:value={configuration.freeSearchFilter.initialValue}
+					onSearch={onFreeSearchChanged}
+				/>
+			{/if}
 			{#if !configuration?.hideAddDataAction}
 				<Button {disabled} variant="outline" onclick={() => addData && addData()}>
 					<div class="flex flex-row items-center gap-2">
