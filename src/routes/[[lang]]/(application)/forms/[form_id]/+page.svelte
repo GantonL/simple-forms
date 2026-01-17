@@ -12,6 +12,8 @@
 	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
 	import { SearchParams } from '$lib/enums/search-params';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	const userForm: UserForm = $state(page.data.userForm);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
 	const preProcessedSubmissionsCount: Promise<number> = $state(
@@ -44,6 +46,16 @@
 	async function onFreeSearchChanged(newSearchTerm: string) {
 		searchTerm = newSearchTerm;
 		getSubmissionsPage(0);
+		updateSearchParamsOnPageUrl();
+	}
+
+	function updateSearchParamsOnPageUrl() {
+		if (!searchTerm) {
+			page.url.searchParams.delete(SearchParams.FreeSearch);
+		} else {
+			page.url.searchParams.set(SearchParams.FreeSearch, searchTerm);
+		}
+		goto(page.url, { keepFocus: true });
 	}
 
 	async function getSubmissionsPage(index: number) {
