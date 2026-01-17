@@ -18,6 +18,10 @@
 	);
 	let configuration = $derived({
 		...tableConfiguration,
+		freeSearchFilter: {
+			...tableConfiguration.freeSearchFilter,
+			initialValue: page.data.searchTerm
+		},
 		serverSide: {
 			...tableConfiguration.serverSide,
 			totalItems: userForm.submissions

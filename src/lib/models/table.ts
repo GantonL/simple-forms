@@ -15,6 +15,7 @@ export interface TableConfiguration<T> {
 	freeSearchFilter?: {
 		enabled: boolean;
 		placeholder?: string;
+		initialValue?: string;
 	};
 	serverSide?: {
 		enabled: boolean;

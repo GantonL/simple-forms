@@ -69,6 +69,12 @@
 	let sortingState = $state(configuration?.sortingState);
 	let sorting = $state<SortingState>(sortingState ?? []);
 
+	$effect.pre(() => {
+		if (configuration?.freeSearchFilter?.enabled) {
+			configuration.freeSearchFilter.initialValue = configuration.freeSearchFilter.initialValue ?? '';
+		}
+	})
+
 	const tableOptions: TableOptions<any> = {
 		get data() {
 			return data;
@@ -166,8 +172,6 @@
 		table.setPageSize(newPageSize);
 	}
 
-	let freeSearchValue = $state("");
-
 	function onFreeSearchChanged(value: string) {
 		if (freeSearchChanged) {
 			freeSearchChanged(value);
@@ -235,7 +239,7 @@
 			{#if configuration?.freeSearchFilter?.enabled}
 				<FreeSearch
 					placeholder={configuration.freeSearchFilter.placeholder}
-					bind:value={freeSearchValue}
+					bind:value={configuration.freeSearchFilter.initialValue}
 					onSearch={onFreeSearchChanged}
 				/>
 			{/if}
