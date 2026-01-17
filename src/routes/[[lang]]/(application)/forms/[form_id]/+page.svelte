@@ -11,16 +11,18 @@
 	import { FormsSubmissions } from '../../../../api';
 	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
+	import { SearchParams } from '$lib/enums/search-params';
 	const userForm: UserForm = $state(page.data.userForm);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
 	const preProcessedSubmissionsCount: Promise<number> = $state(
 		page.data.preProcessedSubmissionsCount
 	);
+	let searchTerm = $state(page.data.searchTerm);
 	let configuration = $derived({
 		...tableConfiguration,
 		freeSearchFilter: {
 			...tableConfiguration.freeSearchFilter,
-			initialValue: page.data.searchTerm
+			initialValue: searchTerm
 		},
 		serverSide: {
 			...tableConfiguration.serverSide,
@@ -39,14 +41,22 @@
 		getSubmissionsPage(0);
 	}
 
+	async function onFreeSearchChanged(newSearchTerm: string) {
+		searchTerm = newSearchTerm;
+		getSubmissionsPage(0);
+	}
+
 	async function getSubmissionsPage(index: number) {
 		if (fetchInProgress) return;
 		fetchInProgress = true;
-		const page = await GET<FormSubmission[]>(FormsSubmissions, {
-			limit: pageSize,
-			offset: index * pageSize,
-			orderBy: DEFAULT_ORDER_BY
-		}).finally(() => (fetchInProgress = false));
+		const page = await GET<FormSubmission[]>(
+			`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}&${SearchParams.FreeSearch}=${searchTerm}`,
+			{
+				limit: pageSize,
+				offset: index * pageSize,
+				orderBy: DEFAULT_ORDER_BY
+			}
+		).finally(() => (fetchInProgress = false));
 		submissions = page;
 	}
 </script>
@@ -85,6 +95,7 @@
 			pageSizeChanged={onPageSizeChanged}
 			isLoading={fetchInProgress}
 			disabled={fetchInProgress}
+			freeSearchChanged={onFreeSearchChanged}
 		/>
 	</div>
 </BasePage>
