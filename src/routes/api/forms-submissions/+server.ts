@@ -11,6 +11,7 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 export const GET: RequestHandler = async ({ url }) => {
+	console.log('submiss');
 	const filters = getUrlFilters(url);
 	const options = getUrlOptions(url);
 	options.select = {

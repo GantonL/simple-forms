@@ -6,6 +6,7 @@ import type { PageServerLoad } from './$types';
 import { DEFAULT_ORDER_BY } from './configurations';
 
 export const load: PageServerLoad = async ({ fetch, locals, params, url }) => {
+	console.log('loaded');
 	const searchTerm = url.searchParams.get(SearchParams.FreeSearch) ?? '';
 	const userId = locals.user.id;
 	const userForm = await GET<UserForm>(

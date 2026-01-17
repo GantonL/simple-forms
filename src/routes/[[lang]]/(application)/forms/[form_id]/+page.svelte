@@ -46,16 +46,6 @@
 	async function onFreeSearchChanged(newSearchTerm: string) {
 		searchTerm = newSearchTerm;
 		getSubmissionsPage(0);
-		updateSearchParamsOnPageUrl();
-	}
-
-	function updateSearchParamsOnPageUrl() {
-		if (!searchTerm) {
-			page.url.searchParams.delete(SearchParams.FreeSearch);
-		} else {
-			page.url.searchParams.set(SearchParams.FreeSearch, searchTerm);
-		}
-		goto(page.url, { keepFocus: true });
 	}
 
 	async function getSubmissionsPage(index: number) {
