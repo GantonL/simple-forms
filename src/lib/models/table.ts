@@ -12,6 +12,10 @@ export interface TableConfiguration<T> {
 		enabled?: boolean;
 		initialState?: { start: Date; end?: Date };
 	};
+	freeSearchFilter?: {
+		enabled: boolean;
+		placeholder?: string;
+	};
 	serverSide?: {
 		enabled: boolean;
 		totalItems?: number;
