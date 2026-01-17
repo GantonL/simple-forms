@@ -20,6 +20,11 @@
 		userData = $bindable({ editableTextBlocks: {}, fields: {}, linkedFields: {} })
 	}: UserFormBuilderProps = $props();
 
+	$effect.pre(() => {
+		if (!userData.linkedFields) {
+			userData.linkedFields = {};
+		}
+	});
 	onMount(() => {
 		if (schema.editableTextBlocks) {
 			const initialTextBlocks: Record<string, string> = {};
@@ -42,10 +47,6 @@
 				}
 			});
 			userData.fields = initialFields;
-		}
-
-		if (!userData.linkedFields) {
-			userData.linkedFields = {};
 		}
 	});
 </script>
@@ -93,7 +94,7 @@
 							fieldId={field.id}
 							fieldType={field.type}
 							{schema}
-							bind:linkedFields={userData.linkedFields}
+							bind:linkedFields={userData.linkedFields!}
 						/>
 					{/if}
 				</div>

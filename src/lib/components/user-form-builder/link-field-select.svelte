@@ -11,7 +11,7 @@
 		fieldId: string;
 		fieldType: string;
 		schema: FormTemplateSchema;
-		linkedFields?: Record<string, string>;
+		linkedFields: Record<string, string>;
 	};
 
 	let { fieldId, fieldType, schema, linkedFields = $bindable({}) }: LinkFieldSelectProps = $props();
@@ -66,7 +66,7 @@
 								value={field.id}
 								label={$t(field.label)}
 								disabled={isCircular}
-								class={isCircular ? "pointer-events-auto opacity-50" : ""}
+								class={isCircular ? 'pointer-events-auto opacity-50' : ''}
 							>
 								{$t(field.label)}
 							</Select.Item>
