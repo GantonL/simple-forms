@@ -126,8 +126,11 @@
 		"agree": "אני מסכים",
 		"preview": "תצוגה מקדימה",
 		"close_preview": "סגור תצוגה מקדימה",
-		"reset": "איפוס"
+		"reset": "איפוס",
+		"link_to_another_field": "קשר עם שדה אחר",
+		"select_field_to_link": "בחר שדה לקשר"
 	},
+	"none": "ללא",
 	"link_copied_to_clipboard": "קישור הועתק ללוח",
 	"copy_link": "העתקת קישור",
 	"form_name": "שם הטופס",

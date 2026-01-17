@@ -7,6 +7,7 @@
 	import { t } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import EditableText from '../editable-text/editable-text.svelte';
+	import * as Select from '$lib/components/ui/select';
 
 	type UserFormBuilderProps = {
 		schema: FormTemplateSchema;
@@ -15,8 +16,10 @@
 
 	let {
 		schema,
-		userData = $bindable({ editableTextBlocks: {}, fields: {} })
+		userData = $bindable({ editableTextBlocks: {}, fields: {}, linkedFields: {} })
 	}: UserFormBuilderProps = $props();
+
+	const dateFields = $derived(schema.fields?.filter((f) => f.type === 'date') ?? []);
 
 	// Initialize form state from schema
 	onMount(() => {
@@ -43,6 +46,11 @@
 				}
 			});
 			userData.fields = initialFields;
+		}
+
+		// Initialize linked fields
+		if (!userData.linkedFields) {
+			userData.linkedFields = {};
 		}
 	});
 </script>
@@ -82,7 +90,50 @@
 			</div>
 			<Separator />
 			{#each schema.fields as field (field)}
-				<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
+				<div class="flex flex-row gap-2 items-center">
+					<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
+
+					{#if field.type === 'date' && dateFields.length > 1}
+						<div class="ml-4 max-w-sm">
+							<Label class="text-muted-foreground text-xs"
+								>{$t('common.form_builder.link_to_another_field')}</Label
+							>
+							<Select.Root
+								type="single"
+								name={`linked-${field.id}`}
+								value={userData.linkedFields?.[field.id] || ''}
+								onValueChange={(val) => {
+									if (!userData.linkedFields) userData.linkedFields = {};
+									if (val) {
+										userData.linkedFields[field.id] = val;
+									} else {
+										delete userData.linkedFields[field.id];
+									}
+								}}
+							>
+								<Select.Trigger class="h-8 w-[200px]">
+									{#if userData.linkedFields?.[field.id]}
+										{$t(
+											dateFields.find((f) => f.id === userData.linkedFields![field.id])?.label || ''
+										)}
+									{:else}
+										<span class="text-muted-foreground"
+											>{$t('common.form_builder.select_field_to_link')}</span
+										>
+									{/if}
+								</Select.Trigger>
+								<Select.Content>
+									<Select.Item value="">{$t('common.none')}</Select.Item>
+									{#each dateFields.filter((f) => f.id !== field.id) as dateField}
+										<Select.Item value={dateField.id} label={$t(dateField.label)}
+											>{$t(dateField.label)}</Select.Item
+										>
+									{/each}
+								</Select.Content>
+							</Select.Root>
+						</div>
+					{/if}
+				</div>
 			{/each}
 		</div>
 	{/if}

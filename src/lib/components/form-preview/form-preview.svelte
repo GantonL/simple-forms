@@ -89,6 +89,17 @@
 		await onSubmit?.(userData);
 		isGeneratingPdf = false;
 	}
+
+	$effect(() => {
+		if (userData.linkedFields && userData.fields) {
+			for (const [targetId, sourceId] of Object.entries(userData.linkedFields)) {
+				const sourceValue = userData.fields[sourceId];
+				if (sourceValue !== undefined && userData.fields[targetId] !== sourceValue) {
+					userData.fields[targetId] = sourceValue;
+				}
+			}
+		}
+	});
 </script>
 
 <div

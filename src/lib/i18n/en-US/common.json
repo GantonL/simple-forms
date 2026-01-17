@@ -127,8 +127,11 @@
 		"agree": "I agree",
 		"preview": "Preview",
 		"close_preview": "Close Preview",
-		"reset": "Reset"
+		"reset": "Reset",
+		"link_to_another_field": "Link to another field",
+		"select_field_to_link": "Select field to link"
 	},
+	"none": "None",
 	"link_copied_to_clipboard": "Link copied to clipboard",
 	"copy_link": "Copy link",
 	"form_name": "Form name",
