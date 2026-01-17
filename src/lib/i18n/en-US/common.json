@@ -74,7 +74,7 @@
 	"already_signed_in": "You are already signed in!",
 	"as_x": "As {{user}}",
 	"signin_title": "Sign in to your account",
-	"signin_description": "Use a social provider or your own credentials",
+	"signin_description": "Use a social provider",
 	"enter_email": "Enter your email",
 	"password": "Password",
 	"enter_password": "Enter your password",
@@ -127,8 +127,13 @@
 		"agree": "I agree",
 		"preview": "Preview",
 		"close_preview": "Close Preview",
-		"reset": "Reset"
+		"reset": "Reset",
+		"auto_fill_from_another_field": "Auto fill from another field",
+		"auto_fill_from_another_field_description": "You can set a field to be automatically filled with the value of another field. In this case, the field will be read-only and will not be editable.",
+		"select_field": "Select field",
+		"circular_dependency_error": "Cannot link to this field because it is already linked to the current field"
 	},
+	"none": "None",
 	"link_copied_to_clipboard": "Link copied to clipboard",
 	"copy_link": "Copy link",
 	"form_name": "Form name",

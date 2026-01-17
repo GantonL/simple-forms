@@ -6,7 +6,7 @@
 	import { t } from '$lib/i18n';
 	const session = authClient.useSession();
 	let { redirect }: { redirect: string } = $props();
-	let isLoading = $derived($session?.isPending);
+	let isLoading = $derived($session?.isPending || $session?.isRefetching);
 
 	async function signin() {
 		authClient.signIn.social({
@@ -14,7 +14,7 @@
 			callbackURL: redirect,
 			fetchOptions: {
 				onError: () => {
-					toast.error('Sign in failed');
+					toast.error('common.operation_failed');
 				}
 			}
 		});

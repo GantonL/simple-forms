@@ -7,6 +7,8 @@
 	import { t } from '$lib/i18n';
 	import { onMount } from 'svelte';
 	import EditableText from '../editable-text/editable-text.svelte';
+	import LinkFieldSelect from '$lib/components/user-form-builder/link-field-select.svelte';
+	import { LINKABLE_FIELD_TYPES } from '$lib/constants/linking-config';
 
 	type UserFormBuilderProps = {
 		schema: FormTemplateSchema;
@@ -15,12 +17,10 @@
 
 	let {
 		schema,
-		userData = $bindable({ editableTextBlocks: {}, fields: {} })
+		userData = $bindable({ editableTextBlocks: {}, fields: {}, linkedFields: {} })
 	}: UserFormBuilderProps = $props();
 
-	// Initialize form state from schema
 	onMount(() => {
-		// Initialize editable text blocks with default content from schema
 		if (schema.editableTextBlocks) {
 			const initialTextBlocks: Record<string, string> = {};
 			schema.editableTextBlocks.forEach((block) => {
@@ -30,7 +30,6 @@
 			userData.editableTextBlocks = initialTextBlocks;
 		}
 
-		// Initialize fields with empty values
 		if (schema.fields) {
 			const initialFields: Record<string, string | number | boolean | string[]> = {};
 			schema.fields.forEach((field) => {
@@ -43,6 +42,10 @@
 				}
 			});
 			userData.fields = initialFields;
+		}
+
+		if (!userData.linkedFields) {
+			userData.linkedFields = {};
 		}
 	});
 </script>
@@ -82,7 +85,18 @@
 			</div>
 			<Separator />
 			{#each schema.fields as field (field)}
-				<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
+				<div class="flex flex-row items-center gap-2">
+					<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
+
+					{#if LINKABLE_FIELD_TYPES.includes(field.type)}
+						<LinkFieldSelect
+							fieldId={field.id}
+							fieldType={field.type}
+							{schema}
+							bind:linkedFields={userData.linkedFields}
+						/>
+					{/if}
+				</div>
 			{/each}
 		</div>
 	{/if}

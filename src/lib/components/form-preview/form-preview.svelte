@@ -89,6 +89,17 @@
 		await onSubmit?.(userData);
 		isGeneratingPdf = false;
 	}
+
+	$effect(() => {
+		if (userData.linkedFields && userData.fields) {
+			for (const [targetId, sourceId] of Object.entries(userData.linkedFields)) {
+				const sourceValue = userData.fields[sourceId];
+				if (sourceValue !== undefined && userData.fields[targetId] !== sourceValue) {
+					userData.fields[targetId] = sourceValue;
+				}
+			}
+		}
+	});
 </script>
 
 <div
@@ -119,7 +130,9 @@
 										data-pdf-item
 									>
 										<FieldRenderer
-											{field}
+											field={userData.linkedFields && field.id in userData.linkedFields
+												? { ...field, disabled: true }
+												: field}
 											bind:value={userData.fields[field.id]}
 											onChange={handleFormInvalidation}
 											mode={forceFieldRendererMode ?? fieldRendererMode}

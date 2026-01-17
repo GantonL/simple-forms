@@ -31,17 +31,18 @@
 			</Card.Header>
 			<Card.Content class="flex flex-col gap-4">
 				<Google {redirect} />
-				{@render OR()}
-				<EmailAndPassword {redirect} />
+				<!-- {@render OR()}
+				We do not support simple email ans password due to complexity of implementation at this point
+				<EmailAndPassword {redirect} /> -->
 			</Card.Content>
 		</Card.Root>
 	{/if}
 </div>
 
-{#snippet OR()}
+<!-- {#snippet OR()}
 	<div class="flex items-center gap-3">
 		<Separator class="flex-1" />
 		<span class="text-muted-foreground text-xs uppercase">{$t('common.or')}</span>
 		<Separator class="flex-1" />
 	</div>
-{/snippet}
+{/snippet} -->

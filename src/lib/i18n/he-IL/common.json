@@ -74,7 +74,7 @@
 	"already_signed_in": "חשבונך כבר מאומת!",
 	"as_x": "בתור {{user}}",
 	"signin_title": "כנסו לחשבונכם",
-	"signin_description": "השתמשו בספק אימות או בפרטי הכניסה האישיים שלכם",
+	"signin_description": "השתמשו בספק אימות",
 	"enter_email": "הזינו כתובת דוא״ל",
 	"password": "סיסמה",
 	"enter_password": "הזינו סיסמה",
@@ -126,8 +126,13 @@
 		"agree": "אני מסכים",
 		"preview": "תצוגה מקדימה",
 		"close_preview": "סגור תצוגה מקדימה",
-		"reset": "איפוס"
+		"reset": "איפוס",
+		"auto_fill_from_another_field": "מילוי אוטומטי באמצעות שדה אחר",
+		"auto_fill_from_another_field_description": "ניתן להגדיר ששדה מסוים יתמלא אוטומטית בערך של שדה אחר. במקרה כזה, השדה יהיה קריא בלבד ולא יהיה ניתן לעריכה",
+		"select_field": "בחר שדה",
+		"circular_dependency_error": "לא ניתן לקשר לשדה זה מכיוון שהוא כבר מקושר לשדה הנוכחי"
 	},
+	"none": "ללא",
 	"link_copied_to_clipboard": "קישור הועתק ללוח",
 	"copy_link": "העתקת קישור",
 	"form_name": "שם הטופס",

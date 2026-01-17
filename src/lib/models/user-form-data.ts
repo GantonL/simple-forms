@@ -14,4 +14,11 @@ export interface UserFormData {
 	 * Maps field ID to the user's provided value.
 	 */
 	fields?: Record<string, string | number | boolean | string[]>;
+
+	/**
+	 * Configuration for linked fields.
+	 * Maps target field ID to source field ID.
+	 * When the source field is updated, the target field should clearly reflect that value.
+	 */
+	linkedFields?: Record<string, string>;
 }
