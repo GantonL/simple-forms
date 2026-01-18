@@ -68,7 +68,7 @@
 		<h2 class="text-2xl font-bold">{userForm.name}</h2>
 		<p class="text-lg font-light">{$t('common.user_form_description')}</p>
 		<a
-			href={resolve(`/templates?tid=${template.id}`)}
+			href={resolve(`/templates?${SearchParams.TemplateId}=${template.id}`)}
 			class="bg-secondary/20 flex w-fit flex-row items-center gap-2 rounded-full border px-4 py-1 text-sm"
 		>
 			<LayoutTemplate size={12} />

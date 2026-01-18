@@ -1,7 +1,7 @@
 import { GET } from '$lib/api/helpers/request';
 import { SearchParams } from '$lib/enums/search-params';
 import {
-	FormTemplate,
+	type FormTemplate,
 	type FormSubmission,
 	type UserForm
 } from '$lib/server/database/schemas/form';

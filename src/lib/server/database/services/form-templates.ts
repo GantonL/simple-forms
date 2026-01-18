@@ -1,4 +1,4 @@
-import type { Column } from 'drizzle-orm';
+import { eq, type Column } from 'drizzle-orm';
 import { FormTemplateTable, type FormTemplateTableInsert } from '../schemas/form';
 import type { WhereCondition } from './abstract';
 import { provider } from './provider';
@@ -8,13 +8,16 @@ import {
 	getUrlOptionsUtil,
 	type BodyFiltersUtil
 } from './utils';
+import { SearchParams } from '$lib/enums/search-params';
 
 export const Service = provider.getFactory().getService(FormTemplateTable);
 
 export const getUrlFilters = (url: URL): WhereCondition<typeof FormTemplateTable>[] => {
-	return getUrlFiltersUtil(url, {
+	const baseUrlFilters = getUrlFiltersUtil(url, {
 		searchColumns: [FormTemplateTable.key]
 	});
+	const serviceUrlFilters = getServiceUrlFilters(url);
+	return [...baseUrlFilters, ...serviceUrlFilters];
 };
 
 type FormTemplateFilters = BodyFiltersUtil;
@@ -50,4 +53,14 @@ export const buildUpdateData = (updateData: UpdateFormTemplateData): UpdateFormT
 		validatedUpdate.schema = updateData.schema;
 	}
 	return validatedUpdate;
+};
+
+const getServiceUrlFilters = (url: URL): WhereCondition<typeof FormTemplateTable>[] => {
+	const searchParams = url.searchParams;
+	const tid = searchParams.get(SearchParams.TemplateId);
+	const conditions: WhereCondition<typeof FormTemplateTable>[] = [];
+	if (tid) {
+		conditions.push(eq(FormTemplateTable.id, Number(tid)));
+	}
+	return conditions;
 };
