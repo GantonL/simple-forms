@@ -6,15 +6,15 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { t } from '$lib/i18n';
 	import type { TableConfiguration } from '$lib/models/table';
-	import type { FormSubmission, UserForm } from '$lib/server/database/schemas/form';
-	import { TriangleAlert } from '@lucide/svelte';
+	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
+	import { LayoutTemplate, TriangleAlert } from '@lucide/svelte';
 	import { FormsSubmissions } from '../../../../api';
 	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
 	import { SearchParams } from '$lib/enums/search-params';
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	const userForm: UserForm = $state(page.data.userForm);
+	const template: FormTemplate = $state(page.data.template);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
 	const preProcessedSubmissionsCount: Promise<number> = $state(
 		page.data.preProcessedSubmissionsCount
@@ -67,6 +67,13 @@
 	{#snippet header()}
 		<h2 class="text-2xl font-bold">{userForm.name}</h2>
 		<p class="text-lg font-light">{$t('common.user_form_description')}</p>
+		<a
+			href={resolve(`/templates?${SearchParams.TemplateId}=${template.id}`)}
+			class="bg-secondary/20 flex w-fit flex-row items-center gap-2 rounded-full border px-4 py-1 text-sm"
+		>
+			<LayoutTemplate size={12} />
+			<span>{$t(`common.templates.${template.key}.name`)}</span>
+		</a>
 	{/snippet}
 	<div class="flex flex-col items-center gap-2">
 		{#await preProcessedSubmissionsCount then count}
