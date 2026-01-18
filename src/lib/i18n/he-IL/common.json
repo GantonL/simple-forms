@@ -186,5 +186,6 @@
 	"download": "הורדה",
 	"regeneration_success": "טופס נשלח ליצירה מחדש בהצלחה",
 	"regeneration_failed": "שליחת טופס ליצירה מחדש נכשלה",
-	"unknown": "לא ידוע"
+	"unknown": "לא ידוע",
+	"danger_zone": "איזור מסוכן"
 }

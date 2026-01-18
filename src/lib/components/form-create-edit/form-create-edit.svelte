@@ -22,6 +22,7 @@
 	import FormPreviewDialog from '$lib/components/form-preview/form-preview-dialog.svelte';
 	import { UsersForms } from '../../../routes/api';
 	import type { UserFormData } from '$lib/models/user-form-data';
+	import DangerZone from '../danger-zone/danger-zone.svelte';
 
 	type mode = 'create' | 'edit';
 
@@ -120,10 +121,7 @@
 	}
 </script>
 
-<BasePage
-	title="common.{componentMode}"
-	description="seo.pages.form_{componentMode}.description"
->
+<BasePage title="common.{componentMode}" description="seo.pages.form_{componentMode}.description">
 	<Card class="w-full">
 		<CardHeader>
 			<CardTitle
@@ -154,32 +152,36 @@
 		<CardContent>
 			<UserFormBuilder schema={template.schema} bind:userData={internalUserData} />
 		</CardContent>
-		<CardFooter class="flex justify-between gap-4">
-			<div class="flex gap-2">
-				<Button variant="secondary" onclick={handlePreview} disabled={isSubmitting}>
-					{$t('common.form_builder.preview')}
-				</Button>
-				<Button
-					class="flex flex-row items-center gap-2"
-					onclick={componentMode === 'create' ? handleCreate : handleEdit}
-					disabled={isSubmitting}
-				>
-					{#if isSubmitting}
-						<LoaderCircle size={12} />
-					{/if}
-					<span>
-						{$t(`common.form_builder.${componentMode === 'create' ? 'create_form' : 'edit_form'}`)}
-					</span>
-				</Button>
-			</div>
-			<div class="flex gap-2">
-				<Button variant="outline" onclick={handleReset} disabled={isSubmitting}>
-					{$t('common.form_builder.reset')}
-				</Button>
+		<CardFooter class="flex flex-col gap-4">
+			<div class="flex w-full justify-between gap-2">
+				<div class="flex gap-2">
+					<Button variant="secondary" onclick={handlePreview} disabled={isSubmitting}>
+						{$t('common.form_builder.preview')}
+					</Button>
+					<Button
+						class="flex flex-row items-center gap-2"
+						onclick={componentMode === 'create' ? handleCreate : handleEdit}
+						disabled={isSubmitting}
+					>
+						{#if isSubmitting}
+							<LoaderCircle size={12} />
+						{/if}
+						<span>
+							{$t(
+								`common.form_builder.${componentMode === 'create' ? 'create_form' : 'edit_form'}`
+							)}
+						</span>
+					</Button>
+				</div>
 				<Button variant="ghost" onclick={handleCancel} disabled={isSubmitting}>
 					{$t('common.cancel')}
 				</Button>
 			</div>
+			<DangerZone class="w-full">
+				<Button variant="outline" onclick={handleReset} disabled={isSubmitting}>
+					{$t('common.form_builder.reset')}
+				</Button>
+			</DangerZone>
 		</CardFooter>
 	</Card>
 </BasePage>

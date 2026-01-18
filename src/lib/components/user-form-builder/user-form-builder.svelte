@@ -86,10 +86,16 @@
 			</div>
 			<Separator />
 			{#each schema.fields as field (field)}
-				<div class="flex flex-row items-center gap-2">
+				{@const linkableField = LINKABLE_FIELD_TYPES.includes(field.type)}
+				<div
+					class="flex w-fit flex-row flex-wrap items-center gap-2"
+					class:border={linkableField}
+					class:rounded-lg={linkableField}
+					class:p-2={linkableField}
+				>
 					<FieldRenderer {field} bind:value={userData.fields![field.id]} mode="build" />
 
-					{#if LINKABLE_FIELD_TYPES.includes(field.type)}
+					{#if linkableField}
 						<LinkFieldSelect
 							fieldId={field.id}
 							fieldType={field.type}
