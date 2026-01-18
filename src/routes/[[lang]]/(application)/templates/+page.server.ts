@@ -7,7 +7,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const tid = url.searchParams.get(SearchParams.TemplateId);
 	const templates = await GET<FormTemplate[]>(
-		`${FormsTemplates}?${SearchParams.TemplateId}=${tid}`,
+		`${FormsTemplates}${Number(tid) ? `?${SearchParams.TemplateId}=${tid}` : ''}`,
 		{ fetch }
 	);
 	return { templates };
