@@ -19,6 +19,7 @@
 	const preProcessedSubmissionsCount: Promise<number> = $state(
 		page.data.preProcessedSubmissionsCount
 	);
+	let totalSubmissions = $state(userForm.submissions);
 	let searchTerm = $state(page.data.searchTerm);
 	let configuration = $derived({
 		...tableConfiguration,
@@ -28,7 +29,7 @@
 		},
 		serverSide: {
 			...tableConfiguration.serverSide,
-			totalItems: userForm.submissions
+			totalItems: totalSubmissions
 		} as TableConfiguration<FormSubmission>['serverSide']
 	});
 	let pageSize = $derived(configuration.pageSize ?? 10);
@@ -45,12 +46,18 @@
 
 	async function onFreeSearchChanged(newSearchTerm: string) {
 		searchTerm = newSearchTerm;
-		getSubmissionsPage(0);
+		getSubmissionsPage(0, { count: true });
 	}
 
-	async function getSubmissionsPage(index: number) {
+	async function getSubmissionsPage(index: number, options?: { count?: boolean }) {
 		if (fetchInProgress) return;
 		fetchInProgress = true;
+		if (options?.count) {
+			const count = await GET<number>(
+				`${FormsSubmissions}/count?${SearchParams.FormId}=${userForm.id}&${SearchParams.FreeSearch}=${searchTerm}`
+			);
+			totalSubmissions = count;
+		}
 		const page = await GET<FormSubmission[]>(
 			`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}&${SearchParams.FreeSearch}=${searchTerm}`,
 			{
