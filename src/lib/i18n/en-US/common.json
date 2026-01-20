@@ -188,5 +188,16 @@
 	"regeneration_success": "Successfully sent form for regneration",
 	"regeneration_failed": "Failed to send form for regeneration",
 	"unknown": "Unknown",
-	"danger_zone": "Danger zone"
+	"danger_zone": "Danger zone",
+	"service_load_status": "Service load status",
+	"remote_browser_service": {
+		"load_status": {
+			"minimum": "Service is operating at minimum capacity",
+			"low": "Service is operating at low capacity",
+			"medium": "Service is operating at medium capacity",
+			"high": "Service is operating at high capacity",
+			"extreme": "Service is at full capacity. Requests are being queued"
+		}
+	},
+	"queued_requests": "{{number}} requests queued"
 }

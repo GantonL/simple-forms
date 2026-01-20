@@ -1,5 +1,6 @@
 import { BASE_APP_URL, BROWSER_SERVICE_HOST, BROWSER_SERVICE_PORT } from '$env/static/private';
 import { AppName } from '$lib/api/configurations/common';
+import type { RemoteBrwoserServiceLoadStatusResponse } from '$lib/types/remote-browser';
 
 const baseUrl = `http://${BROWSER_SERVICE_HOST}:${BROWSER_SERVICE_PORT}`;
 
@@ -60,4 +61,13 @@ export const requestPdfCreation = async (parameters: CreatePdfParameters): Promi
 	const response = await res.json();
 	console.log('[Request PDF creation]', response.message);
 	return true;
+};
+
+export const requestLoadStatus = async (): Promise<
+	RemoteBrwoserServiceLoadStatusResponse | undefined
+> => {
+	const res = await fetch(`${baseUrl}/load`);
+	if (!res?.ok) return;
+	const response = await res.json();
+	return response;
 };
