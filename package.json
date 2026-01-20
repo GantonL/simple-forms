@@ -29,7 +29,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
-		"@internationalized/date": "^3.8.1",
+		"@internationalized/date": "^3.10.0",
 		"@lucide/svelte": "^0.515.0",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
@@ -38,7 +38,7 @@
 		"@tailwindcss/vite": "^4.0.0",
 		"@tanstack/table-core": "^8.21.3",
 		"@vitest/browser": "^3.2.3",
-		"bits-ui": "^2.11.0",
+		"bits-ui": "^2.14.4",
 		"clsx": "^2.1.1",
 		"drizzle-kit": "0.30.0",
 		"eslint": "^9.18.0",
