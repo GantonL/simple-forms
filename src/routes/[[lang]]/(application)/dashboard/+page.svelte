@@ -75,7 +75,7 @@
 				{#if remoteBrowserServiceLoadStatus.queue > 0}
 					<div class="mt-2 flex items-center gap-2 text-xs text-red-500">
 						<AlertOctagon class="h-3 w-3" />
-						<span>{remoteBrowserServiceLoadStatus.queue} requests queued</span>
+						<span>{$t('common.queued_requests', { number: remoteBrowserServiceLoadStatus.queue })}</span>
 					</div>
 				{/if}
 			</Card.Content>

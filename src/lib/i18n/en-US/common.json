@@ -198,5 +198,6 @@
 			"high": "Service is operating at high capacity",
 			"extreme": "Service is at full capacity. Requests are being queued"
 		}
-	}
+	},
+	"queued_requests": "{{number}} requests queued"
 }
