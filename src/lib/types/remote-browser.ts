@@ -3,7 +3,8 @@ export enum LoadStatus {
 	LOW = 'low',
 	MEDIUM = 'medium',
 	HIGH = 'high',
-	EXTREME = 'extreme'
+	EXTREME = 'extreme',
+	ERROR = 'error'
 }
 
 export interface RemoteBrwoserServiceLoadStatusResponse {

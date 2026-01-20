@@ -13,8 +13,9 @@
 	import { LOAD_STATUS_MAPPING } from '$lib/client/configurations/remote-browser-service';
 	import { Progress } from '$lib/components/ui/progress';
 	import { direction } from '$lib/stores';
+	import { AlertCircle } from '@lucide/svelte';
 
-	let remoteBrowserServiceLoadStatus: RemoteBrwoserServiceLoadStatusResponse = $state(
+	let remoteBrowserServiceLoadStatus: RemoteBrwoserServiceLoadStatusResponse | undefined = $state(
 		page.data.remoteBrowserServiceLoadStatus
 	);
 
@@ -48,11 +49,19 @@
 			color: 'text-red-500',
 			bg: 'bg-red-500/10',
 			bar: 'bg-red-500'
+		},
+		[LoadStatus.ERROR]: {
+			icon: AlertCircle,
+			color: 'text-red-500',
+			bg: 'bg-red-500/10',
+			bar: 'bg-red-500'
 		}
 	};
 
-	let currentConfig = $derived(statusConfig[remoteBrowserServiceLoadStatus.status]);
-	let percentageValue = $derived(parseInt(remoteBrowserServiceLoadStatus.percentage));
+	let currentConfig = $derived(
+		statusConfig[remoteBrowserServiceLoadStatus?.status ?? LoadStatus.ERROR]
+	);
+	let percentageValue = $derived(parseInt(remoteBrowserServiceLoadStatus?.percentage ?? '0'));
 </script>
 
 <BasePage title="common.dashboard" description="seo.pages.dashboard.description">
@@ -62,23 +71,29 @@
 				<currentConfig.icon size={24} class={currentConfig.color} />
 				<Card.Title class="font-medium">{$t('common.service_load_status')}</Card.Title>
 			</Card.Header>
-			<Card.Content>
-				<div class="text-2xl font-bold">{remoteBrowserServiceLoadStatus.percentage}</div>
-				<p class="text-muted-foreground text-xs">
-					{$t(`${LOAD_STATUS_MAPPING[remoteBrowserServiceLoadStatus.status].message}`)}
-				</p>
-				<Progress
-					value={percentageValue}
-					max={100}
-					class="mt-1 {$direction === 'lr' ? '' : 'rotate-180'}"
-				/>
-				{#if remoteBrowserServiceLoadStatus.queue > 0}
-					<div class="mt-2 flex items-center gap-2 text-xs text-red-500">
-						<AlertOctagon class="h-3 w-3" />
-						<span>{$t('common.queued_requests', { number: remoteBrowserServiceLoadStatus.queue })}</span>
-					</div>
-				{/if}
-			</Card.Content>
+			{#if remoteBrowserServiceLoadStatus}
+				<Card.Content>
+					<div class="text-2xl font-bold">{remoteBrowserServiceLoadStatus.percentage}</div>
+					<p class="text-muted-foreground text-xs">
+						{$t(`${LOAD_STATUS_MAPPING[remoteBrowserServiceLoadStatus.status].message}`)}
+					</p>
+					<Progress
+						value={percentageValue}
+						max={100}
+						class="mt-1 {$direction === 'lr' ? '' : 'rotate-180'}"
+					/>
+					{#if remoteBrowserServiceLoadStatus?.queue > 0}
+						<div class="mt-2 flex items-center gap-2 text-xs text-red-500">
+							<AlertOctagon class="h-3 w-3" />
+							<span
+								>{$t('common.queued_requests', {
+									number: remoteBrowserServiceLoadStatus!.queue
+								})}</span
+							>
+						</div>
+					{/if}
+				</Card.Content>
+			{/if}
 		</Card.Root>
 	</div>
 </BasePage>

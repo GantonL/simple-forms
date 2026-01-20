@@ -15,5 +15,8 @@ export const LOAD_STATUS_MAPPING = {
 	},
 	[LoadStatus.EXTREME]: {
 		message: 'common.remote_browser_service.load_status.extreme' //"Service is at full capacity. Requests are being queued.",
+	},
+	[LoadStatus.ERROR]: {
+		message: ''
 	}
 };
