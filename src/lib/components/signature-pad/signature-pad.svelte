@@ -30,7 +30,7 @@
 	}: SignaturePadProps = $props();
 
 	let open = $state(false);
-	let canvasElement: HTMLCanvasElement;
+	let canvasElement = $state<HTMLCanvasElement>();
 	let signaturePad: SignaturePad | null = null;
 
 	// Initialize signature pad when dialog opens
