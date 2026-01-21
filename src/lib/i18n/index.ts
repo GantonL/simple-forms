@@ -8,6 +8,7 @@ interface Params {
 	user?: string;
 	author?: string;
 	count?: number;
+	date?: string;
 }
 
 /** @type {import('sveltekit-i18n').Config} */

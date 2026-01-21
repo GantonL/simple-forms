@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { t } from '$lib/i18n';
+	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
 	import { Copy, Link, LoaderCircle, X, Check } from '@lucide/svelte';
 	import * as Card from '../ui/card';
@@ -67,7 +67,7 @@
 				event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
 			/>
 		</Card.Header>
-		<Card.Footer class="align-items flex flex-row gap-2">
+		<Card.Footer class="align-items flex flex-row justify-between gap-2">
 			<Button
 				class="flex flex-row items-center gap-2"
 				onclick={onCopy}
@@ -80,6 +80,11 @@
 				{/if}
 				<span>{$t('common.copy_link')}</span>
 			</Button>
+			<span class="text-muted-foreground text-xs italic"
+				>{$t('common.edited_at_x', {
+					date: Intl.DateTimeFormat(locale.get()).format(new Date(data.updatedAt))
+				})}</span
+			>
 		</Card.Footer>
 	</Card.Root>
 </button>

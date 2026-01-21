@@ -198,5 +198,6 @@
 			"extreme": "השירות פועל בתפוקה מלאה, בקשות עתידיות ימתינו בתור"
 		}
 	},
-	"queued_requests": "{{number}} ממתינות בתור"
+	"queued_requests": "{{number}} ממתינות בתור",
+	"edited_at_x": "נערך ב {{date}}"
 }
