@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, Signature } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -13,6 +13,7 @@
 	import { GET } from '$lib/api/helpers/request';
 	import { UsersForms } from '../../../routes/api';
 	import * as Dialog from '../ui/dialog';
+	import { Badge } from '../ui/badge';
 	let { data, onEvent }: { data: UserForm; onEvent: (event: AppCustomEvent<UserForm>) => void } =
 		$props();
 	let copyDialogOpenInProgress = $state(false);
@@ -61,6 +62,10 @@
 				</Card.Title>
 				<Card.Description>{data.description}</Card.Description>
 			</div>
+			<Badge variant="secondary" class="bg-secondary/35">
+				<Signature size={12} />
+				{data.submissions}
+			</Badge>
 			<Menu
 				configuration={menuConfiguration}
 				rawData={data}
