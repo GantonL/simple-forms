@@ -199,5 +199,5 @@
 		}
 	},
 	"queued_requests": "{{number}} ממתינות בתור",
-	"edited_at_x": "נערך ב {{date}}"
+	"last_signed_at_x": "נחתם לאחרונה ב {{date}}"
 }

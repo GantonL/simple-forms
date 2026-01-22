@@ -86,7 +86,7 @@
 				<span>{$t('common.copy_link')}</span>
 			</Button>
 			<span class="text-muted-foreground text-xs italic"
-				>{$t('common.edited_at_x', {
+				>{$t('common.last_signed_at_x', {
 					date: Intl.DateTimeFormat(locale.get()).format(new Date(data.updatedAt))
 				})}</span
 			>

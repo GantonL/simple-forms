@@ -200,5 +200,5 @@
 		}
 	},
 	"queued_requests": "{{number}} requests queued",
-	"edited_at_x": "Edited at {{date}}"
+	"last_signed_at_x": "Last signed at {{date}}"
 }
