@@ -18,6 +18,14 @@
 	let onDeleteForm = $state(() => {});
 	let deleteInProgress = $state(false);
 
+	let alertDisable = $state(false);
+	let onDisableForm = $state(() => {});
+
+	let alertEnable = $state(false);
+	let onEnableForm = $state(() => {});
+
+	let enableOrDisableInProgress = $state(false);
+
 	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
 		switch (event.type) {
 			case AppCustomEventType.Delete: {
@@ -33,6 +41,16 @@
 				goto(resolve(`/forms/${event.data?.id}`));
 				break;
 			}
+			case AppCustomEventType.Disable: {
+				onDisableForm = () => disableForm(event.data!.id);
+				setTimeout(() => (alertDisable = true));
+				break;
+			}
+			case AppCustomEventType.Enable: {
+				onEnableForm = () => enableForm(event.data!.id);
+				setTimeout(() => (alertEnable = true));
+				break;
+			}
 		}
 	}
 
@@ -44,6 +62,18 @@
 		}
 		alertDelete = false;
 		deleteInProgress = false;
+	}
+
+	async function disableForm(id: number) {
+		enableOrDisableInProgress = true;
+		alertDisable = false;
+		enableOrDisableInProgress = false;
+	}
+
+	async function enableForm(id: number) {
+		enableOrDisableInProgress = true;
+		alertEnable = false;
+		enableOrDisableInProgress = false;
 	}
 </script>
 
@@ -70,4 +100,29 @@
 		disabled: deleteInProgress
 	}}
 	onAction={onDeleteForm}
+></AppAlertDialog>
+
+<AppAlertDialog
+	title="common.are_you_sure"
+	description="common.disable_user_form_confirm_message"
+	bind:open={alertDisable}
+	cancel={{ title: 'common.cancel' }}
+	action={{
+		title: 'common.disable',
+		class: 'bg-destructive/30 text-destructive hover:text-foreground',
+		disabled: enableOrDisableInProgress
+	}}
+	onAction={onDisableForm}
+></AppAlertDialog>
+
+<AppAlertDialog
+	title="common.are_you_sure"
+	description="common.enable_user_form_confirm_message"
+	bind:open={alertEnable}
+	cancel={{ title: 'common.cancel' }}
+	action={{
+		title: 'common.enable',
+		disabled: enableOrDisableInProgress
+	}}
+	onAction={onEnableForm}
 ></AppAlertDialog>
