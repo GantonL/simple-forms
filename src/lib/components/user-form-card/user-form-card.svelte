@@ -55,7 +55,16 @@
 </script>
 
 <button class="hover:cursor-pointer" onclick={onOpen}>
-	<Card.Root class="flex-column flex justify-between">
+	<Card.Root
+		class="relative flex flex-col justify-between overflow-hidden {data.is_active === false
+			? 'opacity-60'
+			: ''}"
+	>
+		{#if data.is_active === false}
+			<div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-20">
+				<PowerOff size={100} />
+			</div>
+		{/if}
 		<Card.Header class="flex flex-row justify-between">
 			<div class="flex flex-col items-start gap-2">
 				<Card.Title class="flex flex-row items-center gap-2">
@@ -63,10 +72,12 @@
 				</Card.Title>
 				<Card.Description>{data.description}</Card.Description>
 			</div>
-			<Badge variant="secondary" class="bg-secondary/35">
-				<Signature size={12} />
-				{data.submissions}
-			</Badge>
+			{#if data.is_active !== false}
+				<Badge variant="secondary" class="bg-secondary/35">
+					<Signature size={12} />
+					{data.submissions}
+				</Badge>
+			{/if}
 			<Menu
 				configuration={menuConfiguration}
 				rawData={data}
