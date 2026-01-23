@@ -53,18 +53,21 @@
 					<DropdownMenu.GroupHeading>{$t(group.header)}</DropdownMenu.GroupHeading>
 				{/if}
 				{#each group.items as item (item)}
-					<DropdownMenu.Item
-						class="group/item {item.class}"
-						disabled={item.disableIf && item.disableIf(rawData)}
-						onclick={() => event({ type: item.event, data: $state.snapshot(rawData) as TMenuData })}
-					>
-						<div class="flex flex-row items-center gap-2">
-							{#if item.icon}
-								<item.icon size="16" class={item.iconClass} />
-							{/if}
-							{item.noTranlationRequired ? item.title : $t(item.title)}
-						</div>
-					</DropdownMenu.Item>
+					{#if !item.showIf || item.showIf(rawData)}
+						<DropdownMenu.Item
+							class="group/item {item.class}"
+							disabled={item.disableIf && item.disableIf(rawData)}
+							onclick={() =>
+								event({ type: item.event, data: $state.snapshot(rawData) as TMenuData })}
+						>
+							<div class="flex flex-row items-center gap-2">
+								{#if item.icon}
+									<item.icon size="16" class={item.iconClass} />
+								{/if}
+								{item.noTranlationRequired ? item.title : $t(item.title)}
+							</div>
+						</DropdownMenu.Item>
+					{/if}
 				{/each}
 			</DropdownMenu.Group>
 			{#if index < configuration.groups.length - 1}

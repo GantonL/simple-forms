@@ -200,5 +200,7 @@
 		}
 	},
 	"queued_requests": "{{number}} requests queued",
-	"last_signed_at_x": "Last signed at {{date}}"
+	"last_signed_at_x": "Last signed at {{date}}",
+	"enable_form_sign": "Allow access",
+	"disable_form_sign": "Deny access"
 }

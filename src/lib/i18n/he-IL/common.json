@@ -199,5 +199,7 @@
 		}
 	},
 	"queued_requests": "{{number}} ממתינות בתור",
-	"last_signed_at_x": "נחתם לאחרונה ב {{date}}"
+	"last_signed_at_x": "נחתם לאחרונה ב {{date}}",
+	"enable_form_sign": "לאפשר גישה לחתימה",
+	"disable_form_sign": "מניעת גישה לחתימה"
 }
