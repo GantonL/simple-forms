@@ -7,12 +7,14 @@
 	import { t } from '$lib/i18n';
 	import type { TableConfiguration } from '$lib/models/table';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { LayoutTemplate, TriangleAlert } from '@lucide/svelte';
+	import { LayoutTemplate, Pencil, TriangleAlert } from '@lucide/svelte';
 	import { FormsSubmissions } from '../../../../api';
 	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
 	import { SearchParams } from '$lib/enums/search-params';
 	import { resolve } from '$app/paths';
+	import { Button } from '$lib/components/ui/button';
+	import { goto } from '$app/navigation';
 	const userForm: UserForm = $state(page.data.userForm);
 	const template: FormTemplate = $state(page.data.template);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
@@ -68,19 +70,31 @@
 		).finally(() => (fetchInProgress = false));
 		submissions = page;
 	}
+
+	function onEdit() {
+		goto(resolve(`/forms/edit?${SearchParams.FormId}=${userForm.id}`));
+	}
 </script>
 
 <BasePage title="common.forms" description="seo.pages.form_detail.description">
 	{#snippet header()}
-		<h2 class="text-2xl font-bold">{userForm.name}</h2>
-		<p class="text-lg font-light">{$t('common.user_form_description')}</p>
-		<a
-			href={resolve(`/templates?${SearchParams.TemplateId}=${template.id}`)}
-			class="bg-secondary/20 flex w-fit flex-row items-center gap-2 rounded-full border px-4 py-1 text-sm"
-		>
-			<LayoutTemplate size={12} />
-			<span>{$t(`common.templates.${template.key}.name`)}</span>
-		</a>
+		<div class="flex flex-row items-start justify-between">
+			<div class="flex flex-col gap-2">
+				<h2 class="text-2xl font-bold">{userForm.name}</h2>
+				<p class="text-lg font-light">{$t('common.user_form_description')}</p>
+				<a
+					href={resolve(`/templates?${SearchParams.TemplateId}=${template.id}`)}
+					class="bg-secondary/20 flex w-fit flex-row items-center gap-2 rounded-full border px-4 py-1 text-sm"
+				>
+					<LayoutTemplate size={12} />
+					<span>{$t(`common.templates.${template.key}.name`)}</span>
+				</a>
+			</div>
+			<Button class="flex flex-row items-center gap-2" variant="outline" onclick={onEdit}>
+				<Pencil size={16} />
+				<span>{$t('common.edit')}</span>
+			</Button>
+		</div>
 	{/snippet}
 	<div class="flex flex-col items-center gap-2">
 		{#await preProcessedSubmissionsCount then count}
