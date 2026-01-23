@@ -45,7 +45,7 @@ export const UserFormTable = pgTable('user_form', {
 	public_link_identifier: uuid('public_link_identifier').defaultRandom(),
 	submissions: integer('submissions').notNull().default(0),
 	data: jsonb('data').$type<UserFormData>(),
-	is_active: boolean().default(false)
+	is_active: boolean().default(true)
 });
 
 export type UserForm = typeof UserFormTable.$inferSelect;

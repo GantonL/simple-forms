@@ -22,13 +22,13 @@ export const menuConfiguration: MenuConfiguration<UserForm> = {
 					icon: PowerOff,
 					event: AppCustomEventType.Disable,
 					title: 'common.disable_form_sign',
-					showIf: (form: UserForm) => !!form.is_active
+					showIf: (form: UserForm) => form.is_active !== false
 				},
 				{
 					icon: Power,
 					event: AppCustomEventType.Enable,
 					title: 'common.enable_form_sign',
-					showIf: (form: UserForm) => !form.is_active
+					showIf: (form: UserForm) => form.is_active === false
 				},
 				{
 					icon: Trash,
