@@ -201,6 +201,9 @@
 	},
 	"queued_requests": "{{number}} requests queued",
 	"last_signed_at_x": "Last signed at {{date}}",
-	"enable_form_sign": "Allow access",
-	"disable_form_sign": "Deny access"
+	"enable_form_sign": "Allow access to sign",
+	"disable_form_sign": "Deny access to sign",
+	"disable_user_form_confirm_message": "This action will block anyone who has a link from accessing the form",
+	"enable_user_form_confirm_message": "This action will reverse the block and reactivate the form",
+	"form_disabled_copy_link_tooltip": "You are not allowed to copy a link of a blocked form"
 }

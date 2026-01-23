@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { DELETE } from '$lib/api/helpers/request';
+	import { DELETE, PUT } from '$lib/api/helpers/request';
 	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
@@ -12,7 +12,7 @@
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { UserForm } from '$lib/server/database/schemas/form';
 	import { UsersForms } from '../../../api';
-	let userForms: UserForm[] = $derived(page.data.userForms);
+	let userForms: UserForm[] = $state(page.data.userForms);
 
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
@@ -66,12 +66,30 @@
 
 	async function disableForm(id: number) {
 		enableOrDisableInProgress = true;
+		const updateRes = await PUT<{ is_active: false }, undefined, { updated: UserForm }>(
+			`${UsersForms}/${id}`,
+			{ is_active: false },
+			undefined
+		);
+		if (updateRes?.updated?.id === id) {
+			const updatedForm = userForms.find((uf) => uf.id === id);
+			updatedForm!.is_active = false;
+		}
 		alertDisable = false;
 		enableOrDisableInProgress = false;
 	}
 
 	async function enableForm(id: number) {
 		enableOrDisableInProgress = true;
+		const updateRes = await PUT<{ is_active: true }, undefined, { updated: UserForm }>(
+			`${UsersForms}/${id}`,
+			{ is_active: true },
+			undefined
+		);
+		if (updateRes?.updated?.id === id) {
+			const updatedForm = userForms.find((uf) => uf.id === id);
+			updatedForm!.is_active = true;
+		}
 		alertEnable = false;
 		enableOrDisableInProgress = false;
 	}
@@ -108,7 +126,7 @@
 	bind:open={alertDisable}
 	cancel={{ title: 'common.cancel' }}
 	action={{
-		title: 'common.disable',
+		title: 'common.disable_form_sign',
 		class: 'bg-destructive/30 text-destructive hover:text-foreground',
 		disabled: enableOrDisableInProgress
 	}}
@@ -121,7 +139,7 @@
 	bind:open={alertEnable}
 	cancel={{ title: 'common.cancel' }}
 	action={{
-		title: 'common.enable',
+		title: 'common.enable_form_sign',
 		disabled: enableOrDisableInProgress
 	}}
 	onAction={onEnableForm}

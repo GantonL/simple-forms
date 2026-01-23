@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check, Signature } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, Signature, PowerOff } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -14,6 +14,7 @@
 	import { UsersForms } from '../../../routes/api';
 	import * as Dialog from '../ui/dialog';
 	import { Badge } from '../ui/badge';
+	import * as Tooltip from '../ui/tooltip';
 	let { data, onEvent }: { data: UserForm; onEvent: (event: AppCustomEvent<UserForm>) => void } =
 		$props();
 	let copyDialogOpenInProgress = $state(false);
@@ -73,18 +74,7 @@
 			/>
 		</Card.Header>
 		<Card.Footer class="align-items flex flex-row justify-between gap-2">
-			<Button
-				class="flex flex-row items-center gap-2"
-				onclick={onCopy}
-				disabled={copyDialogOpenInProgress}
-			>
-				{#if copyDialogOpenInProgress}
-					<LoaderCircle size={12} class="animate-spin" />
-				{:else}
-					<Link size={12} />
-				{/if}
-				<span>{$t('common.copy_link')}</span>
-			</Button>
+			{@render copyLinkButton()}
 			<span class="text-muted-foreground text-xs italic"
 				>{$t('common.last_signed_at_x', {
 					date: Intl.DateTimeFormat(locale.get()).format(new Date(data.updatedAt))
@@ -111,3 +101,29 @@
 		</div>
 	</Dialog.Content>
 </Dialog.Root>
+
+{#snippet copyLinkButton()}
+	{@const disabledInProgress = copyDialogOpenInProgress}
+	{@const disabledNotActive = data.is_active === false}
+	<Tooltip.Root>
+		<Tooltip.Trigger>
+			<Button
+				class="flex flex-row items-center gap-2"
+				onclick={onCopy}
+				disabled={disabledInProgress || disabledNotActive}
+			>
+				{#if copyDialogOpenInProgress}
+					<LoaderCircle size={12} class="animate-spin" />
+				{:else}
+					<Link size={12} />
+				{/if}
+				<span>{$t('common.copy_link')}</span>
+			</Button>
+		</Tooltip.Trigger>
+		{#if disabledNotActive}
+			<Tooltip.Content>
+				{$t('common.form_disabled_copy_link_tooltip')}
+			</Tooltip.Content>
+		{/if}
+	</Tooltip.Root>
+{/snippet}

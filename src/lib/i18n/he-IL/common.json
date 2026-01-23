@@ -201,5 +201,8 @@
 	"queued_requests": "{{number}} ממתינות בתור",
 	"last_signed_at_x": "נחתם לאחרונה ב {{date}}",
 	"enable_form_sign": "לאפשר גישה לחתימה",
-	"disable_form_sign": "מניעת גישה לחתימה"
+	"disable_form_sign": "מניעת גישה לחתימה",
+	"disable_user_form_confirm_message": "פעולה זו תמנע מכל מי שיש לו את הקישור גישה לטופס",
+	"enable_user_form_confirm_message": "פעולה זו תבטל את המניעה ותאפשר גישה מלאה לטופס",
+	"form_disabled_copy_link_tooltip": "לא ניתן להעתיק קישור של טופס שהגישה אליו נחסמה"
 }
