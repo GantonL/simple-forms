@@ -1,0 +1,1 @@
+ALTER TABLE "user_form" ADD COLUMN "is_active" boolean DEFAULT false;
