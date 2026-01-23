@@ -15,6 +15,12 @@
 	"manage_cookies": "Manage cookies",
 	"cookies_policy": "Cookies policy",
 	"status_code_error": {
+		"403": {
+			"description": "Forbidden access",
+			"messages": {
+				"form": "The requested form has been blocked by its owner. If you think this a mistake or you were expecting an available form to sign, please contact the person who gave you the link"
+			}
+		},
 		"404": {
 			"description": "Page not found"
 		},

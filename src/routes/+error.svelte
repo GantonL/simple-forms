@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { getTitleTemplate } from '$lib/client/configurations/meta-tags';
 	import * as Alert from '$lib/components/ui/alert';
@@ -11,6 +12,7 @@
 	import type { MetaTagsProps } from 'svelte-meta-tags';
 
 	const errorNumberMessage = t.get('common.error_number', { number: page?.status ?? 500 });
+	const pageErrorMessage = page.error?.message;
 
 	function setPageMetaTags() {
 		const title = errorNumberMessage;
@@ -30,18 +32,21 @@
 	}
 
 	function goHome() {
-		goto('/');
+		goto(resolve('/'));
 	}
 </script>
 
 <div class="flex h-svh items-center justify-center">
 	{#if page?.error}
-		<div class="flex flex-col gap-2">
+		<div class="flex flex-col gap-2 px-2">
 			<Alert.Root variant="destructive" class="border-destructive/50">
 				<CircleAlert />
 				<Alert.Title>{errorNumberMessage}</Alert.Title>
 				<Alert.Description>
 					<p>{$t(`common.status_code_error.${page.status}.description`)}</p>
+					{#if pageErrorMessage}
+						<p class="text-foreground bg-muted rounded-md border p-2">{$t(pageErrorMessage)}</p>
+					{/if}
 				</Alert.Description>
 			</Alert.Root>
 			<section class="flex w-full flex-row gap-2">
