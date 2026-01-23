@@ -1,4 +1,13 @@
-import { integer, jsonb, pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import {
+	integer,
+	jsonb,
+	pgTable,
+	serial,
+	text,
+	timestamp,
+	uuid,
+	boolean
+} from 'drizzle-orm/pg-core';
 import { user } from './auth';
 import { TemplatesKeys } from '$lib/enums/templates-keys';
 import type { FormTemplateSchema } from '$lib/models/form-temaplte-schema';
@@ -35,7 +44,8 @@ export const UserFormTable = pgTable('user_form', {
 		.notNull(),
 	public_link_identifier: uuid('public_link_identifier').defaultRandom(),
 	submissions: integer('submissions').notNull().default(0),
-	data: jsonb('data').$type<UserFormData>()
+	data: jsonb('data').$type<UserFormData>(),
+	is_active: boolean().default(true)
 });
 
 export type UserForm = typeof UserFormTable.$inferSelect;

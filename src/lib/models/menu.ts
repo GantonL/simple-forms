@@ -10,6 +10,7 @@ export interface MenuActionItem<T = void> {
 	disableIf?: (data: T) => boolean;
 	variant?: ButtonVariant;
 	noTranlationRequired?: boolean;
+	showIf?: (data: T) => boolean;
 }
 
 export interface MenuActionItemGroup<T = void> {

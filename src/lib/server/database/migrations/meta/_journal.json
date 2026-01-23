@@ -36,6 +36,20 @@
       "when": 1768573142058,
       "tag": "0004_certain_wraith",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1769155570796,
+      "tag": "0005_moaning_prowler",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1769156622238,
+      "tag": "0006_awesome_rachel_grey",
+      "breakpoints": true
     }
   ]
 }

@@ -3,5 +3,7 @@ export enum AppCustomEventType {
 	Edit = 'edit',
 	View = 'view',
 	Create = 'create',
-	Open = 'open'
+	Open = 'open',
+	Disable = 'disable',
+	Enable = 'enable'
 }

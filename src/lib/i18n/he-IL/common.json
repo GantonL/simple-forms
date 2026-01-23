@@ -15,6 +15,12 @@
 	"manage_cookies": "ניהול עוגיות",
 	"cookies_policy": "מדיניות עוגיות",
 	"status_code_error": {
+		"403": {
+			"description": "לא קיימת הרשאת גישה לעמוד זה",
+			"messages": {
+				"form": "הטופס המבוקש נחסם על ידי בעליו. אם אתם חושבים שזו טעות או שציפיתם לטופס זמין לחתימה אנא צרו קשר עם מי שהעביר לכם את הקישור"
+			}
+		},
 		"404": {
 			"description": "העמוד המבוקש לא נמצא"
 		},
@@ -199,5 +205,10 @@
 		}
 	},
 	"queued_requests": "{{number}} ממתינות בתור",
-	"last_signed_at_x": "נחתם לאחרונה ב {{date}}"
+	"last_signed_at_x": "נחתם לאחרונה ב {{date}}",
+	"enable_form_sign": "לאפשר גישה לחתימה",
+	"disable_form_sign": "מניעת גישה לחתימה",
+	"disable_user_form_confirm_message": "פעולה זו תמנע מכל מי שיש לו את הקישור גישה לטופס",
+	"enable_user_form_confirm_message": "פעולה זו תבטל את המניעה ותאפשר גישה מלאה לטופס",
+	"form_disabled_copy_link_tooltip": "לא ניתן להעתיק קישור של טופס שהגישה אליו נחסמה"
 }

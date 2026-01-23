@@ -97,7 +97,7 @@ export const buildCreateCandidates = (candidates: NewUserForm[]): NewUserForm[] 
 };
 
 type UpdateUserFormData = Partial<
-	Pick<UserFormTableInsert, 'data' | 'description' | 'name'> & { submissions?: SQL }
+	Pick<UserFormTableInsert, 'data' | 'description' | 'name' | 'is_active'> & { submissions?: SQL }
 >;
 export const buildUpdateData = (updateData: UpdateUserFormData): UpdateUserFormData => {
 	const validatedUpdate: UpdateUserFormData = {};
@@ -112,6 +112,9 @@ export const buildUpdateData = (updateData: UpdateUserFormData): UpdateUserFormD
 	}
 	if (updateData?.name !== undefined) {
 		validatedUpdate.name = updateData.name;
+	}
+	if (updateData?.is_active !== undefined) {
+		validatedUpdate.is_active = updateData.is_active;
 	}
 	return validatedUpdate;
 };

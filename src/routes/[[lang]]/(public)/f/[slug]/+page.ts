@@ -21,6 +21,10 @@ export const load: PageLoad = async ({ params, fetch }) => {
 	if (!userForm) {
 		error(404);
 	}
+	if (userForm.is_active === false) {
+		const errorCode = 403;
+		error(errorCode, { message: `common.status_code_error.${errorCode}.messages.form` });
+	}
 	response.form = userForm;
 
 	const template = await GET<FormTemplate>(`${FormsTemplates}/${userForm.template_id}`, { fetch });
