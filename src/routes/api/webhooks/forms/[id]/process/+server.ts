@@ -11,6 +11,7 @@ import type {
 	FormSubmissionCandidateDataSelect,
 	UserForm
 } from '$lib/server/database/schemas/form';
+import { sendFormSignedSuccessNotification } from '$lib/server/notifications/service';
 
 export const POST: RequestHandler = async ({ request, params, fetch: internalFetch }) => {
 	console.log('[Form webhook]', 'Requetsed to process a newly created form');
@@ -49,10 +50,12 @@ export const POST: RequestHandler = async ({ request, params, fetch: internalFet
 		internalFetch
 	);
 
-	const result = !!submitted?.created;
+	const result = submitted?.created?.length > 0 && submitted.created[0];
 	if (!result) {
 		return new Response('failed');
 	}
+
+	sendFormSignedSuccessNotification(result);
 
 	deleteCandidateData(submissionCandidateData, internalFetch);
 
@@ -124,7 +127,7 @@ async function createSubmission(
 ) {
 	const submitted = await InternalPostRequest<
 		Pick<FormSubmission, 'storage_url' | 'user_form_id' | 'display_data'>,
-		{ created: FormSubmission }
+		{ created: FormSubmission[] }
 	>(
 		FormsSubmissions,
 		{
