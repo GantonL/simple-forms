@@ -30,87 +30,35 @@ export const POST: RequestHandler = async ({ request, params, fetch: internalFet
 		return new Response('No file provided', { status: 400 });
 	}
 
-	const uploadUrlResponse = await InternalPostRequest<
-		{ user_form_id: number; fileSize: number },
-		{ uploadUrl: string; path: string }
-	>(
-		UploadUrl,
-		{
-			user_form_id: Number(params.id),
-			fileSize: file.size
-		},
-		{ fetch: internalFetch }
-	);
-
-	if (!uploadUrlResponse?.uploadUrl || !uploadUrlResponse?.path) {
+	const uploadUrlObject = await getUploadUrlObject(Number(params.id), file.size, internalFetch);
+	if (!uploadUrlObject?.uploadUrl || !uploadUrlObject?.path) {
 		return new Response('Failed to get upload URL', { status: 400 });
 	}
 
-	const buffer = await file.arrayBuffer();
-	const uploadResponse = await fetch(uploadUrlResponse.uploadUrl, {
-		method: 'PUT',
-		mode: 'cors',
-		credentials: 'omit',
-		body: buffer,
-		headers: {
-			'Content-Type': file.type,
-			'Content-Length': buffer.byteLength.toString()
-		}
-	});
-
-	if (!uploadResponse.ok) {
+	const uploadResponse = await uploadFile(uploadUrlObject.uploadUrl, file);
+	if (!uploadResponse?.ok) {
 		return new Response('Upload failed', { status: 500 });
 	}
 
-	const submissionCandidateDataId = form.get('submissionCandidateDataId');
-	const submissionCandidateData = await InternalGetRequest<FormSubmissionCandidateDataSelect>(
-		`${FormSubmissionCandidateData}/${submissionCandidateDataId}`,
-		{ fetch: internalFetch }
-	);
+	const submissionCandidateData = await getSubmissionCandidateData(form, internalFetch);
 
-	const submitted = await InternalPostRequest<
-		Pick<FormSubmission, 'storage_url' | 'user_form_id' | 'display_data'>,
-		{ created: FormSubmission }
-	>(
-		FormsSubmissions,
-		{
-			user_form_id: Number(params.id),
-			storage_url: uploadUrlResponse.path,
-			display_data: getDefaultDisplayData(submissionCandidateData.data)
-		},
-		{ fetch: internalFetch }
+	const submitted = await createSubmission(
+		Number(params.id),
+		uploadUrlObject.path,
+		submissionCandidateData.data,
+		internalFetch
 	);
 
 	const result = !!submitted?.created;
-	if (result) {
-		if (submissionCandidateDataId) {
-			const deleteDataCandidateRes = await InternalDeleteRequest<
-				unknown,
-				FormSubmissionCandidateDataSelect
-			>(
-				`${FormSubmissionCandidateData}/${submissionCandidateDataId}`,
-				{},
-				{ fetch: internalFetch }
-			);
-			if (!deleteDataCandidateRes) {
-				console.error('Submission candidate data was not deleted');
-			}
-		} else {
-			console.error('No submission candidate data id found');
-		}
+	if (!result) {
+		return new Response('failed');
 	}
 
-	if (result) {
-		InternalPutRequest<Pick<UserForm, 'submissions'>, unknown, { updated: UserForm }>(
-			`${UsersForms}/${params.id}`,
-			{
-				submissions: 1
-			},
-			{},
-			{ fetch: internalFetch }
-		);
-	}
-	return new Response(result ? 'success' : 'failed');
+	deleteCandidateData(submissionCandidateData, internalFetch);
+
+	increaseFormSubmissionsCount(params.id!, internalFetch);
+
+	return new Response('success');
 };
 
 function getDefaultDisplayData(
@@ -122,4 +70,97 @@ function getDefaultDisplayData(
 	return {
 		signee: fields[signeeKey ?? keys[0]]
 	};
+}
+
+async function getUploadUrlObject(
+	userFormId: number,
+	fileSize: number,
+	fetchFunction: typeof fetch
+) {
+	const uploadUrlResponse = await InternalPostRequest<
+		{ user_form_id: number; fileSize: number },
+		{ uploadUrl: string; path: string }
+	>(
+		UploadUrl,
+		{
+			user_form_id: userFormId,
+			fileSize
+		},
+		{ fetch: fetchFunction }
+	);
+
+	return uploadUrlResponse;
+}
+
+async function uploadFile(uploadUrl: string, file: File) {
+	const buffer = await file.arrayBuffer();
+	const uploadResponse = await fetch(uploadUrl, {
+		method: 'PUT',
+		mode: 'cors',
+		credentials: 'omit',
+		body: buffer,
+		headers: {
+			'Content-Type': file.type,
+			'Content-Length': buffer.byteLength.toString()
+		}
+	});
+	return uploadResponse;
+}
+
+async function getSubmissionCandidateData(form: FormData, fetchFunction: typeof fetch) {
+	const submissionCandidateDataId = form.get('submissionCandidateDataId');
+	const submissionCandidateData = await InternalGetRequest<FormSubmissionCandidateDataSelect>(
+		`${FormSubmissionCandidateData}/${submissionCandidateDataId}`,
+		{ fetch: fetchFunction }
+	);
+	return submissionCandidateData;
+}
+
+async function createSubmission(
+	userFormId: number,
+	storagePath: string,
+	displayData: FormSubmissionCandidateDataSelect['data'],
+	fetchFunction: typeof fetch
+) {
+	const submitted = await InternalPostRequest<
+		Pick<FormSubmission, 'storage_url' | 'user_form_id' | 'display_data'>,
+		{ created: FormSubmission }
+	>(
+		FormsSubmissions,
+		{
+			user_form_id: userFormId,
+			storage_url: storagePath,
+			display_data: getDefaultDisplayData(displayData)
+		},
+		{ fetch: fetchFunction }
+	);
+	return submitted;
+}
+
+async function deleteCandidateData(
+	submissionCandidateData: FormSubmissionCandidateDataSelect,
+	fetchFunction: typeof fetch
+) {
+	if (!submissionCandidateData?.id) {
+		console.error('No submission candidate data id found');
+		return;
+	}
+	const deleteDataCandidateRes = await InternalDeleteRequest<
+		unknown,
+		FormSubmissionCandidateDataSelect
+	>(`${FormSubmissionCandidateData}/${submissionCandidateData.id}`, {}, { fetch: fetchFunction });
+	if (!deleteDataCandidateRes) {
+		console.error('Submission candidate data was not deleted');
+	}
+}
+
+async function increaseFormSubmissionsCount(userFormId: string, fetchFunction: typeof fetch) {
+	InternalPutRequest<Pick<UserForm, 'submissions'>, unknown, { updated: UserForm }>(
+		`${UsersForms}/${userFormId}`,
+		{
+			submissions: 1
+		},
+		{},
+		{ fetch: fetchFunction }
+	);
 }
