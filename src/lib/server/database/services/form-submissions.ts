@@ -91,12 +91,16 @@ const getServiceUrlFilters = (url: URL): WhereCondition<typeof FormSubmissionTab
 	const searchParams = url.searchParams;
 	const fid = searchParams.get(SearchParams.FormId);
 	const fs = searchParams.get(SearchParams.FreeSearch);
+	const sid = searchParams.get(SearchParams.SubmissionId);
 	const conditions: WhereCondition<typeof FormSubmissionTable>[] = [];
 	if (fid) {
 		conditions.push(eq(FormSubmissionTable.user_form_id, Number(fid)));
 	}
 	if (fs) {
 		conditions.push(ilike(sql`display_data->>'signee'`, `%${fs}%`));
+	}
+	if (sid) {
+		conditions.push(eq(FormSubmissionTable.id, Number(sid)));
 	}
 	return conditions;
 };

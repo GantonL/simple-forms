@@ -3,7 +3,6 @@ import { Service as UsersService } from '$lib/server/database/services/users';
 import { Service as UsersFormsService } from '$lib/server/database/services/user-form';
 import { NOTIFICATIONS, WEBHOOKS, type WebhookBody } from '$lib/models/workflows';
 import formSignedSuccess from '$lib/templates/emails/form-signed-success';
-import { locale } from '$lib/i18n';
 import { BASE_APP_URL, WEBHOOK_BASE_URL } from '$env/static/private';
 import { SearchParams } from '$lib/enums/search-params';
 import { getFullFormattedDate } from '$lib/utils';
