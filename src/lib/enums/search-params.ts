@@ -5,5 +5,6 @@ export enum SearchParams {
 	TemplateId = 'tid',
 	FormId = 'fid',
 	FreeSearch = 'fs',
-	SearchTerm = 'searchTerm'
+	SearchTerm = 'searchTerm',
+	SubmissionId = 'sid'
 }

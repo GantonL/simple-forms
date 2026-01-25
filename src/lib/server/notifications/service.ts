@@ -4,7 +4,8 @@ import { Service as UsersFormsService } from '$lib/server/database/services/user
 import { NOTIFICATIONS, WEBHOOKS, type WebhookBody } from '$lib/models/workflows';
 import formSignedSuccess from '$lib/templates/emails/form-signed-success';
 import { locale } from '$lib/i18n';
-import { WEBHOOK_BASE_URL } from '$env/static/private';
+import { BASE_APP_URL, WEBHOOK_BASE_URL } from '$env/static/private';
+import { SearchParams } from '$lib/enums/search-params';
 
 export async function sendFormSignedSuccessNotification(submission: FormSubmission) {
 	const form = await UsersFormsService.findById(submission.user_form_id);
@@ -25,11 +26,18 @@ export async function sendFormSignedSuccessNotification(submission: FormSubmissi
 		);
 	}
 
+	// const formSettings = await FormSettingsService.findById(form!.id);
+	// if (!formsSettings.notifications[NOTIFICATIONS.FORM_SIGNED].enabled) {
+	//   return;
+	// }
+
 	const email = formSignedSuccess({
 		formName: form!.name,
 		signee: submission.display_data!.signee as string,
 		signedAt: Intl.DateTimeFormat(locale.get()).format(new Date(submission.createdAt)),
-		subscriber: formOwner!.name
+		subscriber: formOwner!.name,
+		manageSettingsLink: `${BASE_APP_URL}/forms/${form!.id}/settings`,
+		signedFormUrl: `${BASE_APP_URL}/forms/${form!.id}?${SearchParams.SubmissionId}=${submission.id}`
 	});
 	const body: WebhookBody = {
 		event_type: NOTIFICATIONS.FORM_SIGNED,
@@ -39,6 +47,7 @@ export async function sendFormSignedSuccessNotification(submission: FormSubmissi
 			html: email.body
 		}
 	};
+	console.log('[Workflow]', 'sending', NOTIFICATIONS.FORM_SIGNED, 'event');
 	fetch(`${WEBHOOK_BASE_URL}/${WEBHOOKS.FORM_EVENTS}`, {
 		method: 'POST',
 		body: JSON.stringify(body),
@@ -55,6 +64,8 @@ export async function sendFormSignedSuccessNotification(submission: FormSubmissi
 					'statusText:',
 					res.statusText
 				);
+			} else {
+				console.log('[Workflow]', NOTIFICATIONS.FORM_SIGNED, 'event sent');
 			}
 		})
 		.catch((error) => {
