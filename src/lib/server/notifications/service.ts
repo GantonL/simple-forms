@@ -6,6 +6,7 @@ import formSignedSuccess from '$lib/templates/emails/form-signed-success';
 import { locale } from '$lib/i18n';
 import { BASE_APP_URL, WEBHOOK_BASE_URL } from '$env/static/private';
 import { SearchParams } from '$lib/enums/search-params';
+import { getFullFormattedDate } from '$lib/utils';
 
 export async function sendFormSignedSuccessNotification(submission: FormSubmission) {
 	const form = await UsersFormsService.findById(submission.user_form_id);
@@ -34,7 +35,7 @@ export async function sendFormSignedSuccessNotification(submission: FormSubmissi
 	const email = formSignedSuccess({
 		formName: form!.name,
 		signee: submission.display_data!.signee as string,
-		signedAt: Intl.DateTimeFormat(locale.get()).format(new Date(submission.createdAt)),
+		signedAt: getFullFormattedDate(submission.createdAt),
 		subscriber: formOwner!.name,
 		manageSettingsLink: `${BASE_APP_URL}/forms/${form!.id}/settings`,
 		signedFormUrl: `${BASE_APP_URL}/forms/${form!.id}?${SearchParams.SubmissionId}=${submission.id}`
