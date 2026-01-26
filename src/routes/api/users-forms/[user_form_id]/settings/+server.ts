@@ -25,7 +25,7 @@ export const POST: RequestHandler = async ({ request, params }) => {
 	const userFormId = Number(params.user_form_id);
 	const itemsToCreate = buildCreateCandidates([{ ...data, user_form_id: userFormId }]);
 	const created = await service.createMany(itemsToCreate);
-	return json(created);
+	return json(created?.length > 0 ? created[0] : null);
 };
 
 export const PUT: RequestHandler = async ({ params, request }) => {
