@@ -2,7 +2,7 @@ import { descructiveMenuItemStyle } from '$lib/client/configurations/ui';
 import { AppCustomEventType } from '$lib/enums/app-custom-event-type';
 import type { MenuConfiguration } from '$lib/models/menu';
 import type { UserForm } from '$lib/server/database/schemas/form';
-import { DoorOpen, Pen, Power, PowerOff, Trash } from '@lucide/svelte';
+import { Cog, DoorOpen, Pen, Power, PowerOff, Trash } from '@lucide/svelte';
 
 export const menuConfiguration: MenuConfiguration<UserForm> = {
 	groups: [
@@ -12,6 +12,11 @@ export const menuConfiguration: MenuConfiguration<UserForm> = {
 					icon: DoorOpen,
 					event: AppCustomEventType.Open,
 					title: 'common.open'
+				},
+				{
+					icon: Cog,
+					event: AppCustomEventType.SubItem,
+					title: 'common.settings'
 				},
 				{
 					icon: Pen,
