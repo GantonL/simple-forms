@@ -219,5 +219,6 @@
 			"description": "התראה תשלח כאשר יצירת טופס חתום הושלמה בהצלחה או אם יצירתו נכשלה. מכובה כברירת מחדל"
 		}
 	},
-	"notification_x_updated_succssfuly": "התראת {{notification}} עודכנה בהצלחה"
+	"notification_x_updated_successfully": "התראת {{notification}} עודכנה בהצלחה",
+	"notification_x_updated_failed": "עדכון התראת {{notification}} נכשל"
 }

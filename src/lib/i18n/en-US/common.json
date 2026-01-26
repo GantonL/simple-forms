@@ -220,5 +220,6 @@
 			"description": "Get notified when a signed form has been created or if we failed to create one. Off by default"
 		}
 	},
-	"notification_x_updated_succssfuly": "{{notification}} notification updated successfully"
+	"notification_x_updated_successfully": "{{notification}} notification updated successfully",
+	"notification_x_updated_failed": "{{notification}} notification failed to update"
 }
