@@ -45,7 +45,7 @@
 					>
 						<section class="flex flex-row items-center justify-between">
 							<h2 class="mt-1 text-xl capitalize">{$t(`common.${cookieCategory['name']}`)}</h2>
-							<div class="flex items-center space-x-2">
+							<div class="flex items-center gap-2">
 								{#if cookieCategory['optional']}
 									<Switch
 										id={cookieCategory['name']}

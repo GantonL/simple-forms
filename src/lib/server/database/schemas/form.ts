@@ -12,6 +12,7 @@ import { user } from './auth';
 import { TemplatesKeys } from '$lib/enums/templates-keys';
 import type { FormTemplateSchema } from '$lib/models/form-temaplte-schema';
 import type { UserFormData } from '$lib/models/user-form-data';
+import type { FormSettingsNofitication } from '$lib/models/form-settings-notification';
 
 export const FormTemplateTable = pgTable('form_template', {
 	id: serial('id').primaryKey(),
@@ -77,3 +78,14 @@ export type FormSubmissionCandidateDataSelect =
 	typeof FormSubmissionCandidateDataTable.$inferSelect;
 export type FormSubmissionCandidateDataInsert =
 	typeof FormSubmissionCandidateDataTable.$inferInsert;
+
+export const FormSettingsTable = pgTable('form_settings', {
+	id: serial('id').primaryKey(),
+	user_form_id: integer('user_form_id')
+		.notNull()
+		.references(() => UserFormTable.id),
+	notifications: jsonb('notifications').$type<FormSettingsNofitication>()
+});
+
+export type FormSettingsSelect = typeof FormSettingsTable.$inferSelect;
+export type FormSettingsInsert = typeof FormSettingsTable.$inferInsert;

@@ -210,5 +210,14 @@
 	"disable_form_sign": "מניעת גישה לחתימה",
 	"disable_user_form_confirm_message": "פעולה זו תמנע מכל מי שיש לו את הקישור גישה לטופס",
 	"enable_user_form_confirm_message": "פעולה זו תבטל את המניעה ותאפשר גישה מלאה לטופס",
-	"form_disabled_copy_link_tooltip": "לא ניתן להעתיק קישור של טופס שהגישה אליו נחסמה"
+	"form_disabled_copy_link_tooltip": "לא ניתן להעתיק קישור של טופס שהגישה אליו נחסמה",
+	"notifications": "התראות",
+	"form_settings": "הגדרות טופס",
+	"notifications_per_type": {
+		"form_signed": {
+			"label": "טופס נחתם",
+			"description": "התראה תשלח כאשר יצירת טופס חתום הושלמה בהצלחה או אם יצירתו נכשלה. מכובה כברירת מחדל"
+		}
+	},
+	"notification_x_updated_succssfuly": "התראת {{notification}} עודכנה בהצלחה"
 }
