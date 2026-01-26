@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { PUT } from '$lib/api/helpers/request';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import { Label } from '$lib/components/ui/label';
@@ -8,6 +9,7 @@
 	import { NOTIFICATIONS } from '$lib/models/workflows';
 	import type { FormSettingsSelect } from '$lib/server/database/schemas/form';
 	import { toast } from 'svelte-sonner';
+	import { UsersForms } from '../../../../../api';
 
 	const settings: FormSettingsSelect = $state(page.data.settings);
 	const availableNotifications = Object.values(NOTIFICATIONS);
@@ -17,11 +19,22 @@
 		}
 	};
 
-	function onNotificationCheckedChanged(notificationType: NOTIFICATIONS) {
-		console.log(settings.notifications![notificationType].enabled);
-		// update form settings notifications with new value
-		toast.success(
-			t.get(`common.notification_x_updated_succssfuly`, {
+	async function onNotificationCheckedChanged(notificationType: NOTIFICATIONS) {
+		const updatedRes = await PUT<
+			Pick<FormSettingsSelect, 'notifications'>,
+			unknown,
+			{ updated: FormSettingsSelect[] }
+		>(
+			`${UsersForms}/${settings.user_form_id}/settings`,
+			{ notifications: settings.notifications },
+			{},
+			{
+				fetch
+			}
+		);
+		const success = !!updatedRes?.updated;
+		toast[success ? 'success' : 'error'](
+			t.get(`common.notification_x_updated_${success ? 'successfully' : 'failed'}`, {
 				notification: t.get(`common.notifications_per_type.${notificationType}.label`)
 			})
 		);
