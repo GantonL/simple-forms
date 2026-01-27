@@ -7,9 +7,9 @@
 	import { t } from '$lib/i18n';
 	import type { TableConfiguration } from '$lib/models/table';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { LayoutTemplate, Pencil, TriangleAlert } from '@lucide/svelte';
+	import { LayoutTemplate, TriangleAlert } from '@lucide/svelte';
 	import { FormsSubmissions } from '../../../../api';
-	import { columns, DEFAULT_ORDER_BY, tableConfiguration } from './configurations';
+	import { columns, DEFAULT_ORDER_BY, pageActions, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
 	import { SearchParams } from '$lib/enums/search-params';
 	import { resolve } from '$app/paths';
@@ -71,8 +71,17 @@
 		submissions = page;
 	}
 
-	function onEdit() {
-		goto(resolve(`/forms/edit?${SearchParams.FormId}=${userForm.id}`));
+	function onPageAction(event: string) {
+		switch (event) {
+			case 'settings': {
+				goto(resolve(`/forms/${userForm.id}/settings`));
+				break;
+			}
+			case 'edit': {
+				goto(resolve(`/forms/edit?${SearchParams.FormId}=${userForm.id}`));
+				break;
+			}
+		}
 	}
 </script>
 
@@ -90,10 +99,18 @@
 					<span>{$t(`common.templates.${template.key}.name`)}</span>
 				</a>
 			</div>
-			<Button class="flex flex-row items-center gap-2" variant="outline" onclick={onEdit}>
-				<Pencil size={16} />
-				<span>{$t('common.edit')}</span>
-			</Button>
+			<div class="flex flex-row flex-wrap items-center justify-end gap-2">
+				{#each pageActions as action (action)}
+					<Button
+						class="flex flex-row items-center gap-2"
+						variant="outline"
+						onclick={() => onPageAction(action.event)}
+					>
+						<action.icon size={16} />
+						<span>{$t(action.label)}</span>
+					</Button>
+				{/each}
+			</div>
 		</div>
 	{/snippet}
 	<div class="flex flex-col items-center gap-2">
