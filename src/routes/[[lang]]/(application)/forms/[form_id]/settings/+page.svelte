@@ -66,6 +66,7 @@
 				id={notification}
 				bind:checked={settings.notifications![notification].enabled}
 				onCheckedChange={() => onNotificationCheckedChanged(notification)}
+				class="cursor-pointer"
 			/>
 			<Label for={notification}>{$t(`common.notifications_per_type.${notification}.label`)}</Label>
 		</div>

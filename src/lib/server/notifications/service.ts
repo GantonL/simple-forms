@@ -1,11 +1,13 @@
-import type { FormSubmission } from '../database/schemas/form';
+import { FormSettingsTable, type FormSubmission } from '../database/schemas/form';
 import { Service as UsersService } from '$lib/server/database/services/users';
 import { Service as UsersFormsService } from '$lib/server/database/services/user-form';
+import { Service as FormSettingsService } from '$lib/server/database/services/form-settings';
 import { NOTIFICATIONS, WEBHOOKS, type WebhookBody } from '$lib/models/workflows';
 import formSignedSuccess from '$lib/templates/emails/form-signed-success';
 import { BASE_APP_URL, WEBHOOK_BASE_URL } from '$env/static/private';
 import { SearchParams } from '$lib/enums/search-params';
 import { getFullFormattedDate } from '$lib/utils';
+import { eq } from 'drizzle-orm';
 
 export async function sendFormSignedSuccessNotification(submission: FormSubmission) {
 	const form = await UsersFormsService.findById(submission.user_form_id);
@@ -17,6 +19,17 @@ export async function sendFormSignedSuccessNotification(submission: FormSubmissi
 		);
 	}
 
+	const settings = await FormSettingsService.findOne(
+		eq(FormSettingsTable.user_form_id, submission.user_form_id)
+	);
+	const notifications = settings?.notifications;
+	if (notifications) {
+		const formSignedEnabled = notifications[NOTIFICATIONS.FORM_SIGNED]?.enabled;
+		if (!formSignedEnabled) {
+			return;
+		}
+	}
+
 	const formOwner = await UsersService.findById(form!.user_id);
 	if (!formOwner) {
 		console.error(
@@ -25,11 +38,6 @@ export async function sendFormSignedSuccessNotification(submission: FormSubmissi
 			`user id: ${form!.user_id}`
 		);
 	}
-
-	// const formSettings = await FormSettingsService.findById(form!.id);
-	// if (!formsSettings.notifications[NOTIFICATIONS.FORM_SIGNED].enabled) {
-	//   return;
-	// }
 
 	const email = formSignedSuccess({
 		formName: form!.name,
