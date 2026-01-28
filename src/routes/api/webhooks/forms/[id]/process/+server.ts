@@ -11,7 +11,10 @@ import type {
 	FormSubmissionCandidateDataSelect,
 	UserForm
 } from '$lib/server/database/schemas/form';
-import { sendFormSignedSuccessNotification } from '$lib/server/notifications/service';
+import {
+	sendFormSignedSuccessNotification,
+	sendSigneeRequestedSignedCopyNotification
+} from '$lib/server/notifications/service';
 
 export const POST: RequestHandler = async ({ request, params, fetch: internalFetch }) => {
 	console.log('[Form webhook]', 'Requetsed to process a newly created form');
@@ -56,6 +59,7 @@ export const POST: RequestHandler = async ({ request, params, fetch: internalFet
 	}
 
 	sendFormSignedSuccessNotification(result);
+	sendSigneeRequestedSignedCopyNotification(result, submissionCandidateData.options);
 
 	deleteCandidateData(submissionCandidateData, internalFetch);
 

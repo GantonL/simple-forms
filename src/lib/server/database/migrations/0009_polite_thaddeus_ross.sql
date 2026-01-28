@@ -1,0 +1,1 @@
+ALTER TABLE "form_submission_candidate_data" ADD COLUMN "options" jsonb;

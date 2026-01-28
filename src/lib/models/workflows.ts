@@ -3,7 +3,8 @@ export enum WEBHOOKS {
 }
 
 export enum NOTIFICATIONS {
-	FORM_SIGNED = 'form_signed'
+	FORM_SIGNED = 'form_signed',
+	SIGNEE_REQUESTED_SIGNED_COPY = 'signee_requested_signed_copy'
 }
 
 interface EmailData {

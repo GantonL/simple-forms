@@ -17,13 +17,13 @@ export const GET: RequestHandler = async ({ url }) => {
 
 export const POST: RequestHandler = async ({ request }) => {
 	const { data: requestData } = await request.json();
-	const { user_form_id, data } = requestData;
+	const { user_form_id, data, options } = requestData;
 
 	if (!user_form_id || !data) {
 		error(400, { message: 'missing_required_fields' });
 	}
 
-	const newSubmissionCandidateData = [{ user_form_id, data }];
+	const newSubmissionCandidateData = [{ user_form_id, data, options }];
 	const itemsToCreate = buildCreateCandidates(newSubmissionCandidateData);
 	const created = await service.createMany(itemsToCreate);
 	return json({ created });

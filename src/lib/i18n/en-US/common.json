@@ -222,5 +222,7 @@
 	},
 	"notification_x_updated_successfully": "{{notification}} notification updated successfully",
 	"notification_x_updated_failed": "{{notification}} notification failed to update",
-	"settings": "Settings"
+	"settings": "Settings",
+	"send_me_a_copy": "Send me a copy",
+	"more_options": "More options"
 }

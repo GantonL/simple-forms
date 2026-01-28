@@ -221,5 +221,7 @@
 	},
 	"notification_x_updated_successfully": "התראת {{notification}} עודכנה בהצלחה",
 	"notification_x_updated_failed": "עדכון התראת {{notification}} נכשל",
-	"settings": "הגדרות"
+	"settings": "הגדרות",
+	"send_me_a_copy": "שלחו לי העתק",
+	"more_options": "אפשרויות נוספות"
 }

@@ -13,17 +13,19 @@
 	import { toast } from 'svelte-sonner';
 	import { FormSubmissionCandidateData, RemoteBrowserServiceCreatePdf } from '../../../../api';
 	import type { UserFormData } from '$lib/models/user-form-data';
+	import type { SignedFormUserPreferedOptions } from '$lib/models/signed-form-user-prefered-options';
 
 	const form: UserForm = $derived(page.data.form);
 	const schema: FormTemplate['schema'] = $derived(page.data.schema);
 
-	async function onFormSubmitted(data: UserFormData) {
+	async function onFormSubmitted(data: UserFormData, options?: SignedFormUserPreferedOptions) {
 		const submissionCandidateData = await POST<
-			{ user_form_id: number; data: UserFormData },
+			{ user_form_id: number; data: UserFormData; options?: SignedFormUserPreferedOptions },
 			{ created: FormSubmissionCandidateDataSelect[] }
 		>(FormSubmissionCandidateData, {
 			user_form_id: form.id,
-			data: data
+			data: data,
+			options
 		});
 		if (!submissionCandidateData.created?.length || !submissionCandidateData.created[0]?.id) {
 			toast.error('Could not complete process, internal server error');

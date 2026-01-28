@@ -67,19 +67,20 @@ export const getUrlOptions = (url: URL) => {
 
 type NewFormSubmissionCandidateData = Pick<
 	FormSubmissionCandidateDataInsert,
-	'user_form_id' | 'data'
+	'user_form_id' | 'data' | 'options'
 >;
 export const buildCreateCandidates = (
 	candidates: NewFormSubmissionCandidateData[]
 ): NewFormSubmissionCandidateData[] => {
-	const newUsers: NewFormSubmissionCandidateData[] = [];
+	const newCandidates: NewFormSubmissionCandidateData[] = [];
 	candidates.forEach((candidate) => {
-		newUsers.push({
+		newCandidates.push({
 			user_form_id: candidate.user_form_id,
-			data: candidate.data
+			data: candidate.data,
+			options: candidate.options
 		});
 	});
-	return newUsers;
+	return newCandidates;
 };
 
 type FormSubmissionCandidateData = Pick<FormSubmissionCandidateDataInsert, 'data'>;
