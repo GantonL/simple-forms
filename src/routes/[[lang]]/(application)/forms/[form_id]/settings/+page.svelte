@@ -12,7 +12,7 @@
 	import { UsersForms } from '../../../../../api';
 
 	const settings: FormSettingsSelect = $state(page.data.settings);
-	const availableNotifications = Object.values(NOTIFICATIONS);
+	const availableNotifications = [NOTIFICATIONS.FORM_SIGNED];
 	settings.notifications = {
 		[NOTIFICATIONS.FORM_SIGNED]: {
 			enabled: (settings.notifications ?? {})[NOTIFICATIONS.FORM_SIGNED]?.enabled ?? false
@@ -64,7 +64,7 @@
 		<div class="flex gap-2">
 			<Switch
 				id={notification}
-				bind:checked={settings.notifications![notification].enabled}
+				bind:checked={settings.notifications![notification as NOTIFICATIONS.FORM_SIGNED].enabled}
 				onCheckedChange={() => onNotificationCheckedChanged(notification)}
 				class="cursor-pointer"
 			/>
