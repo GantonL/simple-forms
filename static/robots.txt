@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://simple-forms.com/sitemap.xml
+Sitemap: https://app.simpleforms.cloud/sitemap.xml

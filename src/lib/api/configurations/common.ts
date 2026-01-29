@@ -11,9 +11,8 @@ export const getDirection = (locale: AvailableLocals): DirectionSetting => {
 	return directionSelection;
 };
 export const AppName: string = 'Simple Forms';
-export const SupportEmail: string = 'support@simple-forms.com';
-export const BaseUrl: string = 'https://forms.drlihikeren.com';
-export const BaseDemoUrl: string = 'https://ssv5.templates.guylahav.com/';
+export const SupportEmail: string = 'simple.forms.app@gmail.com';
+export const BaseUrl: string = 'https://app.simpleforms.cloud';
 export const Author: string = 'Guy Lahav';
 export const TwitterUsername: string = '@myusername';
 export const TwitterSitename: string = '@mysitename';
