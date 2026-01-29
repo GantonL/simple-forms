@@ -195,9 +195,6 @@
 
 {#snippet moreOptions()}
 	<Card.Root class="w-full">
-		<Card.Header>
-			<Card.Title>{$t('common.more_options')}</Card.Title>
-		</Card.Header>
 		<Card.Content>
 			<div class="flex w-full flex-col gap-2">
 				<div class="flex w-fit cursor-pointer flex-row items-center gap-2">
