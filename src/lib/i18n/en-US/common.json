@@ -122,10 +122,6 @@
 	"form_builder": {
 		"title": "Create Your Form",
 		"description": "Customize the form template by filling in your information",
-		"editable_text_blocks": "Text Content",
-		"editable_text_blocks_description": "Customize the text content that will appear in your form",
-		"form_fields": "Form Fields",
-		"form_fields_description": "Fill in the required information for your form",
 		"create_form": "Create Form",
 		"edit_form": "Edit Form",
 		"submitting": "Creating...",

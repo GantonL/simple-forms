@@ -12,6 +12,7 @@
 	import * as Card from '../ui/card';
 	import { NOTIFICATIONS } from '$lib/models/workflows';
 	import type { SignedFormUserPreferedOptions } from '$lib/models/signed-form-user-prefered-options';
+	import { getField, getTextBlock, parseSectionItem } from '../form-utils';
 
 	type FieldRendererMode = 'default' | 'display';
 
@@ -37,35 +38,6 @@
 	let fieldRendererMode = $derived<FieldRendererMode>(isGeneratingPdf ? 'display' : 'default');
 	let sendCopyRequested = $state(false);
 	let sendCopyEmail = $state('');
-
-	type SectionItem = {
-		type: 'text' | 'field';
-		id: string;
-		content?: string;
-	};
-
-	const parseSectionItem = (item: string): SectionItem | null => {
-		// Check if it's a field reference (format: "fields:field_id")
-		if (item.startsWith('fields:')) {
-			const fieldId = item.substring(7); // Remove "fields:" prefix
-			const field = schema.fields?.find((f) => f.id === fieldId);
-			if (field) {
-				return { type: 'field', id: fieldId };
-			}
-		} else {
-			// It's a text block reference
-			const textBlock = schema.editableTextBlocks?.find((block) => block.id === item);
-			if (textBlock) {
-				const content = userData.editableTextBlocks?.[item] || $t(textBlock.content);
-				return { type: 'text', id: item, content };
-			}
-		}
-		return null;
-	};
-
-	const getField = (fieldId: string) => {
-		return schema.fields?.find((f) => f.id === fieldId);
-	};
 
 	const handleFormInvalidation = $derived(() => {
 		if (!schema.fields || !userData.fields) return true;
@@ -138,18 +110,22 @@
 			{#each schema.layout.sections as section, sectionIndex (sectionIndex)}
 				<div class="flex flex-row flex-wrap items-start gap-2 space-y-4">
 					{#each section as item, itemIndex (itemIndex)}
-						{@const parsedItem = parseSectionItem(item)}
+						{@const parsedItem = parseSectionItem(item, schema)}
 						{#if parsedItem}
 							{#if parsedItem.type === 'text'}
 								<!-- Render text content without label -->
-								{#if parsedItem.content}
+								{@const block = getTextBlock(parsedItem.id, schema)}
+								{@const content = block
+									? userData.editableTextBlocks?.[parsedItem.id] || $t(block.content)
+									: ''}
+								{#if content}
 									<div data-pdf-markdown>
-										<CompiledMarkdown content={parsedItem.content}></CompiledMarkdown>
+										<CompiledMarkdown {content}></CompiledMarkdown>
 									</div>
 								{/if}
 							{:else if parsedItem.type === 'field'}
 								<!-- Render actual input field -->
-								{@const field = getField(parsedItem.id)}
+								{@const field = getField(parsedItem.id, schema)}
 								{#if field && userData.fields}
 									<div
 										class="inline-block min-w-[200px] md:min-w-[250px] print:break-inside-avoid"
