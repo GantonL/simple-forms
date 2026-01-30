@@ -6,13 +6,19 @@
 	import { direction } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
 	import CompiledMarkdown from '../resource-markdown/compiled-markdown.svelte';
+	import Checkbox from '../checkbox/checkbox.svelte';
+	import { Label } from '../ui/label';
+	import { Input } from '../ui/input';
+	import * as Card from '../ui/card';
+	import { NOTIFICATIONS } from '$lib/models/workflows';
+	import type { SignedFormUserPreferedOptions } from '$lib/models/signed-form-user-prefered-options';
 
 	type FieldRendererMode = 'default' | 'display';
 
 	type FormPreviewProps = {
 		schema: FormTemplateSchema;
 		userData: UserFormData;
-		onSubmit?: (data: UserFormData) => Promise<void>;
+		onSubmit?: (data: UserFormData, options?: SignedFormUserPreferedOptions) => Promise<void>;
 		mode?: 'demo';
 		forceFieldRendererMode?: FieldRendererMode;
 	};
@@ -29,6 +35,8 @@
 	let isGeneratingPdf = $state(false);
 	let isFormValid = $state(false);
 	let fieldRendererMode = $derived<FieldRendererMode>(isGeneratingPdf ? 'display' : 'default');
+	let sendCopyRequested = $state(false);
+	let sendCopyEmail = $state('');
 
 	type SectionItem = {
 		type: 'text' | 'field';
@@ -86,8 +94,26 @@
 
 	async function handleSubmission() {
 		isGeneratingPdf = true;
-		await onSubmit?.(userData);
+		await onSubmit?.(userData, buildSubmitOptions());
 		isGeneratingPdf = false;
+	}
+
+	function buildSubmitOptions() {
+		const options: SignedFormUserPreferedOptions = {};
+		if (sendCopyEmail) {
+			options.notifications = {
+				...options.notifications,
+				[NOTIFICATIONS.SIGNEE_REQUESTED_SIGNED_COPY]: {
+					...options.notifications?.[NOTIFICATIONS.SIGNEE_REQUESTED_SIGNED_COPY],
+					signee_form_copy_email: sendCopyEmail
+				}
+			};
+		}
+		return options;
+	}
+
+	function sendMeCopyCheckedChanged(checked: boolean) {
+		sendCopyRequested = checked;
 	}
 
 	$effect(() => {
@@ -150,7 +176,8 @@
 
 <!-- Submit Button -->
 {#if mode !== 'demo'}
-	<div class="mx-auto flex w-full max-w-4xl justify-center pb-8">
+	<div class="mx-auto flex w-full max-w-4xl flex-col items-center justify-center gap-2 py-8">
+		{@render moreOptions()}
 		<Button
 			onclick={handleSubmission}
 			disabled={isGeneratingPdf || !isFormValid}
@@ -165,6 +192,35 @@
 		</Button>
 	</div>
 {/if}
+
+{#snippet moreOptions()}
+	<Card.Root class="w-full">
+		<Card.Content>
+			<div class="flex w-full flex-col gap-2">
+				<div class="flex w-fit cursor-pointer flex-row items-center gap-2">
+					<Checkbox
+						class="border-secondary cursor-pointer"
+						id="sendCopy"
+						onCheckedChange={sendMeCopyCheckedChanged}
+					/>
+					<Label for="sendCopy" class="cursor-pointer text-nowrap"
+						>{$t('common.send_me_a_copy')}</Label
+					>
+				</div>
+				<Input
+					type="email"
+					bind:value={sendCopyEmail}
+					disabled={!sendCopyRequested}
+					required
+					tabindex={0}
+					autofocus={true}
+					placeholder={$t('common.email')}
+					class="border-secondary"
+				/>
+			</div>
+		</Card.Content>
+	</Card.Root>
+{/snippet}
 
 <style>
 	@media print {

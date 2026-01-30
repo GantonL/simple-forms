@@ -5,6 +5,7 @@ import type { ColumnDef } from '@tanstack/table-core';
 import CreateFormSubmissionLink from './create-form-submission-link.svelte';
 import { defaultDateCell } from '$lib/components/app-data-table/configurations/defaults';
 import { t } from '$lib/i18n';
+import { Cog, Pencil } from '@lucide/svelte';
 
 export const DEFAULT_ORDER_BY = '-createdAt';
 
@@ -45,5 +46,18 @@ export const columns: ColumnDef<FormSubmission>[] = [
 		cell: ({ row }) => {
 			return renderComponent(CreateFormSubmissionLink, { submission: row.original });
 		}
+	}
+];
+
+export const pageActions = [
+	{
+		icon: Cog,
+		label: 'common.settings',
+		event: 'settings'
+	},
+	{
+		icon: Pencil,
+		label: 'common.edit',
+		event: 'edit'
 	}
 ];

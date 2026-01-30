@@ -37,6 +37,10 @@
 				goto(resolve(`/forms/edit?${SearchParams.FormId}=${event.data?.id}`));
 				break;
 			}
+			case AppCustomEventType.SubItem: {
+				goto(resolve(`/forms/${event.data?.id}/settings`));
+				break;
+			}
 			case AppCustomEventType.Open: {
 				goto(resolve(`/forms/${event.data?.id}`));
 				break;

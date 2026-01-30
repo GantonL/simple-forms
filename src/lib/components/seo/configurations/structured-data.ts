@@ -1,4 +1,4 @@
-import { BaseDemoUrl } from '$lib/api/configurations/common';
+import { BaseUrl } from '$lib/api/configurations/common';
 
 export const Breadcrumbs = {
 	'@type': 'BreadcrumbList',
@@ -7,25 +7,25 @@ export const Breadcrumbs = {
 			'@type': 'ListItem',
 			position: 1,
 			name: 'Home',
-			item: `${BaseDemoUrl}`
+			item: `${BaseUrl}`
 		},
 		{
 			'@type': 'ListItem',
 			position: 2,
 			name: 'Dashboard',
-			item: `${BaseDemoUrl}/dashboard`
+			item: `${BaseUrl}/dashboard`
 		},
 		{
 			'@type': 'ListItem',
 			position: 3,
 			name: 'Forms',
-			item: `${BaseDemoUrl}/forms`
+			item: `${BaseUrl}/forms`
 		},
 		{
 			'@type': 'ListItem',
 			position: 4,
 			name: 'Templates',
-			item: `${BaseDemoUrl}/templates`
+			item: `${BaseUrl}/templates`
 		}
 	]
 };

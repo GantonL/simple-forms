@@ -23,8 +23,9 @@ export const load: PageServerLoad = async ({ fetch, locals, params, url }) => {
 			fetch
 		}
 	);
+	const submissionId = url.searchParams.get(SearchParams.SubmissionId) ?? '';
 	const submissions = await GET<FormSubmission[]>(
-		`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}&${SearchParams.FreeSearch}=${searchTerm}`,
+		`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}&${SearchParams.FreeSearch}=${searchTerm}&${SearchParams.SubmissionId}=${submissionId}`,
 		{ fetch, orderBy: DEFAULT_ORDER_BY }
 	);
 	const preProcessedSubmissionsCount = GET<number>(

@@ -1,5 +1,5 @@
-import { locale } from '$lib/i18n';
 import type { ComboboxConfiguration } from '$lib/models/combobox';
+import { getFullFormattedDate } from '$lib/utils';
 
 export const pageSizeOptionsConfiguration: ComboboxConfiguration = {
 	options: [
@@ -14,13 +14,5 @@ export const pageSizeOptionsConfiguration: ComboboxConfiguration = {
 
 export function defaultDateCell(date: Date) {
 	if (!date) return;
-	const options: Intl.DateTimeFormatOptions = {
-		year: 'numeric',
-		month: 'numeric',
-		day: 'numeric',
-		hour: 'numeric',
-		minute: 'numeric',
-		second: 'numeric'
-	};
-	return Intl.DateTimeFormat(locale.get(), options).format(new Date(date));
+	return getFullFormattedDate(date);
 }

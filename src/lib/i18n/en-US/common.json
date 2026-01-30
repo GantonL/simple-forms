@@ -6,7 +6,7 @@
 	"brand": {
 		"name": "Simple Forms",
 		"description": "Management, distribution & signing forms",
-		"support-email": "support@simple-forms.com"
+		"support-email": "simple.forms.app@gmail.com"
 	},
 	"copyright": "© {{year}} Simple Forms. All rights reserved.",
 	"privacy_policy": "Privacy Policy",
@@ -211,5 +211,17 @@
 	"disable_form_sign": "Deny access to sign",
 	"disable_user_form_confirm_message": "This action will block anyone who has a link from accessing the form",
 	"enable_user_form_confirm_message": "This action will reverse the block and reactivate the form",
-	"form_disabled_copy_link_tooltip": "You are not allowed to copy a link of a blocked form"
+	"form_disabled_copy_link_tooltip": "You are not allowed to copy a link of a blocked form",
+	"notifications": "Notifications",
+	"form_settings": "Form settings",
+	"notifications_per_type": {
+		"form_signed": {
+			"label": "Form signed",
+			"description": "Get notified when a signed form has been created or if we failed to create one. Off by default"
+		}
+	},
+	"notification_x_updated_successfully": "{{notification}} notification updated successfully",
+	"notification_x_updated_failed": "{{notification}} notification failed to update",
+	"settings": "Settings",
+	"send_me_a_copy": "Send me a copy"
 }

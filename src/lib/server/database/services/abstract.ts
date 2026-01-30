@@ -61,9 +61,9 @@ export class AbstractService<
 	/**
 	 * Find a record by ID
 	 */
-	async findById(id: string | number): Promise<TSelect | undefined> {
+	async findById(id: string | number, options?: QueryOptions): Promise<TSelect | undefined> {
 		const result = await this.db
-			.select()
+			.select(options?.select ?? undefined)
 			.from(this.table as any)
 			.where(eq((this.table as any).id, id))
 			.limit(1);
@@ -120,9 +120,10 @@ export class AbstractService<
 	 * Find one record
 	 */
 	async findOne(
-		where?: WhereCondition<TTable> | WhereCondition<TTable>[]
+		where?: WhereCondition<TTable> | WhereCondition<TTable>[],
+		options?: QueryOptions
 	): Promise<TSelect | undefined> {
-		const results = await this.find(where, { limit: 1 });
+		const results = await this.find(where, { ...options, limit: 1 });
 		return results[0];
 	}
 
