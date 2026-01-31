@@ -66,23 +66,25 @@
 			</div>
 		{/if}
 		<Card.Header class="flex flex-row justify-between">
-			<div class="flex flex-col items-start gap-2">
-				<Card.Title class="flex flex-row items-center gap-2">
-					<span>{data.name}</span>
+			<div class="flex w-full flex-col items-start gap-2">
+				<Card.Title class="flex w-full flex-row items-center justify-between gap-2">
+					<span class="max-w-24 truncate">{data.name}</span>
+					{#if data.is_active !== false}
+						<Badge variant="secondary" class="bg-secondary/35">
+							<Signature size={12} />
+							{data.submissions}
+						</Badge>
+					{/if}
+					<Menu
+						configuration={menuConfiguration}
+						rawData={data}
+						event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
+					/>
 				</Card.Title>
-				<Card.Description>{data.description}</Card.Description>
+				<Card.Description class="flex w-full">
+					<span class="max-w-lg truncate">{data.description}</span>
+				</Card.Description>
 			</div>
-			{#if data.is_active !== false}
-				<Badge variant="secondary" class="bg-secondary/35">
-					<Signature size={12} />
-					{data.submissions}
-				</Badge>
-			{/if}
-			<Menu
-				configuration={menuConfiguration}
-				rawData={data}
-				event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
-			/>
 		</Card.Header>
 		<Card.Footer class="align-items flex flex-row justify-between gap-2">
 			{@render copyLinkButton()}
