@@ -6,9 +6,9 @@ import {
 	PersonStanding,
 	LogIn,
 	Signature,
-	FileSignature,
+	FilePenLine,
 	LayoutDashboard,
-	BookTemplate
+	BookDashed
 } from '@lucide/svelte';
 
 export interface GroupedRoutes {
@@ -16,6 +16,12 @@ export interface GroupedRoutes {
 	children: Link[];
 	excludeFromMainMenu?: boolean;
 }
+export const FormsPage: Link = {
+	label: 'common.my_forms',
+	path: '/forms',
+	icon: FilePenLine
+};
+
 export const AppRoutes: GroupedRoutes[] = [
 	{
 		title: 'common.application',
@@ -25,15 +31,11 @@ export const AppRoutes: GroupedRoutes[] = [
 				path: '/dashboard',
 				icon: LayoutDashboard
 			},
-			{
-				label: 'common.my_forms',
-				path: '/forms',
-				icon: FileSignature
-			},
+			FormsPage,
 			{
 				label: 'common.templates_raw',
 				path: '/templates',
-				icon: BookTemplate
+				icon: BookDashed
 			},
 			{
 				label: 'common.public',
