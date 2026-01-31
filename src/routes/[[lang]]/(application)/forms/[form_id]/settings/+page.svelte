@@ -7,11 +7,16 @@
 	import { Switch } from '$lib/components/ui/switch';
 	import { t } from '$lib/i18n';
 	import { NOTIFICATIONS } from '$lib/models/workflows';
-	import type { FormSettingsSelect } from '$lib/server/database/schemas/form';
+	import type { FormSettingsSelect, UserForm } from '$lib/server/database/schemas/form';
 	import { toast } from 'svelte-sonner';
 	import { UsersForms } from '../../../../../api';
+	import AppBreadcrumbs from '$lib/components/app-breadcrumbs/app-breadcrumbs.svelte';
+	import type { BreadcrumbItemConfiguration } from '$lib/models/breadcrumb-item-configuration';
+	import { FormsPageItem, SpecificFormPageItem } from '$lib/client/configurations/breadcrumbs';
+	import { Cog } from '@lucide/svelte';
 
 	const settings: FormSettingsSelect = $state(page.data.settings);
+	const userForm: UserForm = $state(page.data.userForm);
 	const availableNotifications = [NOTIFICATIONS.FORM_SIGNED];
 	settings.notifications = {
 		[NOTIFICATIONS.FORM_SIGNED]: {
@@ -39,10 +44,23 @@
 			})
 		);
 	}
+
+	function getBreadcrumbsItems(): BreadcrumbItemConfiguration[] {
+		return [
+			FormsPageItem,
+			SpecificFormPageItem(userForm),
+			{
+				label: 'common.settings',
+				icon: Cog,
+				link: ''
+			}
+		];
+	}
 </script>
 
 <BasePage title="common.forms" description="seo.pages.form_detail.description">
 	{#snippet header()}
+		<AppBreadcrumbs items={getBreadcrumbsItems()}></AppBreadcrumbs>
 		<h2 class="text-2xl font-bold">{$t('common.form_settings')}</h2>
 	{/snippet}
 	<Card.Root>

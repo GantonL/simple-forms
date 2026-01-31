@@ -18,7 +18,7 @@
 	import { useSidebar } from '$lib/components/ui/sidebar';
 	import AppBreadcrumbs from '$lib/components/app-breadcrumbs/app-breadcrumbs.svelte';
 	import type { BreadcrumbItemConfiguration } from '$lib/models/breadcrumb-item-configuration';
-	import { FormsPageItem } from '$lib/client/configurations/breadcrumbs';
+	import { FormsPageItem, SpecificFormPageItem } from '$lib/client/configurations/breadcrumbs';
 	const sidebar = useSidebar();
 
 	const userForm: UserForm = $state(page.data.userForm);
@@ -91,14 +91,7 @@
 	}
 
 	function getBreadcrumbsItems(): BreadcrumbItemConfiguration[] {
-		return [
-			FormsPageItem,
-			{
-				label: userForm.name,
-				translateLabel: false,
-				link: `/${page.url.pathname}`
-			}
-		];
+		return [FormsPageItem, SpecificFormPageItem(userForm)];
 	}
 </script>
 

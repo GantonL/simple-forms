@@ -21,6 +21,11 @@ export const FormsPage: Link = {
 	path: '/forms',
 	icon: FilePenLine
 };
+export const TemplatesPage: Link = {
+	label: 'common.templates_raw',
+	path: '/templates',
+	icon: BookDashed
+};
 
 export const AppRoutes: GroupedRoutes[] = [
 	{
@@ -32,11 +37,7 @@ export const AppRoutes: GroupedRoutes[] = [
 				icon: LayoutDashboard
 			},
 			FormsPage,
-			{
-				label: 'common.templates_raw',
-				path: '/templates',
-				icon: BookDashed
-			},
+			TemplatesPage,
 			{
 				label: 'common.public',
 				path: '/f',
