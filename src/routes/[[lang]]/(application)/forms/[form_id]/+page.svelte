@@ -15,6 +15,9 @@
 	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
 	import { goto } from '$app/navigation';
+	import { useSidebar } from '$lib/components/ui/sidebar';
+	const sidebar = useSidebar();
+
 	const userForm: UserForm = $state(page.data.userForm);
 	const template: FormTemplate = $state(page.data.template);
 	let submissions: FormSubmission[] = $state(page.data.submissions);
@@ -87,9 +90,9 @@
 
 <BasePage title="common.forms" description="seo.pages.form_detail.description">
 	{#snippet header()}
-		<div class="flex flex-row items-start justify-between">
-			<div class="flex flex-col gap-2">
-				<h2 class="text-2xl font-bold">{userForm.name}</h2>
+		<div class="flex w-full flex-row items-start justify-between">
+			<div class="flex max-w-xl min-w-0 flex-col gap-2">
+				<h2 class="truncate text-2xl font-bold">{userForm.name}</h2>
 				<p class="text-lg font-light">{$t('common.user_form_description')}</p>
 				<a
 					href={resolve(`/templates?${SearchParams.TemplateId}=${template.id}`)}
@@ -107,7 +110,7 @@
 						onclick={() => onPageAction(action.event)}
 					>
 						<action.icon size={16} />
-						<span>{$t(action.label)}</span>
+						<span class:hidden={sidebar.isMobile}>{$t(action.label)}</span>
 					</Button>
 				{/each}
 			</div>
