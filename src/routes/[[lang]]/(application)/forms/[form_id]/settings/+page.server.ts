@@ -31,5 +31,5 @@ export const load: PageServerLoad = async ({ fetch, locals, params }) => {
 			}
 		);
 	}
-	return { settings };
+	return { settings, userForm };
 };

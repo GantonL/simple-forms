@@ -7,7 +7,7 @@
 	import { t } from '$lib/i18n';
 	import type { TableConfiguration } from '$lib/models/table';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { LayoutTemplate, TriangleAlert } from '@lucide/svelte';
+	import { FilePenLine, LayoutTemplate, TriangleAlert } from '@lucide/svelte';
 	import { FormsSubmissions } from '../../../../api';
 	import { columns, DEFAULT_ORDER_BY, pageActions, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
@@ -16,6 +16,9 @@
 	import { Button } from '$lib/components/ui/button';
 	import { goto } from '$app/navigation';
 	import { useSidebar } from '$lib/components/ui/sidebar';
+	import AppBreadcrumbs from '$lib/components/app-breadcrumbs/app-breadcrumbs.svelte';
+	import type { BreadcrumbItemConfiguration } from '$lib/models/breadcrumb-item-configuration';
+	import { FormsPageItem, SpecificFormPageItem } from '$lib/client/configurations/breadcrumbs';
 	const sidebar = useSidebar();
 
 	const userForm: UserForm = $state(page.data.userForm);
@@ -86,10 +89,15 @@
 			}
 		}
 	}
+
+	function getBreadcrumbsItems(): BreadcrumbItemConfiguration[] {
+		return [FormsPageItem, SpecificFormPageItem(userForm)];
+	}
 </script>
 
 <BasePage title="common.forms" description="seo.pages.form_detail.description">
 	{#snippet header()}
+		<AppBreadcrumbs items={getBreadcrumbsItems()}></AppBreadcrumbs>
 		<div class="flex w-full flex-row items-start justify-between">
 			<div class="flex max-w-xl min-w-0 flex-col gap-2">
 				<h2 class="truncate text-2xl font-bold">{userForm.name}</h2>
