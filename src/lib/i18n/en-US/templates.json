@@ -8,7 +8,8 @@
 		"terms": "Terms and Conditions",
 		"confirmation": "Confirmation",
 		"admin_statement": "Administrator Section",
-		"researcher_statement": "Researcher Section"
+		"researcher_statement": "Researcher Section",
+		"doctor_statement": "Doctor Section"
 	},
 	"content": {
 		"content": "Your amazing form content",
@@ -17,7 +18,8 @@
 		"terms": "By signing this form, you agree to the following terms and conditions:\n\n1. You have read and understood all information provided\n2. You consent to participate voluntarily\n3. You understand that you may withdraw at any time\n4. Your personal information will be handled according to our privacy policy",
 		"confirmation": "I hereby confirm that I have read, understood, and agree to all the terms and conditions outlined above.",
 		"admin_statement": "Administrator Approval: This form has been reviewed and approved by the administrator.",
-		"researcher_statement": "Researcher Approval: This form has been reviewed and approved by the researcher."
+		"researcher_statement": "Researcher Approval: This form has been reviewed and approved by the researcher.",
+		"doctor_statement": ""
 	},
 	"labels": {
 		"full_name": "Full Name",
@@ -31,6 +33,10 @@
 		"admin_date": "Administrator Date",
 		"researcher_name": "Researcher Name",
 		"researcher_signature": "Researcher Signature",
-		"researcher_date": "Researcher Date"
+		"researcher_date": "Researcher Date",
+		"first_name": "First Name",
+		"last_name": "Surname",
+		"injection_areas": "I declare that I have been given a detailed explanation about Botolinuim Toxin A injection as a medical cosmetic treatment in the following areas:",
+		"doctor_name": "Doctor Name"
 	}
 }
