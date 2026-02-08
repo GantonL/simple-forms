@@ -112,6 +112,10 @@
 		"simple_research_consent_form": {
 			"name": "Simple research consent form",
 			"description": "The signee details at the top, generic content, signature and researcher detailes"
+		},
+		"botox_consent_form": {
+			"name": "BOTOX injection consent form",
+			"description": "BOTOX injection consent form for aesthetics clinics"
 		}
 	},
 	"templates_raw": "Templates",
