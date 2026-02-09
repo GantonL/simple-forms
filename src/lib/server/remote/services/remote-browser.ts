@@ -71,3 +71,8 @@ export const requestLoadStatus = async (): Promise<
 	const response = await res.json();
 	return response;
 };
+
+export const requestToPrepare = async (): Promise<boolean> => {
+	const res = await fetch(`${baseUrl}/load/prepare`, { method: 'POST' });
+	return !!res?.ok;
+};

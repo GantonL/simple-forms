@@ -8,4 +8,5 @@ export const UploadUrl = `${CONTROLLER}/upload-url`;
 export const SignedUrl = (id: number) => `${CONTROLLER}/storage/${String(id)}/signed-url`;
 export const RemoteBrowserServiceCreatePdf = `${CONTROLLER}/remote/browser-service/pdf`;
 export const RemoteBrowserServiceLoadStatus = `${CONTROLLER}/remote/browser-service/load`;
+export const RemoteBrowserServicePrepare = `${CONTROLLER}/remote/browser-service/load/prepare`;
 export const FormSubmissionCandidateData = `${CONTROLLER}/form-submission-candidate-data`;

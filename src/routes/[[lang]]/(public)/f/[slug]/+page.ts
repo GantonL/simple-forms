@@ -1,7 +1,7 @@
-import { GET } from '$lib/api/helpers/request';
+import { GET, POST } from '$lib/api/helpers/request';
 import type { FormTemplate, UserForm } from '$lib/server/database/schemas/form';
 import { error } from '@sveltejs/kit';
-import { FormsTemplates, UsersForms } from '../../../../api';
+import { FormsTemplates, RemoteBrowserServicePrepare, UsersForms } from '../../../../api';
 import { SearchParams } from '$lib/enums/search-params';
 import type { PageLoad } from './$types';
 
@@ -32,5 +32,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		error(500);
 	}
 	response.schema = template.schema;
+
+	POST<unknown, boolean>(RemoteBrowserServicePrepare, {}, { fetch });
+
 	return response;
 };
