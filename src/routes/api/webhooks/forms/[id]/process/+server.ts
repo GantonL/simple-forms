@@ -15,6 +15,7 @@ import {
 	sendFormSignedSuccessNotification,
 	sendSigneeRequestedSignedCopyNotification
 } from '$lib/server/notifications/service';
+import { getSigneeKey } from '$lib/utils';
 
 export const POST: RequestHandler = async ({ request, params, fetch: internalFetch }) => {
 	console.log('[Form webhook]', 'Requetsed to process a newly created form');
@@ -73,7 +74,7 @@ function getDefaultDisplayData(
 ): FormSubmission['display_data'] {
 	const fields = data!.fields!;
 	const keys = Object.keys(fields);
-	const signeeKey = keys.find((k) => k.includes('full_name') || k.includes('email'));
+	const signeeKey = getSigneeKey(keys, data!.signeeFieldKey);
 	return {
 		signee: fields[signeeKey ?? keys[0]]
 	};

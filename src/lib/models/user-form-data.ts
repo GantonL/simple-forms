@@ -21,4 +21,10 @@ export interface UserFormData {
 	 * When the source field is updated, the target field should clearly reflect that value.
 	 */
 	linkedFields?: Record<string, string>;
+
+	/**
+	 * Repesents the the choosen field id rule to determine the signee of the form.
+	 * Defaults to 'full_name';
+	 */
+	signeeFieldKey?: string;
 }

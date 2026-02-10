@@ -24,3 +24,11 @@ export function getFullFormattedDate(date: Date) {
 	};
 	return Intl.DateTimeFormat(locale.get(), options).format(new Date(date));
 }
+
+export function getSigneeKey(keys: string[], searchKey?: string) {
+	return keys.find((k) =>
+		searchKey
+			? k.includes(searchKey)
+			: ['full_name', 'id'].some((defaultkey) => k.includes(defaultkey))
+	);
+}

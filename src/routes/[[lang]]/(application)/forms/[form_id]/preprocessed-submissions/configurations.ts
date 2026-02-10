@@ -4,6 +4,7 @@ import type { TableConfiguration } from '$lib/models/table';
 import type { FormSubmissionCandidateDataSelect } from '$lib/server/database/schemas/form';
 import type { ColumnDef } from '@tanstack/table-core';
 import RegeneratePreprocessedSubmission from './regenerate-preprocessed-submission.svelte';
+import { getSigneeKey } from '$lib/utils';
 
 export const DEFAULT_ORDER_BY = '-createdAt';
 
@@ -25,9 +26,10 @@ export const columns: ColumnDef<FormSubmissionCandidateDataSelect>[] = [
 		accessorKey: 'data',
 		header: 'common.signee',
 		cell: ({ row }) => {
-			const fields = row.original.data!.fields!;
+			const data = row.original.data;
+			const fields = data!.fields!;
 			const keys = Object.keys(fields);
-			const signeeKey = keys.find((k) => k.includes('full_name') || k.includes('email'));
+			const signeeKey = getSigneeKey(keys, data!.signeeFieldKey);
 			return fields[signeeKey ?? keys[0]];
 		}
 	},
