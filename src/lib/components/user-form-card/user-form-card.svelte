@@ -15,8 +15,16 @@
 	import * as Dialog from '../ui/dialog';
 	import { Badge } from '../ui/badge';
 	import * as Tooltip from '../ui/tooltip';
-	let { data, onEvent }: { data: UserForm; onEvent: (event: AppCustomEvent<UserForm>) => void } =
-		$props();
+	import type { ClassValue } from 'svelte/elements';
+	let {
+		data,
+		onEvent,
+		class: className
+	}: {
+		data: UserForm;
+		onEvent: (event: AppCustomEvent<UserForm>) => void;
+		class?: ClassValue;
+	} = $props<>();
 	let copyDialogOpenInProgress = $state(false);
 	let copyLink = $state('');
 	let copiedSuccess = $state(false);
@@ -56,7 +64,8 @@
 
 <button class="hover:cursor-pointer" onclick={onOpen}>
 	<Card.Root
-		class="relative flex flex-col justify-between overflow-hidden {data.is_active === false
+		class="{className} relative flex flex-col justify-between overflow-hidden {data.is_active ===
+		false
 			? 'opacity-60'
 			: ''}"
 	>
