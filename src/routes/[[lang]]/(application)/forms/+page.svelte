@@ -106,7 +106,7 @@
 	{/snippet}
 	<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
 		{#each userForms as userForm (userForm.id)}
-			<UserFormCard data={userForm} onEvent={onUserCardEvent} />
+			<UserFormCard class="h-full" data={userForm} onEvent={onUserCardEvent} />
 		{/each}
 	</div>
 </BasePage>
