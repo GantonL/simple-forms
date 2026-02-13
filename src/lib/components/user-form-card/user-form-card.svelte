@@ -15,8 +15,16 @@
 	import * as Dialog from '../ui/dialog';
 	import { Badge } from '../ui/badge';
 	import * as Tooltip from '../ui/tooltip';
-	let { data, onEvent }: { data: UserForm; onEvent: (event: AppCustomEvent<UserForm>) => void } =
-		$props();
+	import type { ClassValue } from 'svelte/elements';
+	let {
+		data,
+		onEvent,
+		class: className
+	}: {
+		data: UserForm;
+		onEvent: (event: AppCustomEvent<UserForm>) => void;
+		class?: ClassValue;
+	} = $props();
 	let copyDialogOpenInProgress = $state(false);
 	let copyLink = $state('');
 	let copiedSuccess = $state(false);
@@ -56,7 +64,8 @@
 
 <button class="hover:cursor-pointer" onclick={onOpen}>
 	<Card.Root
-		class="relative flex flex-col justify-between overflow-hidden {data.is_active === false
+		class="{className} relative flex flex-col justify-between overflow-hidden {data.is_active ===
+		false
 			? 'opacity-60'
 			: ''}"
 	>
@@ -65,27 +74,29 @@
 				<PowerOff size={100} />
 			</div>
 		{/if}
-		<Card.Header class="flex flex-row justify-between">
-			<div class="flex w-full flex-col items-start gap-2">
-				<Card.Title class="flex w-full flex-row items-center justify-between gap-2">
-					<span class="max-w-24 truncate">{data.name}</span>
-					{#if data.is_active !== false}
-						<Badge variant="secondary" class="bg-secondary/35">
-							<Signature size={12} />
-							{data.submissions}
-						</Badge>
-					{/if}
-					<Menu
-						configuration={menuConfiguration}
-						rawData={data}
-						event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
-					/>
-				</Card.Title>
-				<Card.Description class="flex w-full">
-					<span class="max-w-lg truncate">{data.description}</span>
-				</Card.Description>
-			</div>
+		<Card.Header class="flex w-full flex-col">
+			<Card.Title class="flex w-full flex-row items-center justify-between gap-2">
+				<div class="flex min-w-0 grow">
+					<span class="truncate">{data.name}</span>
+				</div>
+				<Menu
+					configuration={menuConfiguration}
+					rawData={data}
+					event={(e) => onEvent({ type: e.type as AppCustomEventType, data })}
+				/>
+			</Card.Title>
+			<Card.Description class="flex w-full">
+				<span class="max-w-lg truncate">{data.description}</span>
+			</Card.Description>
 		</Card.Header>
+		<Card.Content>
+			{#if data.is_active !== false}
+				<Badge variant="secondary" class="bg-secondary/35">
+					<Signature size={12} />
+					{data.submissions}
+				</Badge>
+			{/if}
+		</Card.Content>
 		<Card.Footer class="align-items flex flex-row justify-between gap-2">
 			{@render copyLinkButton()}
 			<span class="text-muted-foreground text-xs italic"
