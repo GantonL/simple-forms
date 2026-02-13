@@ -7,7 +7,7 @@
 	import { t } from '$lib/i18n';
 	import type { TableConfiguration } from '$lib/models/table';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { FilePenLine, LayoutTemplate, TriangleAlert } from '@lucide/svelte';
+	import { LayoutTemplate, TriangleAlert } from '@lucide/svelte';
 	import { FormsSubmissions } from '../../../../api';
 	import { columns, DEFAULT_ORDER_BY, pageActions, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';

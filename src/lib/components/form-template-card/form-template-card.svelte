@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import type { FormTemplate } from '$lib/server/database/schemas/form';
-	import { FilePlus2, LayoutTemplate } from '@lucide/svelte';
+	import { FilePlusCorner, LayoutTemplate } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { type AppCustomEvent } from '$lib/models/common';
@@ -31,8 +31,8 @@
 	</Card.Content>
 	<Card.Footer class="flex flex-row gap-2">
 		<Button class="flex flex-row items-center gap-2" onclick={onCreate}>
-			<FilePlus2 size={12} />
-			<span>{$t('common.create')}</span>
+			<FilePlusCorner size={12} />
+			<span>{$t('common.form_builder.create_form')}</span>
 		</Button>
 	</Card.Footer>
 </Card.Root>

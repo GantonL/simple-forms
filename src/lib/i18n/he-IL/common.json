@@ -222,5 +222,6 @@
 	"notification_x_updated_successfully": "התראת {{notification}} עודכנה בהצלחה",
 	"notification_x_updated_failed": "עדכון התראת {{notification}} נכשל",
 	"settings": "הגדרות",
-	"send_me_a_copy": "שלחו לי העתק"
+	"send_me_a_copy": "שלחו לי העתק",
+	"create_template": "יצירת תבנית"
 }

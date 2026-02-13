@@ -12,7 +12,7 @@
 		return [
 			TemplatesPageItem,
 			{
-				label: 'common.create',
+				label: 'common.form_builder.create_form',
 				icon: FilePlus,
 				link: ''
 			}
