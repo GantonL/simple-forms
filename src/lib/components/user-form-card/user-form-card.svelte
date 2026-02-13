@@ -24,7 +24,7 @@
 		data: UserForm;
 		onEvent: (event: AppCustomEvent<UserForm>) => void;
 		class?: ClassValue;
-	} = $props<>();
+	} = $props();
 	let copyDialogOpenInProgress = $state(false);
 	let copyLink = $state('');
 	let copiedSuccess = $state(false);
