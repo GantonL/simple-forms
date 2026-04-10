@@ -8,7 +8,7 @@
 		isFieldBlock,
 		FIELD_TYPES
 	} from './types';
-	import { GripVertical, Trash2, FileText, Plus } from '@lucide/svelte';
+	import { GripVertical, GripHorizontal, X, FileText, Plus, Trash2 } from '@lucide/svelte';
 	import * as Icons from '@lucide/svelte';
 
 	type Props = {
@@ -20,6 +20,8 @@
 		onBlockMove: (blockId: string, targetSectionIndex: number, targetBlockIndex: number) => void;
 		onBlockDelete: (id: string) => void;
 		onNewSection: () => void;
+		onSectionMove: (sectionId: string, targetIndex: number) => void;
+		onSectionDelete: (sectionId: string) => void;
 	};
 
 	let {
@@ -30,13 +32,17 @@
 		onBlockSelect,
 		onBlockMove,
 		onBlockDelete,
-		onNewSection
+		onNewSection,
+		onSectionMove,
+		onSectionDelete
 	}: Props = $props();
 
 	let canvasRef: HTMLDivElement | undefined = $state();
 	let dragOverSection = $state<number | null>(null);
 	let dragOverBlock = $state<number | null>(null);
 	let draggingBlockId = $state<string | null>(null);
+	let draggingSectionId = $state<string | null>(null);
+	let dragOverSectionDropZone = $state<number | null>(null);
 
 	function getFieldIcon(fieldType: string) {
 		const iconMap: Record<string, any> = {
@@ -114,6 +120,34 @@
 		dragOverBlock = null;
 	}
 
+	function handleSectionDragStart(e: DragEvent, sectionId: string) {
+		if (!e.dataTransfer) return;
+		e.dataTransfer.effectAllowed = 'move';
+		e.dataTransfer.setData('application/section', sectionId);
+		draggingSectionId = sectionId;
+	}
+
+	function handleSectionDragEnd() {
+		draggingSectionId = null;
+		dragOverSectionDropZone = null;
+	}
+
+	function handleSectionDropZoneDragOver(e: DragEvent, targetIndex: number) {
+		if (!draggingSectionId) return;
+		e.preventDefault();
+		if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+		dragOverSectionDropZone = targetIndex;
+	}
+
+	function handleSectionDropZoneDrop(e: DragEvent, targetIndex: number) {
+		e.preventDefault();
+		if (draggingSectionId) {
+			onSectionMove(draggingSectionId, targetIndex);
+		}
+		draggingSectionId = null;
+		dragOverSectionDropZone = null;
+	}
+
 	function getFieldTypeLabel(fieldType: string): string {
 		const type = FIELD_TYPES.find((ft: FieldTypeConfig) => ft.value === fieldType);
 		return type ? $t(type.labelKey) : fieldType;
@@ -122,7 +156,7 @@
 
 <div
 	bind:this={canvasRef}
-	class="relative h-full overflow-y-auto bg-white p-6"
+	class="relative h-full overflow-y-auto bg-muted/20 p-6"
 	class:ring-2={isDragging}
 	class:ring-primary={isDragging}
 	class:ring-dashed={isDragging}
@@ -153,18 +187,59 @@
 			</p>
 		</div>
 	{:else}
-		<div class="space-y-4">
+		<div class="space-y-2">
 			{#each sections as section, sectionIndex (section.id)}
+				<!-- Drop zone before section -->
+				{#if sectionIndex === 0}
+					<div
+						role="listitem"
+						aria-label="Drop zone"
+						class="h-2 rounded transition-all {dragOverSectionDropZone === 0 ? 'bg-primary/30' : ''}"
+						ondragover={(e) => handleSectionDropZoneDragOver(e, 0)}
+						ondrop={(e) => handleSectionDropZoneDrop(e, 0)}
+						ondragleave={() => (dragOverSectionDropZone = null)}
+					></div>
+				{/if}
+
 				<div
 					role="region"
 					aria-label="{$t('common.template_builder.new_section')} {sectionIndex + 1}"
-					class="rounded-lg border-2 p-4 transition-all {dragOverSection === sectionIndex &&
-					dragOverBlock === null
+					class="group/section relative rounded-lg border-2 border-muted-foreground/20 p-4 transition-all {draggingSectionId ===
+					section.id
+						? 'opacity-50'
+						: ''} {dragOverSection === sectionIndex && dragOverBlock === null
 						? 'border-primary bg-primary/5'
 						: ''}"
+					draggable="true"
+					ondragstart={(e) => handleSectionDragStart(e, section.id)}
+					ondragend={handleSectionDragEnd}
 					ondragover={(e) => handleSectionDragOver(e, sectionIndex)}
 					ondrop={(e) => handleSectionDrop(e, sectionIndex)}
 				>
+					<!-- Section Header -->
+					<div
+						class="absolute -top-3 left-1/2 flex -translate-x-1/2 gap-1 opacity-0 transition-opacity group-hover/section:opacity-100"
+					>
+						<button
+							type="button"
+							class="bg-background text-muted-foreground flex cursor-grab items-center gap-1 rounded px-2 py-0.5 text-xs shadow-sm ring-1 ring-black/10 active:cursor-grabbing"
+							aria-label={$t('common.template_builder.drag_to_reorder')}
+						>
+							<GripHorizontal class="h-3 w-3" />
+							<span>{$t('common.template_builder.new_section')} {sectionIndex + 1}</span>
+						</button>
+
+						{#if sections.length > 1}
+							<button
+								type="button"
+								class="bg-destructive/10 text-destructive hover:bg-destructive/20 rounded px-1.5 py-0.5 shadow-sm ring-1 ring-destructive/20"
+								onclick={() => onSectionDelete(section.id)}
+								aria-label={$t('common.delete')}
+							>
+								<Trash2 class="h-3 w-3" />
+							</button>
+						{/if}
+					</div>
 					{#if section.blocks.length === 0}
 						<div
 							class="flex min-h-[80px] items-center justify-center rounded border-2 border-dashed"
@@ -179,11 +254,9 @@
 								{@const isSelected = selectedBlockId === block.id}
 								{@const isDraggingThis = draggingBlockId === block.id}
 								<div
-									class="group relative min-w-[200px] flex-1 rounded-lg border-2 p-4 transition-all {isSelected ||
+									class="bg-card group relative min-w-[200px] flex-1 rounded-xl border p-4 shadow-sm transition-all hover:shadow-md {isSelected ||
 									(dragOverSection === sectionIndex && dragOverBlock === blockIndex)
 										? 'border-primary bg-primary/5'
-										: 'border-transparent'} {!isSelected
-										? 'hover:border-muted-foreground/30'
 										: ''} {isDraggingThis ? 'opacity-50' : ''}"
 									draggable="true"
 									ondragstart={(e) => handleBlockDragStart(e, block.id)}
@@ -201,7 +274,7 @@
 									>
 										<button
 											type="button"
-											class="cursor-grab rounded bg-white p-1 shadow-sm ring-1 ring-black/5 active:cursor-grabbing"
+											class="bg-background cursor-grab rounded p-1 shadow-sm ring-1 ring-black/10 active:cursor-grabbing"
 											aria-label={$t('common.template_builder.drag_to_reorder')}
 										>
 											<GripVertical class="h-4 w-4" />
@@ -209,21 +282,17 @@
 									</div>
 
 									<!-- Delete Button -->
-									<div
-										class="absolute -end-2 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100"
+									<button
+										type="button"
+										class="bg-destructive text-destructive-foreground absolute -top-2 -end-2 z-10 rounded-full p-1 shadow-md opacity-0 transition-all hover:scale-110 group-hover:opacity-100"
+										onclick={(e) => {
+											e.stopPropagation();
+											onBlockDelete(block.id);
+										}}
+										aria-label={$t('common.delete')}
 									>
-										<button
-											type="button"
-											class="text-destructive hover:bg-destructive/10 rounded bg-white p-1 shadow-sm ring-1 ring-black/5"
-											onclick={(e) => {
-												e.stopPropagation();
-												onBlockDelete(block.id);
-											}}
-											aria-label={$t('common.delete')}
-										>
-											<Trash2 class="h-4 w-4" />
-										</button>
-									</div>
+										<X class="h-3.5 w-3.5" />
+									</button>
 
 									<!-- Block Content Preview -->
 									{#if isTextBlock(block.properties)}
@@ -262,6 +331,18 @@
 						</div>
 					{/if}
 				</div>
+
+				<!-- Drop zone after section -->
+				<div
+					role="listitem"
+					aria-label="Drop zone"
+					class="h-2 rounded transition-all {dragOverSectionDropZone === sectionIndex + 1
+						? 'bg-primary/30'
+						: ''}"
+					ondragover={(e) => handleSectionDropZoneDragOver(e, sectionIndex + 1)}
+					ondrop={(e) => handleSectionDropZoneDrop(e, sectionIndex + 1)}
+					ondragleave={() => (dragOverSectionDropZone = null)}
+				></div>
 			{/each}
 		</div>
 

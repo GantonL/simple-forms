@@ -3,6 +3,8 @@
 	import { direction } from '$lib/stores';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
+	import * as Sheet from '$lib/components/ui/sheet';
+	import { Blocks, Settings2 } from '@lucide/svelte';
 	import BlockPalette from './block-palette.svelte';
 	import BuilderCanvas from './builder-canvas.svelte';
 	import BlockProperties from './block-properties.svelte';
@@ -11,6 +13,8 @@
 	let sections = $state<Section[]>([]);
 	let selectedBlockId = $state<string | null>(null);
 	let draggedBlockType = $state<{ type: BlockType; fieldType?: FieldType } | null>(null);
+	let paletteOpen = $state(false);
+	let propertiesOpen = $state(false);
 
 	const selectedBlock = $derived(
 		sections.flatMap((s) => s.blocks).find((b) => b.id === selectedBlockId) ?? null
@@ -140,6 +144,33 @@
 		draggedBlockType = null;
 	}
 
+	function handleMobileBlockAdd(type: BlockType, fieldType?: FieldType) {
+		draggedBlockType = { type, fieldType };
+		const targetSection = sections.length > 0 ? 0 : 0;
+		handleCanvasDrop(targetSection);
+		paletteOpen = false;
+	}
+
+	function handleSectionMove(sectionId: string, targetIndex: number) {
+		const currentIndex = sections.findIndex((s) => s.id === sectionId);
+		if (currentIndex === -1 || currentIndex === targetIndex) return;
+		const [moved] = sections.splice(currentIndex, 1);
+		const adjustedTarget = currentIndex < targetIndex ? targetIndex - 1 : targetIndex;
+		sections.splice(adjustedTarget, 0, moved);
+		sections = [...sections];
+	}
+
+	function handleSectionDelete(sectionId: string) {
+		if (sections.length <= 1) return;
+		sections = sections.filter((s) => s.id !== sectionId);
+		// Clear selection if deleted block was in that section
+		const deletedSection = sections.find((s) => s.id === sectionId);
+		if (deletedSection && selectedBlockId) {
+			const blockInSection = deletedSection.blocks.find((b) => b.id === selectedBlockId);
+			if (blockInSection) selectedBlockId = null;
+		}
+	}
+
 	function handleNewSection() {
 		sections = [...sections, { id: generateId('section'), blocks: [] }];
 	}
@@ -157,12 +188,65 @@
 	});
 </script>
 
+<!-- Mobile Toolbar -->
+<div class="mb-4 flex gap-2 md:hidden">
+	<Button variant="outline" onclick={() => (paletteOpen = true)}>
+		<Blocks class="mr-2 h-4 w-4" />
+		{$t('common.template_builder.blocks')}
+	</Button>
+	<Button variant="outline" onclick={() => (propertiesOpen = true)} disabled={!selectedBlock}>
+		<Settings2 class="mr-2 h-4 w-4" />
+		{$t('common.template_builder.properties')}
+	</Button>
+</div>
+
+<!-- Mobile Sheets -->
+<Sheet.Root bind:open={paletteOpen}>
+	<Sheet.Content side="left">
+		<Sheet.Header>
+			<Sheet.Title>{$t('common.template_builder.blocks')}</Sheet.Title>
+			<Sheet.Description>{$t('common.template_builder.drag_blocks')}</Sheet.Description>
+		</Sheet.Header>
+		<div class="p-4">
+			<BlockPalette
+				onDragStart={handlePaletteDragStart}
+				onDragEnd={handleDragEnd}
+				onSelect={handleMobileBlockAdd}
+			/>
+		</div>
+	</Sheet.Content>
+</Sheet.Root>
+
+<Sheet.Root bind:open={propertiesOpen}>
+	<Sheet.Content side="right">
+		<Sheet.Header>
+			<Sheet.Title>{$t('common.template_builder.properties')}</Sheet.Title>
+			<Sheet.Description>
+				{#if selectedBlock}
+					{$t('common.template_builder.edit_properties')}
+				{:else}
+					{$t('common.template_builder.select_block')}
+				{/if}
+			</Sheet.Description>
+		</Sheet.Header>
+		<div class="p-4">
+			{#if selectedBlock}
+				<BlockProperties block={selectedBlock} onChange={handlePropertiesChange} />
+			{:else}
+				<p class="text-muted-foreground text-center text-sm">
+					{$t('common.template_builder.no_selection')}
+				</p>
+			{/if}
+		</div>
+	</Sheet.Content>
+</Sheet.Root>
+
 <div
-	class="flex h-[calc(100vh-200px)] min-h-[600px] gap-4"
+	class="flex h-[calc(100vh-200px)] min-h-[400px] gap-4 md:min-h-[600px]"
 	style="direction: {$direction === 'lr' ? 'ltr' : 'rtl'}"
 >
-	<!-- Left Sidebar: Block Palette -->
-	<Card.Root class="w-64 shrink-0 overflow-y-auto">
+	<!-- Left Sidebar: Block Palette (Desktop only) -->
+	<Card.Root class="hidden w-64 shrink-0 overflow-y-auto border-0 bg-muted/30 shadow-none md:block">
 		<Card.Header class="pb-2">
 			<Card.Title class="text-lg">{$t('common.template_builder.blocks')}</Card.Title>
 			<Card.Description>{$t('common.template_builder.drag_blocks')}</Card.Description>
@@ -188,12 +272,14 @@
 				onBlockMove={handleBlockMove}
 				onBlockDelete={handleBlockDelete}
 				onNewSection={handleNewSection}
+				onSectionMove={handleSectionMove}
+				onSectionDelete={handleSectionDelete}
 			/>
 		</Card.Content>
 	</Card.Root>
 
-	<!-- Right Sidebar: Properties Panel -->
-	<Card.Root class="w-72 shrink-0 overflow-y-auto">
+	<!-- Right Sidebar: Properties Panel (Desktop only) -->
+	<Card.Root class="hidden w-72 shrink-0 overflow-y-auto border-0 bg-muted/30 shadow-none md:block">
 		<Card.Header class="pb-2">
 			<Card.Title class="text-lg">{$t('common.template_builder.properties')}</Card.Title>
 			<Card.Description>

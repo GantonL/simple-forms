@@ -8,9 +8,10 @@
 	type Props = {
 		onDragStart: (type: BlockType, fieldType?: FieldType) => void;
 		onDragEnd: () => void;
+		onSelect?: (type: BlockType, fieldType?: FieldType) => void;
 	};
 
-	let { onDragStart, onDragEnd }: Props = $props();
+	let { onDragStart, onDragEnd, onSelect }: Props = $props();
 
 	function getIcon(iconName: string) {
 		const iconMap: Record<string, any> = {
@@ -48,6 +49,7 @@
 			draggable="true"
 			ondragstart={(e) => handleDragStart(e, 'text')}
 			ondragend={handleDragEnd}
+			onclick={() => onSelect?.('text')}
 		>
 			<FileText />
 			<span>{$t('common.template_builder.text_block')}</span>
@@ -69,6 +71,7 @@
 					draggable="true"
 					ondragstart={(e) => handleDragStart(e, 'field', fieldType.value)}
 					ondragend={handleDragEnd}
+					onclick={() => onSelect?.('field', fieldType.value)}
 				>
 					<IconComponent />
 					<span>{$t(fieldType.labelKey)}</span>
