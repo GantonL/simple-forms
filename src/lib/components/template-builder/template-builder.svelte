@@ -4,11 +4,15 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import * as Sheet from '$lib/components/ui/sheet';
+	import { Switch } from '$lib/components/ui/switch';
+	import { Label } from '$lib/components/ui/label';
 	import { Blocks, Settings2 } from '@lucide/svelte';
 	import BlockPalette from './block-palette.svelte';
 	import BuilderCanvas from './builder-canvas.svelte';
 	import BlockProperties from './block-properties.svelte';
 	import type { CanvasBlock, Section, BlockType, FieldType } from './types';
+
+	let { onSave }: { onSave?: (sections: Section[]) => void } = $props();
 
 	let sections = $state<Section[]>([]);
 	let selectedBlockId = $state<string | null>(null);
@@ -303,11 +307,16 @@
 </div>
 
 <!-- Action Bar -->
-<div class="mt-4 flex justify-end gap-2">
-	<Button variant="outline" onclick={handleClearCanvas}>
-		{$t('common.template_builder.clear_canvas')}
-	</Button>
-	<Button disabled={sections.every((s) => s.blocks.length === 0)}>
-		{$t('common.template_builder.save_template')}
-	</Button>
+<div class="mt-4 flex flex-col justify-end gap-4 sm:flex-row sm:items-center">
+	<div class="flex gap-2">
+		<Button variant="outline" onclick={handleClearCanvas}>
+			{$t('common.template_builder.clear_canvas')}
+		</Button>
+		<Button
+			disabled={sections.every((s) => s.blocks.length === 0)}
+			onclick={() => onSave?.(sections)}
+		>
+			{$t('common.template_builder.save_template')}
+		</Button>
+	</div>
 </div>

@@ -6,5 +6,6 @@ export enum AppCustomEventType {
 	Open = 'open',
 	Disable = 'disable',
 	Enable = 'enable',
-	SubItem = 'sub_item'
+	SubItem = 'sub_item',
+	Publish = 'publish'
 }

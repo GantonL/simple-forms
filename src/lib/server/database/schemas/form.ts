@@ -18,6 +18,8 @@ import type { SignedFormUserPreferedOptions } from '$lib/models/signed-form-user
 export const FormTemplateTable = pgTable('form_template', {
 	id: serial('id').primaryKey(),
 	key: text('key').$type<TemplatesKeys>().unique(),
+	user_id: text('user_id').references(() => user.id),
+	is_community: boolean('is_community').default(false).notNull(),
 	schema: jsonb('schema').$type<FormTemplateSchema>().notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at')

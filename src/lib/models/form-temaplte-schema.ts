@@ -50,9 +50,11 @@ export interface PdfLayout {
 
 export interface FormTemplateSchema {
 	version: string;
-	direction: CanvasDirection;
+	direction: CanvasDirection | string;
+	name?: string;
+	description?: string;
 	editableTextBlocks: EditableTextBlocks[];
 	fields: Field[];
 	layout: Layout;
-	pdfLayout: PdfLayout;
+	pdfLayout?: PdfLayout;
 }
