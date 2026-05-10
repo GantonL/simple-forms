@@ -1,7 +1,13 @@
 import locale from '$lib/hooks/locale';
 import { sequence } from '@sveltejs/kit/hooks';
 import { handle as authHandle } from '$lib/server/auth/handle';
-import { BASE_APP_URL, BROWSER_SERVICE_HOST, BROWSER_SERVICE_PORT } from '$env/static/private';
+import {
+	BASE_APP_URL,
+	BROWSER_SERVICE_HOST,
+	BROWSER_SERVICE_PORT,
+	PAYMENTS_SERVICE_HOST,
+	PAYMENTS_SERVICE_PORT
+} from '$env/static/private';
 
 export const handle = sequence(csrfHandle, locale, authHandle);
 
@@ -11,6 +17,7 @@ export async function csrfHandle({ event, resolve }) {
 		console.log('Request from origin', origin);
 		const allowedOrigins = [
 			`http://${BROWSER_SERVICE_HOST}:${BROWSER_SERVICE_PORT}`,
+			`http://${PAYMENTS_SERVICE_HOST}:${PAYMENTS_SERVICE_PORT}`,
 			BASE_APP_URL,
 			'http://localhost:5173'
 		];
