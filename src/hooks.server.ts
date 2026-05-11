@@ -1,6 +1,7 @@
 import locale from '$lib/hooks/locale';
 import { sequence } from '@sveltejs/kit/hooks';
 import { handle as authHandle } from '$lib/server/auth/handle';
+import { handle as paymentsHandle } from '$lib/server/remote/services/payments';
 import {
 	BASE_APP_URL,
 	BROWSER_SERVICE_HOST,
@@ -9,7 +10,7 @@ import {
 	PAYMENTS_SERVICE_PORT
 } from '$env/static/private';
 
-export const handle = sequence(csrfHandle, locale, authHandle);
+export const handle = sequence(csrfHandle, locale, authHandle, paymentsHandle);
 
 export async function csrfHandle({ event, resolve }) {
 	if (['POST', 'DELETE', 'PUT', 'PATCH'].includes(event.request.method)) {
