@@ -88,6 +88,9 @@
 	"built_by": "Built by {{author}}",
 	"email_verified": "Email verified",
 	"last_updated": "Last updated",
+	"plan": "Plan",
+	"license": "License",
+	"license_id_tooltip": "License ID: {{id}}",
 	"signed_up_successfuly": "Signed up successfuly",
 	"signup_title": "Sign up to create a new account",
 	"signup_description": "Use a valid email address and a strong password",
@@ -223,5 +226,10 @@
 	"notification_x_updated_successfully": "{{notification}} notification updated successfully",
 	"notification_x_updated_failed": "{{notification}} notification failed to update",
 	"settings": "Settings",
-	"send_me_a_copy": "Send me a copy"
+	"send_me_a_copy": "Send me a copy",
+	"plans": {
+		"46138": {
+			"name": "Basic"
+		}
+	}
 }

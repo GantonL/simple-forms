@@ -7,5 +7,7 @@
 </script>
 
 <BasePage title={user.name ?? 'common.user'} description="seo.pages.user.description">
-	<UserProfileCard {user} />
+	<div class="flex w-full items-center justify-center">
+		<UserProfileCard {user} />
+	</div>
 </BasePage>
