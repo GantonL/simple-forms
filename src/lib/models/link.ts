@@ -1,3 +1,4 @@
+import type { Plans } from '$lib/enums/plans';
 import type { IconProps } from '@lucide/svelte';
 import type { Component } from 'svelte';
 
@@ -8,4 +9,5 @@ export interface Link {
 	authenticationRequired?: boolean; // defaults to true,
 	hidden?: boolean;
 	labelParams?: Record<string, string>;
+	planRequired?: Plans[];
 }

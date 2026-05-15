@@ -2,7 +2,7 @@ import { svelteKitHandler } from 'better-auth/svelte-kit';
 import { auth } from './config';
 import { building } from '$app/environment';
 import { redirect } from '@sveltejs/kit';
-import { AppRoutes } from '$lib/client/configurations/routes';
+import { isRouteRequiresAuthentication } from '$lib/utils';
 
 export async function handle({ event, resolve }): Promise<Response> {
 	if (event.url.pathname.startsWith('/api/webhooks')) {
@@ -20,20 +20,4 @@ export async function handle({ event, resolve }): Promise<Response> {
 	}
 	event.locals.authHandler = auth.handler;
 	return svelteKitHandler({ event, resolve, auth, building });
-}
-
-function isRouteRequiresAuthentication(path: string): boolean {
-	if (pathIsHome(path)) return false;
-	return !!AppRoutes.find((group) => {
-		return group.children.find((child) => {
-			return (
-				(path.startsWith(child.path) || child.path.startsWith(path)) &&
-				child.authenticationRequired !== false
-			);
-		});
-	});
-}
-
-function pathIsHome(path: string): boolean {
-	return path === '' || path === '/';
 }

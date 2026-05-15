@@ -1,3 +1,4 @@
+import { Plans } from '$lib/enums/plans';
 import type { Link } from '$lib/models/link';
 import {
 	BookLock,
@@ -19,12 +20,14 @@ export interface GroupedRoutes {
 export const FormsPage: Link = {
 	label: 'common.my_forms',
 	path: '/forms',
-	icon: FilePenLine
+	icon: FilePenLine,
+	planRequired: [Plans.Basic]
 };
 export const TemplatesPage: Link = {
 	label: 'common.templates_raw',
 	path: '/templates',
-	icon: BookDashed
+	icon: BookDashed,
+	planRequired: [Plans.Basic]
 };
 
 export const AppRoutes: GroupedRoutes[] = [
@@ -34,7 +37,8 @@ export const AppRoutes: GroupedRoutes[] = [
 			{
 				label: 'common.dashboard',
 				path: '/dashboard',
-				icon: LayoutDashboard
+				icon: LayoutDashboard,
+				planRequired: [Plans.Basic]
 			},
 			FormsPage,
 			TemplatesPage,
