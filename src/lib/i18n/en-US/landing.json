@@ -60,6 +60,26 @@
 			"description": "Enterprise-grade security ensuring your data and signatures are safe, private, and legally valid."
 		}
 	},
+	"pricing": {
+		"title": "Simple, Transparent Pricing",
+		"subtitle": "One plan. Everything you need.",
+		"badge_popular": "Most Popular",
+		"cta_get_started": "Get Started",
+		"per_month": "/ month",
+		"plans": {
+			"basic": {
+				"name": "Basic",
+				"description": "Everything you need to create, share and collect signatures.",
+				"features": {
+					"unlimited_forms": "Unlimited forms",
+					"signature_collection": "Digital signature collection",
+					"real_time_dashboard": "Real-time dashboard",
+					"template_library": "Full template library",
+					"secure_storage": "Secure document storage"
+				}
+			}
+		}
+	},
 	"final_cta": {
 		"title": "Ready to Simplify Your Forms?",
 		"description": "Join organizations already using Simple Forms to streamline their signature collection.",

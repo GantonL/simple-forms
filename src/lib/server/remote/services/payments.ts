@@ -31,3 +31,13 @@ export async function handle({ event, resolve }): Promise<Response> {
 	}
 	return resolve(event);
 }
+
+export async function getSubscriptions(userEmail: string) {
+	try {
+		const res = await fetch(`${baseUrl}/sunscriptions?user_email=${userEmail}`);
+		return res.json() as Promise<[]>;
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+}

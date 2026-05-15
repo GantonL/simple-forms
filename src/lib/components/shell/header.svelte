@@ -18,6 +18,7 @@
 			</Tooltip.Root>
 		</Tooltip.Provider>
 		<h1 class="flex flex-row items-center gap-3 text-xl">
+			<img class="h-12 w-12" src="/logo.svg" alt="Simple Forms Logo" />
 			<a href="/">{$t('common.brand.name')}</a>
 		</h1>
 	</div>
