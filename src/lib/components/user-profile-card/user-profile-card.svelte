@@ -7,7 +7,7 @@
 	import { t } from '$lib/i18n';
 	import { CircleCheck, CircleX } from '@lucide/svelte';
 
-	let { user } = $props();
+	let { user, plan } = $props();
 </script>
 
 <Card.Root class="w-full max-w-lg">
@@ -21,7 +21,7 @@
 		<div class="space-y-3">
 			<div class="flex items-center justify-between">
 				<span class="text-muted-foreground text-sm font-medium">{$t('common.plan')}</span>
-				<Badge variant="secondary">{$t(`common.plans.${user.plan_id}.name`)}</Badge>
+				<Badge variant="secondary">{$t(`common.plans.${plan}.name`)}</Badge>
 			</div>
 
 			<div class="flex items-center justify-between">

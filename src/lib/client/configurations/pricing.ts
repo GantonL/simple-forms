@@ -1,10 +1,12 @@
+import { Plans } from '$lib/enums/plans';
+
 export interface PricingFeature {
 	labelKey: string;
 	included: boolean;
 }
 
 export interface PricingPlan {
-	id: string;
+	id: Plans;
 	nameKey: string;
 	descriptionKey: string;
 	price: number;
@@ -12,14 +14,13 @@ export interface PricingPlan {
 	billingPeriod: 'monthly' | 'yearly' | 'one-time';
 	features: PricingFeature[];
 	ctaLabelKey: string;
-	ctaHref: string;
 	highlighted?: boolean;
 	badgeKey?: string;
 }
 
 export const pricingPlans: PricingPlan[] = [
 	{
-		id: '46138',
+		id: Plans.Basic,
 		nameKey: 'landing.pricing.plans.basic.name',
 		descriptionKey: 'landing.pricing.plans.basic.description',
 		price: 4.99,
@@ -34,7 +35,6 @@ export const pricingPlans: PricingPlan[] = [
 			{ labelKey: 'landing.pricing.plans.basic.features.template_library', included: true },
 			{ labelKey: 'landing.pricing.plans.basic.features.secure_storage', included: true }
 		],
-		ctaLabelKey: 'landing.pricing.cta_get_started',
-		ctaHref: 'https://checkout.freemius.com/product/27925/plan/46138/'
+		ctaLabelKey: 'landing.pricing.cta_get_started'
 	}
 ];

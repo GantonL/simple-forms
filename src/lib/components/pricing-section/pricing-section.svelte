@@ -2,12 +2,25 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
-	import type { PricingPlan } from '$lib/configurations/pricing';
+	import type { PricingPlan } from '$lib/client/configurations/pricing';
 	import { t } from '$lib/i18n';
 	import { Check, X } from '@lucide/svelte';
 	import { fly } from 'svelte/transition';
+	import type { Plans } from '$lib/enums/plans';
+	import { GET } from '$lib/api/helpers/request';
+	import { PaymentsGetCheckoutLink } from '../../../routes/api';
 
 	let { plans, mounted = false }: { plans: PricingPlan[]; mounted?: boolean } = $props();
+
+	async function generateCheckoutLinkAndRedirect(plan: Plans) {
+		const checkouLinkRes = await GET<{ checkoutLink: string }>(PaymentsGetCheckoutLink(plan));
+
+		if (!checkouLinkRes?.checkoutLink) {
+			// error message
+			return;
+		}
+		window.open(checkouLinkRes?.checkoutLink, '_blank');
+	}
 </script>
 
 <section class="flex w-full flex-col gap-12">
@@ -80,10 +93,9 @@
 										class="w-full text-base font-semibold"
 										size="lg"
 										variant={plan.highlighted ? 'default' : 'outline'}
+										onclick={() => generateCheckoutLinkAndRedirect(plan.id)}
 									>
-										<a href={plan.ctaHref} target="_blank">
-											{$t(plan.ctaLabelKey)}
-										</a>
+										{$t(plan.ctaLabelKey)}
 									</Button>
 								</div>
 							</Card.Content>

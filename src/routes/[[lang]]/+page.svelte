@@ -6,7 +6,6 @@
 	import * as Card from '$lib/components/ui/card';
 	import { t } from '$lib/i18n';
 	import PricingSection from '$lib/components/pricing-section/pricing-section.svelte';
-	import { pricingPlans } from '$lib/configurations/pricing';
 	import {
 		FileText,
 		Share2,
@@ -21,6 +20,7 @@
 	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
+	import { pricingPlans } from '$lib/client/configurations/pricing';
 
 	function handleGetStarted() {
 		goto(resolve('/signup'));

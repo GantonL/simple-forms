@@ -228,7 +228,7 @@
 	"settings": "Settings",
 	"send_me_a_copy": "Send me a copy",
 	"plans": {
-		"46138": {
+		"basic": {
 			"name": "Basic"
 		}
 	}

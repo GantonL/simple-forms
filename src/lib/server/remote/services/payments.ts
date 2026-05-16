@@ -1,6 +1,13 @@
-import { PAYMENTS_SERVICE_PORT, PAYMENTS_SERVICE_HOST } from '$env/static/private';
+import {
+	PAYMENTS_SERVICE_PORT,
+	PAYMENTS_SERVICE_HOST,
+	PRODUCT_ID,
+	BASIC_PLAN_ID
+} from '$env/static/private';
+import { Plans } from '$lib/enums/plans';
 import { getRouteRequiresPlan } from '$lib/utils';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
+import type { User } from 'better-auth';
 
 const baseUrl = `http://${PAYMENTS_SERVICE_HOST}:${PAYMENTS_SERVICE_PORT}`;
 
@@ -21,7 +28,11 @@ export async function handle({ event, resolve }): Promise<Response> {
 	if (!requiredPlan || requiredPlan?.length === 0) {
 		return resolve(event);
 	}
-	if (!requiredPlan.includes(planId)) {
+	const planName = getPlanNameById(planId);
+	if (!planName) {
+		return error(500, 'Unknown user plan id');
+	}
+	if (!requiredPlan.includes(planName)) {
 		return redirect(302, '/user/plan/upgrade');
 	}
 	const licenseId = event.locals?.user?.license_id;
@@ -40,4 +51,33 @@ export async function getSubscriptions(userEmail: string) {
 		console.log(error);
 		return [];
 	}
+}
+
+export function getProductId() {
+	return PRODUCT_ID;
+}
+
+export function getPlanId(plan: Plans) {
+	switch (plan) {
+		case Plans.Basic: {
+			return BASIC_PLAN_ID;
+		}
+	}
+}
+
+export function getPlanNameById(id: string) {
+	switch (id) {
+		case BASIC_PLAN_ID: {
+			return Plans.Basic;
+		}
+	}
+}
+
+export function getCheckoutLink(user: User, plan: Plans) {
+	const baseCheckoutUrl = `https://checkout.freemius.com/product/${getProductId()}/plan/${getPlanId(plan)}`;
+	const queryParams = new URLSearchParams({
+		user_email: user.email,
+		readonly_user: 'true'
+	});
+	return `${baseCheckoutUrl}?${queryParams.toString()}`;
 }

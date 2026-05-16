@@ -1,3 +1,5 @@
+import type { Plans } from '$lib/enums/plans';
+
 const CONTROLLER = '/api';
 export const Locale = `${CONTROLLER}/locale`;
 export const ManageCookies = `${CONTROLLER}/manage-cookies`;
@@ -10,3 +12,5 @@ export const RemoteBrowserServiceCreatePdf = `${CONTROLLER}/remote/browser-servi
 export const RemoteBrowserServiceLoadStatus = `${CONTROLLER}/remote/browser-service/load`;
 export const RemoteBrowserServicePrepare = `${CONTROLLER}/remote/browser-service/load/prepare`;
 export const FormSubmissionCandidateData = `${CONTROLLER}/form-submission-candidate-data`;
+export const PaymentsGetCheckoutLink = (plan: Plans) =>
+	`${CONTROLLER}/payments/checkout-link/${String(plan)}`;

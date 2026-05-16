@@ -99,5 +99,15 @@ export const AppRoutes: GroupedRoutes[] = [
 				authenticationRequired: false
 			}
 		]
+	},
+	{
+		title: 'common.purchase',
+		excludeFromMainMenu: true,
+		children: [
+			{
+				label: 'common.purchase_completed',
+				path: '/checkout/completed'
+			}
+		]
 	}
 ];
