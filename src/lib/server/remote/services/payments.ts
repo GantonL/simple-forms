@@ -2,7 +2,8 @@ import {
 	PAYMENTS_SERVICE_PORT,
 	PAYMENTS_SERVICE_HOST,
 	PRODUCT_ID,
-	BASIC_PLAN_ID
+	BASIC_PLAN_ID,
+	ENV
 } from '$env/static/private';
 import { Plans } from '$lib/enums/plans';
 import { getRouteRequiresPlan } from '$lib/utils';
@@ -79,5 +80,18 @@ export function getCheckoutLink(user: User, plan: Plans) {
 		user_email: user.email,
 		readonly_user: 'true'
 	});
+	if (ENV === 'local') {
+		queryParams.append('sandbox', 'true');
+	}
 	return `${baseCheckoutUrl}?${queryParams.toString()}`;
+}
+
+export async function validateCheckoutCompletionResponse(url: string) {
+	try {
+		const body = JSON.stringify({ url });
+		const res = await fetch(`${baseUrl}/checkout/validate`, { method: 'POST', body });
+		return !!res?.ok;
+	} catch {
+		return { valid: false };
+	}
 }

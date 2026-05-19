@@ -230,5 +230,8 @@
 		"basic": {
 			"name": "בסיסית"
 		}
-	}
+	},
+	"validating_checkout": "אנחנו מאמתים את הרכישה שלך",
+	"checkout_validation_failed": "אימות רכישה נכשל",
+	"checkout_validation_failed_description": "בידקו שרכישתכם אכן הושלמה, במידה וכן אנא צרו איתנו קשר"
 }

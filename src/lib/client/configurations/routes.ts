@@ -16,6 +16,7 @@ export interface GroupedRoutes {
 	title: string;
 	children: Link[];
 	excludeFromMainMenu?: boolean;
+	excludeFromFooter?: boolean;
 }
 export const FormsPage: Link = {
 	label: 'common.my_forms',
@@ -91,18 +92,13 @@ export const AppRoutes: GroupedRoutes[] = [
 				path: '/signin',
 				icon: LogIn,
 				authenticationRequired: false
-			},
-			{
-				label: 'common.signup',
-				path: '/signup',
-				icon: Signature,
-				authenticationRequired: false
 			}
 		]
 	},
 	{
 		title: 'common.purchase',
 		excludeFromMainMenu: true,
+		excludeFromFooter: true,
 		children: [
 			{
 				label: 'common.purchase_completed',

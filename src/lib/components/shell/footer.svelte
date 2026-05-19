@@ -30,20 +30,22 @@
 				</div>
 			</div>
 			{#each AppRoutes as group (group.title)}
-				<div>
-					<h4 class="text-foreground text-sm font-semibold tracking-wider uppercase">
-						{$t(group.title)}
-					</h4>
-					<ul class="mt-4 space-y-3 text-sm">
-						{#each group.children as link (link.path)}
-							{#if !link.hidden}
-								<li>
-									<Link {link} />
-								</li>
-							{/if}
-						{/each}
-					</ul>
-				</div>
+				{#if !group.excludeFromFooter}
+					<div>
+						<h4 class="text-foreground text-sm font-semibold tracking-wider uppercase">
+							{$t(group.title)}
+						</h4>
+						<ul class="mt-4 space-y-3 text-sm">
+							{#each group.children as link (link.path)}
+								{#if !link.hidden}
+									<li>
+										<Link {link} />
+									</li>
+								{/if}
+							{/each}
+						</ul>
+					</div>
+				{/if}
 			{/each}
 		</div>
 

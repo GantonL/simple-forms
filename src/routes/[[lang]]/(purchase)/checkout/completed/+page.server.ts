@@ -1,0 +1,8 @@
+import { validateCheckoutCompletionResponse } from '$lib/server/remote/services/payments';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ request }) => {
+	return {
+		validation: validateCheckoutCompletionResponse(request.url)
+	};
+};
