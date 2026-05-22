@@ -234,5 +234,13 @@
 	},
 	"validating_checkout": "We are validationg your checkout",
 	"checkout_validation_failed": "Checkout validation failed",
-	"checkout_validation_failed_description": "Check if your paymet process has been completed, if so please contact us"
+	"checkout_validation_failed_description": "Check if your paymet process has been completed, if so please contact us",
+	"cancel_subscription": "Cancel subscription",
+	"cancel_subscription_confirm_message": "Cancellation will be effective immediately. After proccess completion you will no longer be able to create new forms or edit existing ones, and others will not be able to sign your forms.",
+	"subscriptions_cancelled_success": "Subscription canceled successfully",
+	"subscriptions_cancelled_failed": "Subscription cancelation failed",
+	"yes": "YES",
+	"no": "NO",
+	"subscription_cancelled_at": "Subscription cancelled at {{date}}",
+	"click_here_to_renew": "Click here to renew"
 }

@@ -10,7 +10,7 @@
 	let { user, plan } = $props();
 </script>
 
-<Card.Root class="w-full max-w-lg">
+<Card.Root class="w-full">
 	<Card.Header class="flex flex-col items-center pb-4 text-center">
 		<Avatar styleClass="h-18 w-18" src={user.image} size={120} />
 		<Card.Title class="mt-2 text-2xl">{user.name}</Card.Title>

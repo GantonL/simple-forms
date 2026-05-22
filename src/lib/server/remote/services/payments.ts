@@ -46,11 +46,22 @@ export async function handle({ event, resolve }): Promise<Response> {
 
 export async function getSubscriptions(userEmail: string) {
 	try {
-		const res = await fetch(`${baseUrl}/sunscriptions?user_email=${userEmail}`);
-		return res.json() as Promise<[]>;
+		const res = await fetch(`${baseUrl}/subscriptions?user_email=${userEmail}`);
+		const subscriptionsJsonResult = await res.json();
+		return subscriptionsJsonResult?.subscriptions ?? [];
 	} catch (error) {
 		console.log(error);
 		return [];
+	}
+}
+
+export async function cancelSubscription(id: string) {
+	try {
+		const res = await fetch(`${baseUrl}/subscriptions/${id}`, { method: 'DELETE' });
+		return res.json();
+	} catch (error) {
+		console.log(error);
+		return;
 	}
 }
 

@@ -233,5 +233,13 @@
 	},
 	"validating_checkout": "אנחנו מאמתים את הרכישה שלך",
 	"checkout_validation_failed": "אימות רכישה נכשל",
-	"checkout_validation_failed_description": "בידקו שרכישתכם אכן הושלמה, במידה וכן אנא צרו איתנו קשר"
+	"checkout_validation_failed_description": "בידקו שרכישתכם אכן הושלמה, במידה וכן אנא צרו איתנו קשר",
+	"cancel_subscription": "ביטול מינוי / תכנית",
+	"cancel_subscription_confirm_message": "הביטול יבוצע באופן מיידי. לאחר השלמת התהליך לא תוכלו יותר ליצור טפסים חדשים או לערוך טפסים קיימים, ומשתמשים לא יוכלו לחתום על הטפסים שלכם",
+	"subscriptions_cancelled_success": "ביטול המינוי בוצע בהצלחה",
+	"subscriptions_cancelled_failed": "ביטול המינוי נכשל",
+	"yes": "כן",
+	"no": "לא",
+	"subscription_cancelled_at": "מינוי בוטל ב {{date}}",
+	"click_here_to_renew": "לחצו כאן לחידוש המינוי"
 }

@@ -14,3 +14,6 @@ export const RemoteBrowserServicePrepare = `${CONTROLLER}/remote/browser-service
 export const FormSubmissionCandidateData = `${CONTROLLER}/form-submission-candidate-data`;
 export const PaymentsGetCheckoutLink = (plan: Plans) =>
 	`${CONTROLLER}/payments/checkout-link/${String(plan)}`;
+export const PaymentsSubscription = (subscriptionId: string) =>
+	`${CONTROLLER}/payments/subscriptions/${subscriptionId}`;
+export const PaymentsSubscriptions = `${CONTROLLER}/payments/subscriptions`;
