@@ -13,7 +13,7 @@
 	$effect(() => {
 		validation.then((res: boolean) => {
 			if (res) {
-				goto(resolve('/'));
+				goto(resolve('/user'));
 			}
 		});
 	});
@@ -34,7 +34,11 @@
 </BasePage>
 
 {#snippet validating()}
-	{@render alert({ icon: LoaderCircle, title: 'common.validating_checkout' })}
+	{@render alert({
+		icon: LoaderCircle,
+		iconClass: 'animate-spin',
+		title: 'common.validating_checkout'
+	})}
 {/snippet}
 {#snippet error()}
 	{@render alert({
@@ -47,12 +51,13 @@
 {#snippet alert(options: {
 	variant?: AlertVariant;
 	icon: Component<IconProps>;
+	iconClass?: string;
 	title: string;
 	description?: string;
 })}
 	<Alert.Root variant={options.variant ?? 'default'} class="w-fit">
 		<Alert.Title class="flex flex-row items-center gap-2">
-			<options.icon size={24} />
+			<options.icon size={24} class={options?.iconClass} />
 			<h2>{$t(options.title)}</h2>
 		</Alert.Title>
 		{#if options.description}

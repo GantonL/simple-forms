@@ -7,7 +7,7 @@ import { getRequestEvent } from '$app/server';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { customSession } from 'better-auth/plugins';
 import { userFsEntitlements } from '../database/schemas/entitlements';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -34,7 +34,8 @@ export const auth = betterAuth({
 			const entitlements = await db
 				.select()
 				.from(userFsEntitlements)
-				.where(eq(userFsEntitlements.userId, user.id));
+				.where(eq(userFsEntitlements.userId, user.id))
+				.orderBy(desc(userFsEntitlements.createdAt));
 			return {
 				...session,
 				user: {
