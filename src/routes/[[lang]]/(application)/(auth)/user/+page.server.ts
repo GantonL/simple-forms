@@ -1,6 +1,6 @@
 import { GET } from '$lib/api/helpers/request';
 import { getPlanNameById } from '$lib/server/remote/services/payments';
-import { PaymentsSubscriptions } from '../../../../api';
+import { PaymentsInvoices, PaymentsSubscriptions } from '../../../../api';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
@@ -9,9 +9,12 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		subscriptionRes?.subscriptions.find(
 			(sub) => sub?.license_id === locals.user.license_id && sub?.status !== 'cancelled'
 		) ?? subscriptionRes?.subscriptions?.[0];
+	const invoicesRes = await GET<{ invoices: unknown[] }>(PaymentsInvoices, { fetch });
+	const invoices = invoicesRes?.invoices;
 	return {
 		user: locals.user,
 		plan: getPlanNameById(locals.user.plan_id),
-		subscription
+		subscription,
+		invoices
 	};
 };

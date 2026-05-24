@@ -1,5 +1,5 @@
 import type { ComboboxConfiguration } from '$lib/models/combobox';
-import { getFullFormattedDate } from '$lib/utils';
+import { getFormattetCost, getFullFormattedDate } from '$lib/utils';
 
 export const pageSizeOptionsConfiguration: ComboboxConfiguration = {
 	options: [
@@ -15,4 +15,8 @@ export const pageSizeOptionsConfiguration: ComboboxConfiguration = {
 export function defaultDateCell(date: Date) {
 	if (!date) return;
 	return getFullFormattedDate(date);
+}
+
+export function defaultCostCell(cost: string, currency: string) {
+	return getFormattetCost(cost, currency);
 }

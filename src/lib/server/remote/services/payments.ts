@@ -106,3 +106,28 @@ export async function validateCheckoutCompletionResponse(url: string) {
 		return { valid: false };
 	}
 }
+
+export async function getInvoices(user_id: string) {
+	try {
+		const res = await fetch(`${baseUrl}/invoices?user_id=${user_id}`);
+		const invoicesJsonResult = await res.json();
+		return invoicesJsonResult?.payments ?? [];
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+}
+
+export async function getInvoicePdf(id: string) {
+	try {
+		const headers = new Headers();
+		headers.append('Content-Type', 'application/pdf');
+		const res = await fetch(`${baseUrl}/invoices/${id}/pdf`, { headers });
+		const arrayBuffer = await res.arrayBuffer();
+		const base64String = Buffer.from(arrayBuffer).toString('base64');
+		return base64String;
+	} catch (error) {
+		console.log(error);
+		return;
+	}
+}

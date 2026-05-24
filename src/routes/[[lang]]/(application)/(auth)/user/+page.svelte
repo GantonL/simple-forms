@@ -13,11 +13,15 @@
 	import { toast } from 'svelte-sonner';
 	import * as Alert from '$lib/components/ui/alert';
 	import { resolve } from '$app/paths';
+	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
+	import { invoicesTable } from './configurations';
 	let user: User = $derived(page.data.user);
 	let plan: Plans = $derived(page.data.plan);
 	let subscription = $derived(page.data.subscription);
 	let alertCancelSubscription = $state(false);
 	let cancelSubscriptionInProgress = $state(false);
+	let invoices = $derived(page.data.invoices);
+
 	async function onCancelSubscription() {
 		cancelSubscriptionInProgress = true;
 		const cancelRes = await DELETE<unknown, { cancelled: unknown }>(
@@ -33,32 +37,45 @@
 			toast.error(t.get('common.subscriptions_cancelled_failed'));
 		}
 	}
+
+	function onInvoicesTablesPageSizeChanged() {}
+	function onInvoicesTablesPageIndexChanged() {}
 </script>
 
 <BasePage title={user.name ?? 'common.user'} description="seo.pages.user.description">
-	<div class="flex w-full max-w-lg flex-col items-center justify-center gap-4">
-		<UserProfileCard {user} {plan} />
-		{#if subscription?.cancelled_at}
-			<Alert.Root class="border-amber-400 bg-amber-400/20">
-				<Alert.Title
-					>{$t('common.subscription_cancelled_at', {
-						date: subscription.cancelled_at
-					})}</Alert.Title
+	<div class="flex w-full items-center justify-center">
+		<div class="flex w-full max-w-lg flex-col items-center justify-center gap-4">
+			<UserProfileCard {user} {plan} />
+			<AppDataTable
+				data={invoices}
+				columns={invoicesTable.columns}
+				configuration={invoicesTable.configuration}
+				pageSizeChanged={onInvoicesTablesPageSizeChanged}
+				pageIndexChanged={onInvoicesTablesPageIndexChanged}
+			></AppDataTable>
+			{#if subscription?.cancelled_at}
+				<Alert.Root class="border-amber-400 bg-amber-400/20">
+					<Alert.Title
+						>{$t('common.subscription_cancelled_at', {
+							date: subscription.cancelled_at
+						})}</Alert.Title
+					>
+					<Alert.Description
+						><a class="underline underline-offset-1" href={resolve('/user/plan/renew')}
+							>{$t('common.click_here_to_renew')}</a
+						></Alert.Description
+					>
+				</Alert.Root>
+			{/if}
+			<DangerZone class="w-full">
+				<Button
+					variant="destructive"
+					disabled={subscription?.cancelled_at}
+					onclick={() => (alertCancelSubscription = true)}
+					>{$t('common.cancel_subscription')}</Button
 				>
-				<Alert.Description
-					><a class="underline underline-offset-1" href={resolve('/user/plan/renew')}
-						>{$t('common.click_here_to_renew')}</a
-					></Alert.Description
-				>
-			</Alert.Root>
-		{/if}
-		<DangerZone class="w-full">
-			<Button
-				variant="destructive"
-				disabled={subscription?.cancelled_at}
-				onclick={() => (alertCancelSubscription = true)}>{$t('common.cancel_subscription')}</Button
-			>
-		</DangerZone>
+			</DangerZone>
+		</div>
 	</div>
 </BasePage>
 

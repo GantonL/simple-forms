@@ -27,6 +27,13 @@ export function getFullFormattedDate(date: Date) {
 	return Intl.DateTimeFormat(locale.get(), options).format(new Date(date));
 }
 
+export function getFormattetCost(cost: string | number, currency: string) {
+	return Intl.NumberFormat(locale.get(), {
+		style: 'currency',
+		currency
+	}).format(Number(cost));
+}
+
 export function getSigneeKey(keys: string[], searchKey?: string) {
 	return keys.find((k) =>
 		searchKey

@@ -241,5 +241,9 @@
 	"yes": "כן",
 	"no": "לא",
 	"subscription_cancelled_at": "מינוי בוטל ב {{date}}",
-	"click_here_to_renew": "לחצו כאן לחידוש המינוי"
+	"click_here_to_renew": "לחצו כאן לחידוש המינוי",
+	"paid": "שולם",
+	"download_invoice": "הורדת חשבונית",
+	"download_invoice_success": "תהליך הורדת חשבונית הצליח",
+	"download_invoice_failed": "תהליך הורדת חשבונית נכשל"
 }
