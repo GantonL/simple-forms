@@ -243,5 +243,9 @@
 	"no": "NO",
 	"subscription_cancelled_at": "Subscription cancelled at {{date}}",
 	"click_here_to_renew": "Click here to renew",
-	"paid": "Paid"
+	"paid": "Paid",
+	"download_invoice": "Download invoice",
+	"download_invoice_success": "Invoice downloaded successfully",
+	"download_invoice_failed": "Failed to download invoice",
+	"next_payment": "Next payment {{date}}"
 }

@@ -46,6 +46,15 @@
 	<div class="flex w-full items-center justify-center">
 		<div class="flex w-full max-w-lg flex-col items-center justify-center gap-4">
 			<UserProfileCard {user} {plan} />
+			{#if subscription?.next_payment && !subscription?.cancelled_at}
+				<Alert.Root class="border-green-400 bg-green-400/20">
+					<Alert.Title
+						>{$t('common.next_payment', {
+							date: subscription.next_payment
+						})}</Alert.Title
+					>
+				</Alert.Root>
+			{/if}
 			<AppDataTable
 				data={invoices}
 				columns={invoicesTable.columns}
