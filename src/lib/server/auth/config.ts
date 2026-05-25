@@ -41,7 +41,8 @@ export const auth = betterAuth({
 				user: {
 					...user,
 					license_id: entitlements?.[0]?.fsLicenseId,
-					plan_id: entitlements?.[0]?.fsPlanId
+					plan_id: entitlements?.[0]?.fsPlanId,
+					expiration: entitlements?.[0]?.expiration
 				}
 			};
 		})

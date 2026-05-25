@@ -21,7 +21,9 @@
 		<div class="space-y-3">
 			<div class="flex items-center justify-between">
 				<span class="text-muted-foreground text-sm font-medium">{$t('common.plan')}</span>
-				<Badge variant="secondary">{$t(`common.plans.${plan}.name`)}</Badge>
+				<Badge variant={new Date(user.expiration) < new Date() ? 'destructive' : 'secondary'}
+					>{$t(`common.plans.${plan}.name`)}</Badge
+				>
 			</div>
 
 			<div class="flex items-center justify-between">
