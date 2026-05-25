@@ -5,14 +5,17 @@ import {
 	getUrlOptions,
 	buildCreateCandidates,
 	buildUpdateData,
-	getBodyFilters
+	getBodyFilters,
+	postFindBlock
 } from '$lib/server/database/services/user-form';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, locals }) => {
 	const filters = getUrlFilters(url);
 	const options = getUrlOptions(url);
 	const items = await service.find(filters, options);
+	const isPostFindBlock = await postFindBlock(url, items, locals.user);
+	if (isPostFindBlock) return json([]);
 	return json(items);
 };
 
