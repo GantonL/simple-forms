@@ -1,5 +1,5 @@
 import { eq, inArray, type SQL, sql, type Column } from 'drizzle-orm';
-import { UserFormTable, type UserFormTableInsert } from '../schemas/form';
+import { UserFormTable, type UserForm, type UserFormTableInsert } from '../schemas/form';
 import type { WhereCondition } from './abstract';
 import { provider } from './provider';
 import {
@@ -9,12 +9,15 @@ import {
 	type BodyFiltersUtil
 } from './utils';
 import { SearchParams } from '$lib/enums/search-params';
+import { Service as UserEntitlementsService } from './users-entitlements';
+import type { User } from 'better-auth';
+import { userFsEntitlements } from '../schemas/entitlements';
 
 export const Service = provider.getFactory().getService(UserFormTable);
 
 export const getUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
 	const baseUrlFilters = getUrlFiltersUtil(url, { searchColumns: [] });
-	const serviceUrlFilters = getServiveUrlFilters(url);
+	const serviceUrlFilters = getServiceUrlFilters(url);
 	return [...baseUrlFilters, ...serviceUrlFilters];
 };
 
@@ -59,7 +62,7 @@ const getServiceSpecificBodyFilters = (
 	return conditions;
 };
 
-const getServiveUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
+const getServiceUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] => {
 	const searchParams = url.searchParams;
 	const pli = searchParams.get(SearchParams.PublicLinkIdentifier);
 	const uid = searchParams.get(SearchParams.UserId);
@@ -117,4 +120,21 @@ export const buildUpdateData = (updateData: UpdateUserFormData): UpdateUserFormD
 		validatedUpdate.is_active = updateData.is_active;
 	}
 	return validatedUpdate;
+};
+
+export const postFindBlock = async (url: URL, forms: UserForm[], user: User): Promise<boolean> => {
+	const searchParams = url.searchParams;
+	const pli = searchParams.get(SearchParams.PublicLinkIdentifier);
+	if (pli) {
+		const userId = forms[0]?.user_id;
+		if (!userId) return false;
+		const license = await UserEntitlementsService.findOne(
+			eq(userFsEntitlements.fsLicenseId, user.license_id)
+		);
+		if (license?.isCanceled) return true;
+		if (license?.expiration) {
+			return new Date() > new Date(license.expiration);
+		}
+	}
+	return false;
 };

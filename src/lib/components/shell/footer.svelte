@@ -17,7 +17,10 @@
 	<div class="container mx-auto px-6 py-12">
 		<div class="grid grid-cols-1 gap-8 md:grid-cols-4">
 			<div class="col-span-1 md:col-span-2">
-				<h3 class="text-foreground text-xl font-bold">{$t('common.brand.name')}</h3>
+				<h3 class="text-foreground flex items-center gap-4 text-xl font-bold">
+					<img class="h-8 w-8" src="/logo.svg" alt="Simple Forms Logo" />
+					<span>{$t('common.brand.name')}</span>
+				</h3>
 				<p class="text-muted-foreground mt-4 max-w-md text-sm leading-relaxed">
 					{$t('common.brand.description')}
 				</p>
@@ -27,20 +30,22 @@
 				</div>
 			</div>
 			{#each AppRoutes as group (group.title)}
-				<div>
-					<h4 class="text-foreground text-sm font-semibold tracking-wider uppercase">
-						{$t(group.title)}
-					</h4>
-					<ul class="mt-4 space-y-3 text-sm">
-						{#each group.children as link (link.path)}
-							{#if !link.hidden}
-								<li>
-									<Link {link} />
-								</li>
-							{/if}
-						{/each}
-					</ul>
-				</div>
+				{#if !group.excludeFromFooter}
+					<div>
+						<h4 class="text-foreground text-sm font-semibold tracking-wider uppercase">
+							{$t(group.title)}
+						</h4>
+						<ul class="mt-4 space-y-3 text-sm">
+							{#each group.children as link (link.path)}
+								{#if !link.hidden}
+									<li>
+										<Link {link} />
+									</li>
+								{/if}
+							{/each}
+						</ul>
+					</div>
+				{/if}
 			{/each}
 		</div>
 

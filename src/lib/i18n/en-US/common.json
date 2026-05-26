@@ -88,6 +88,9 @@
 	"built_by": "Built by {{author}}",
 	"email_verified": "Email verified",
 	"last_updated": "Last updated",
+	"plan": "Plan",
+	"license": "License",
+	"license_id_tooltip": "License ID: {{id}}",
 	"signed_up_successfuly": "Signed up successfuly",
 	"signup_title": "Sign up to create a new account",
 	"signup_description": "Use a valid email address and a strong password",
@@ -223,5 +226,26 @@
 	"notification_x_updated_successfully": "{{notification}} notification updated successfully",
 	"notification_x_updated_failed": "{{notification}} notification failed to update",
 	"settings": "Settings",
-	"send_me_a_copy": "Send me a copy"
+	"send_me_a_copy": "Send me a copy",
+	"plans": {
+		"basic": {
+			"name": "Basic"
+		}
+	},
+	"validating_checkout": "We are validationg your checkout",
+	"checkout_validation_failed": "Checkout validation failed",
+	"checkout_validation_failed_description": "Check if your paymet process has been completed, if so please contact us",
+	"cancel_subscription": "Cancel subscription",
+	"cancel_subscription_confirm_message": "Cancellation will be effective immediately. After proccess completion you will no longer be able to create new forms or edit existing ones, and others will not be able to sign your forms.",
+	"subscriptions_cancelled_success": "Subscription canceled successfully",
+	"subscriptions_cancelled_failed": "Subscription cancelation failed",
+	"yes": "YES",
+	"no": "NO",
+	"subscription_cancelled_at": "Subscription cancelled at {{date}}",
+	"click_here_to_renew": "Click here to renew",
+	"paid": "Paid",
+	"download_invoice": "Download invoice",
+	"download_invoice_success": "Invoice downloaded successfully",
+	"download_invoice_failed": "Failed to download invoice",
+	"next_payment": "Next payment {{date}}"
 }

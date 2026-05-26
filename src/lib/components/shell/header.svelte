@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { t } from '$lib/i18n';
 	import ThemeSwitcher from '../theme-switcher/theme-switcher.svelte';
 	import SidebarTrigger from '../ui/sidebar/sidebar-trigger.svelte';
@@ -17,8 +18,11 @@
 				</Tooltip.Content>
 			</Tooltip.Root>
 		</Tooltip.Provider>
-		<h1 class="flex flex-row items-center gap-3 text-xl">
-			<a href="/">{$t('common.brand.name')}</a>
+		<h1>
+			<a class="flex flex-row items-center gap-3 text-xl" href={resolve('/')}>
+				<img class="h-10 w-10" src="/logo.svg" alt="Simple Forms Logo" />
+				<span>{$t('common.brand.name')} </span>
+			</a>
 		</h1>
 	</div>
 	<div class="flex flex-row items-center justify-end gap-2">

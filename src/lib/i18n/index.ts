@@ -10,6 +10,7 @@ interface Params {
 	count?: number;
 	date?: string;
 	notification?: string;
+	id?: string;
 }
 
 /** @type {import('sveltekit-i18n').Config} */

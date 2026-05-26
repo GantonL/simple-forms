@@ -1,3 +1,4 @@
+import { Plans } from '$lib/enums/plans';
 import type { Link } from '$lib/models/link';
 import {
 	BookLock,
@@ -15,16 +16,19 @@ export interface GroupedRoutes {
 	title: string;
 	children: Link[];
 	excludeFromMainMenu?: boolean;
+	excludeFromFooter?: boolean;
 }
 export const FormsPage: Link = {
 	label: 'common.my_forms',
 	path: '/forms',
-	icon: FilePenLine
+	icon: FilePenLine,
+	planRequired: [Plans.Basic]
 };
 export const TemplatesPage: Link = {
 	label: 'common.templates_raw',
 	path: '/templates',
-	icon: BookDashed
+	icon: BookDashed,
+	planRequired: [Plans.Basic]
 };
 
 export const AppRoutes: GroupedRoutes[] = [
@@ -34,7 +38,8 @@ export const AppRoutes: GroupedRoutes[] = [
 			{
 				label: 'common.dashboard',
 				path: '/dashboard',
-				icon: LayoutDashboard
+				icon: LayoutDashboard,
+				planRequired: [Plans.Basic]
 			},
 			FormsPage,
 			TemplatesPage,
@@ -87,12 +92,17 @@ export const AppRoutes: GroupedRoutes[] = [
 				path: '/signin',
 				icon: LogIn,
 				authenticationRequired: false
-			},
+			}
+		]
+	},
+	{
+		title: 'common.purchase',
+		excludeFromMainMenu: true,
+		excludeFromFooter: true,
+		children: [
 			{
-				label: 'common.signup',
-				path: '/signup',
-				icon: Signature,
-				authenticationRequired: false
+				label: 'common.purchase_completed',
+				path: '/checkout/completed'
 			}
 		]
 	}

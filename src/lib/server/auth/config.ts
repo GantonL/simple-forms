@@ -5,6 +5,9 @@ import { account, session, user, verification } from '../database/schemas/auth';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
+import { customSession } from 'better-auth/plugins';
+import { userFsEntitlements } from '../database/schemas/entitlements';
+import { eq, desc } from 'drizzle-orm';
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -25,7 +28,25 @@ export const auth = betterAuth({
 			clientSecret: GOOGLE_CLIENT_SECRET
 		}
 	},
-	plugins: [sveltekitCookies(getRequestEvent)],
+	plugins: [
+		sveltekitCookies(getRequestEvent),
+		customSession(async ({ user, session }) => {
+			const entitlements = await db
+				.select()
+				.from(userFsEntitlements)
+				.where(eq(userFsEntitlements.userId, user.id))
+				.orderBy(desc(userFsEntitlements.createdAt));
+			return {
+				...session,
+				user: {
+					...user,
+					license_id: entitlements?.[0]?.fsLicenseId,
+					plan_id: entitlements?.[0]?.fsPlanId,
+					expiration: entitlements?.[0]?.expiration
+				}
+			};
+		})
+	],
 	session: {
 		cookieCache: {
 			enabled: true,

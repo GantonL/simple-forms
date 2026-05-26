@@ -88,6 +88,9 @@
 	"built_by": "נבנה ע״י {{author}}",
 	"email_verified": "דוא״ל מאומת",
 	"last_updated": "עודכן לאחרונה",
+	"plan": "תוכנית",
+	"license": "רישיון",
+	"license_id_tooltip": "מזהה רישיון: {{id}}",
 	"signed_up_successfuly": "נרשמת בהצלחה",
 	"signup_title": "הירשמו ליצירת חשבון חדש",
 	"signup_description": "השתמשו בכתובת דוא״ל תקינה וסיסמה חזקה",
@@ -222,5 +225,26 @@
 	"notification_x_updated_successfully": "התראת {{notification}} עודכנה בהצלחה",
 	"notification_x_updated_failed": "עדכון התראת {{notification}} נכשל",
 	"settings": "הגדרות",
-	"send_me_a_copy": "שלחו לי העתק"
+	"send_me_a_copy": "שלחו לי העתק",
+	"plans": {
+		"basic": {
+			"name": "בסיסית"
+		}
+	},
+	"validating_checkout": "אנחנו מאמתים את הרכישה שלך",
+	"checkout_validation_failed": "אימות רכישה נכשל",
+	"checkout_validation_failed_description": "בידקו שרכישתכם אכן הושלמה, במידה וכן אנא צרו איתנו קשר",
+	"cancel_subscription": "ביטול מינוי / תכנית",
+	"cancel_subscription_confirm_message": "הביטול יבוצע באופן מיידי. לאחר השלמת התהליך לא תוכלו יותר ליצור טפסים חדשים או לערוך טפסים קיימים, ומשתמשים לא יוכלו לחתום על הטפסים שלכם",
+	"subscriptions_cancelled_success": "ביטול המינוי בוצע בהצלחה",
+	"subscriptions_cancelled_failed": "ביטול המינוי נכשל",
+	"yes": "כן",
+	"no": "לא",
+	"subscription_cancelled_at": "מינוי בוטל ב {{date}}",
+	"click_here_to_renew": "לחצו כאן לחידוש המינוי",
+	"paid": "שולם",
+	"download_invoice": "הורדת חשבונית",
+	"download_invoice_success": "תהליך הורדת חשבונית הצליח",
+	"download_invoice_failed": "תהליך הורדת חשבונית נכשל",
+	"next_payment": "תשלום הבא {{date}}"
 }

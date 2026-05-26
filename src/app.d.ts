@@ -1,5 +1,13 @@
 import type { Session, User } from 'better-auth';
 
+declare module 'better-auth' {
+	interface User {
+		license_id?: string | null;
+		plan_id?: string | null;
+		expiration?: Date | string | null;
+	}
+}
+
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
