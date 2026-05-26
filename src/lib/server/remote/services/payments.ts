@@ -29,6 +29,9 @@ export async function handle({ event, resolve }): Promise<Response> {
 	if (!requiredPlan || requiredPlan?.length === 0) {
 		return resolve(event);
 	}
+	if (!planId) {
+		return redirect(302, '/pricing');
+	}
 	const planName = getPlanNameById(planId);
 	if (!planName) {
 		return error(500, 'Unknown user plan id');

@@ -247,5 +247,6 @@
 	"download_invoice": "Download invoice",
 	"download_invoice_success": "Invoice downloaded successfully",
 	"download_invoice_failed": "Failed to download invoice",
-	"next_payment": "Next payment {{date}}"
+	"next_payment": "Next payment {{date}}",
+	"pricing": "Pricing"
 }
