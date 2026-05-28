@@ -4,13 +4,17 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import type { PricingPlan } from '$lib/client/configurations/pricing';
 	import { locale, t } from '$lib/i18n';
-	import { Check, X } from '@lucide/svelte';
+	import { Check, BadgeCheck, X } from '@lucide/svelte';
 	import { fly } from 'svelte/transition';
 	import type { Plans } from '$lib/enums/plans';
 	import { GET } from '$lib/api/helpers/request';
 	import { PaymentsGetCheckoutLink } from '../../../routes/api';
 
-	let { plans, mounted = false }: { plans: PricingPlan[]; mounted?: boolean } = $props();
+	let {
+		plans,
+		mounted = false,
+		activePlan
+	}: { plans: PricingPlan[]; mounted?: boolean; activePlan?: Plans } = $props();
 
 	async function generateCheckoutLinkAndRedirect(plan: Plans) {
 		const queryParams = new URLSearchParams({
@@ -99,8 +103,13 @@
 										size="lg"
 										variant={plan.highlighted ? 'default' : 'outline'}
 										onclick={() => generateCheckoutLinkAndRedirect(plan.id)}
+										disabled={activePlan === plan.id}
 									>
-										{$t(plan.ctaLabelKey)}
+										{#if activePlan === plan.id}
+											<BadgeCheck size={24} />
+										{:else}
+											{$t(plan.ctaLabelKey)}
+										{/if}
 									</Button>
 								</div>
 							</Card.Content>

@@ -21,7 +21,9 @@
 	import { cubicOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
 	import { pricingPlans } from '$lib/client/configurations/pricing';
+	import { page } from '$app/state';
 
+	let { activePlan } = page.data;
 	function handleGetStarted() {
 		goto(resolve('/signup'));
 	}
@@ -284,7 +286,9 @@
 			</section>
 
 			<!-- Pricing Section -->
-			<PricingSection plans={pricingPlans} {mounted} />
+			{#if !activePlan}
+				<PricingSection plans={pricingPlans} {mounted} />
+			{/if}
 
 			<!-- Final CTA Section -->
 			<section>
