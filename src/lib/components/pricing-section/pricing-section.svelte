@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import type { PricingPlan } from '$lib/client/configurations/pricing';
-	import { t } from '$lib/i18n';
+	import { locale, t } from '$lib/i18n';
 	import { Check, X } from '@lucide/svelte';
 	import { fly } from 'svelte/transition';
 	import type { Plans } from '$lib/enums/plans';
@@ -13,7 +13,12 @@
 	let { plans, mounted = false }: { plans: PricingPlan[]; mounted?: boolean } = $props();
 
 	async function generateCheckoutLinkAndRedirect(plan: Plans) {
-		const checkouLinkRes = await GET<{ checkoutLink: string }>(PaymentsGetCheckoutLink(plan));
+		const queryParams = new URLSearchParams({
+			language: locale.get()
+		});
+		const checkouLinkRes = await GET<{ checkoutLink: string }>(
+			`${PaymentsGetCheckoutLink(plan)}?${queryParams}`
+		);
 
 		if (!checkouLinkRes?.checkoutLink) {
 			// error message

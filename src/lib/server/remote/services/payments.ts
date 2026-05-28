@@ -5,6 +5,7 @@ import {
 	BASIC_PLAN_ID,
 	ENV
 } from '$env/static/private';
+import type { AvailableLocals } from '$lib/enums/available-locales';
 import { Plans } from '$lib/enums/plans';
 import { getRouteRequiresPlan } from '$lib/utils';
 import { error, redirect } from '@sveltejs/kit';
@@ -88,16 +89,34 @@ export function getPlanNameById(id: string) {
 	}
 }
 
-export function getCheckoutLink(user: User, plan: Plans) {
-	const baseCheckoutUrl = `https://checkout.freemius.com/product/${getProductId()}/plan/${getPlanId(plan)}`;
+export async function getCheckoutLink(
+	user: User,
+	plan: Plans,
+	options?: { language: AvailableLocals }
+) {
+	const baseCheckoutUrl = `${baseUrl}/checkout/link`;
+	const productId = getProductId();
+	const planId = getPlanId(plan);
+	if (!planId) return;
 	const queryParams = new URLSearchParams({
-		user_email: user.email,
-		readonly_user: 'true'
+		productId,
+		planId,
+		userEmail: user.email,
+		readonlyUser: 'true',
+		environment: ENV
 	});
-	if (ENV === 'local') {
-		queryParams.append('sandbox', 'true');
+	if (options?.language?.length) {
+		queryParams.append('language', options.language.split('-')[0]);
 	}
-	return `${baseCheckoutUrl}?${queryParams.toString()}`;
+	const url = `${baseCheckoutUrl}?${queryParams.toString()}`;
+	try {
+		const res = await fetch(url);
+		if (!res?.ok) return;
+		const checkoutLink = await res.text();
+		return checkoutLink;
+	} catch {
+		return;
+	}
 }
 
 export async function validateCheckoutCompletionResponse(url: string) {
