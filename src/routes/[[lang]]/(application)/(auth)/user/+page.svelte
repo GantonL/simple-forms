@@ -6,7 +6,7 @@
 	import DangerZone from '$lib/components/danger-zone/danger-zone.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import UserProfileCard from '$lib/components/user-profile-card/user-profile-card.svelte';
-	import type { Plans } from '$lib/enums/plans';
+	import UserSubscriptionCard from '$lib/components/user-subscription-card/user-subscription-card.svelte';
 	import { t } from '$lib/i18n';
 	import type { User } from 'better-auth';
 	import { PaymentsSubscription } from '../../../../api';
@@ -15,8 +15,8 @@
 	import { resolve } from '$app/paths';
 	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
 	import { invoicesTable } from './configurations';
+	import { Shredder } from '@lucide/svelte';
 	let user: User = $derived(page.data.user);
-	let plan: Plans = $derived(page.data.plan);
 	let subscription = $derived(page.data.subscription);
 	let alertCancelSubscription = $state(false);
 	let cancelSubscriptionInProgress = $state(false);
@@ -45,7 +45,8 @@
 <BasePage title={user.name ?? 'common.user'} description="seo.pages.user.description">
 	<div class="flex w-full items-center justify-center">
 		<div class="flex w-full max-w-lg flex-col items-center justify-center gap-4">
-			<UserProfileCard {user} {plan} />
+			<UserProfileCard {user} />
+			<UserSubscriptionCard {subscription} />
 			{#if subscription?.next_payment && !subscription?.cancelled_at}
 				<Alert.Root class="border-green-400 bg-green-400/20">
 					<Alert.Title
@@ -78,11 +79,14 @@
 			{/if}
 			<DangerZone class="w-full">
 				<Button
+					class="flex flex-row gap-2"
 					variant="destructive"
 					disabled={subscription?.cancelled_at}
 					onclick={() => (alertCancelSubscription = true)}
-					>{$t('common.cancel_subscription')}</Button
 				>
+					<Shredder />
+					<span>{$t('common.cancel_subscription')}</span>
+				</Button>
 			</DangerZone>
 		</div>
 	</div>

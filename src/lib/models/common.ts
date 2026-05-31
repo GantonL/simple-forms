@@ -15,3 +15,16 @@ export interface AppCustomEvent<Data = void> {
 	type: AppCustomEventType;
 	data?: Data;
 }
+
+export interface DispalySectionItem<D> {
+	label: string;
+	key: keyof D;
+	type: string;
+	icon?: Component;
+	hideIf?: (data: D) => boolean;
+}
+
+export interface DisplaySection<D> {
+	title: string;
+	items: DispalySectionItem<D>[];
+}
