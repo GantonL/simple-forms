@@ -32,7 +32,8 @@ export const getUrlOptionsUtil = <T extends TableConfig>(
 	const options: QueryOptions = {
 		limit: getLimitFromSearchParams(searchParams),
 		offset: getOffsetFromSearchParams(searchParams),
-		orderBy: getOrderByFromSearchParams<T>(searchParams, table)
+		orderBy: getOrderByFromSearchParams<T>(searchParams, table),
+		renderer: searchParams.get('renderer') === 'true'
 	};
 	return options;
 };

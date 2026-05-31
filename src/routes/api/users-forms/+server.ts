@@ -14,6 +14,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 	const filters = getUrlFilters(url);
 	const options = getUrlOptions(url);
 	const items = await service.find(filters, options);
+	if (options?.renderer) return json(items);
 	const isPostFindBlock = await postFindBlock(url, items, locals.user);
 	if (isPostFindBlock) return json([]);
 	return json(items);

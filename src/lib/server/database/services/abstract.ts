@@ -19,6 +19,7 @@ export interface QueryOptions extends BaseQueryOptions {
 		table: PgTable;
 		condition: SQL;
 	};
+	renderer?: boolean;
 }
 
 export type WhereCondition<T> = SQL<unknown> | ((table: T) => SQL<unknown>);
