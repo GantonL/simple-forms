@@ -37,7 +37,7 @@ export const load: PageLoad = async ({ params, fetch, url }) => {
 	const publicLinkIndetifier = params.slug;
 
 	const [userForm] = await GET<UserForm[]>(
-		`${UsersForms}?${SearchParams.PublicLinkIdentifier}=${publicLinkIndetifier}&limit=1`,
+		`${UsersForms}?${SearchParams.PublicLinkIdentifier}=${publicLinkIndetifier}&limit=1&renderer=true`,
 		{
 			fetch
 		}
