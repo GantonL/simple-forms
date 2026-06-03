@@ -9,6 +9,15 @@ export const GET: RequestHandler = async () => {
 		lang: {
 			default: AvailableLocals.English_US,
 			alternates: [AvailableLocals.Hebrew]
+		},
+		excludeRoutePatterns: ['.*\\(renderer\\).*', '.*\\(public\\).*', '.*/forms/.*'],
+		processPaths: (paths) => {
+			return paths.filter(({ path }) => {
+				if (path.includes('/checkout/')) {
+					return false;
+				}
+				return true;
+			});
 		}
 	});
 };
