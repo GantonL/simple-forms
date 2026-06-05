@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import type { Subscription } from '$lib/models/subscription';
+	import { ShieldUser, TriangleAlert } from '@lucide/svelte';
 	import { defaultDateCell } from '../app-data-table/configurations/defaults';
 	import Link from '../link/link.svelte';
+	import * as Alert from '../ui/alert';
 	import { Badge } from '../ui/badge';
 	import * as Card from '../ui/card';
 	import { Label } from '../ui/label';
@@ -14,12 +16,24 @@
 
 <Card.Root class="w-full">
 	<Card.Content class="flex flex-col gap-8">
-		{#each sections as section, i (section)}
-			{@render Section(section)}
-			{#if i < sections.length - 1}
-				<Separator />
-			{/if}
-		{/each}
+		{#if !subscription}
+			<Alert.Root class="border-primary bg-primary/20">
+				<Alert.Title class="flex flex-row items-center gap-2">
+					<ShieldUser />
+					<span>{$t('common.no_active_plan_subscription')}</span>
+				</Alert.Title>
+				<Alert.Description>
+					<Link link={{ path: '/pricing', label: 'common.click_to_purchase_plan' }} />
+				</Alert.Description>
+			</Alert.Root>
+		{:else}
+			{#each sections as section, i (section)}
+				{@render Section(section)}
+				{#if i < sections.length - 1}
+					<Separator />
+				{/if}
+			{/each}
+		{/if}
 	</Card.Content>
 </Card.Root>
 
@@ -31,7 +45,7 @@
 				{#if !(item.hideIf && item.hideIf(subscription))}
 					{@const rawValue = subscription[item.key]}
 					{@const value = item.trasformValue ? item.trasformValue(rawValue) : rawValue}
-					{#if value}
+					{#if rawValue}
 						<div class="flex flex-col gap-2 p-2 {item.class}">
 							<Label class="flex flex-row items-center gap-2">
 								{#if item.icon}

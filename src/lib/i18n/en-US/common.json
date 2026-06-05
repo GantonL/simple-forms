@@ -255,5 +255,7 @@
 	"billing_cycle": "Billing cycle",
 	"billing_cycle_labels": {
 		"monthly": "Monthly"
-	}
+	},
+	"no_active_plan_subscription": "No active plan has been found",
+	"click_to_purchase_plan": "Click to purchase a plan"
 }

@@ -254,5 +254,7 @@
 	"billing_cycle": "מחזור תשלום",
 	"billing_cycle_labels": {
 		"monthly": "חודשי"
-	}
+	},
+	"no_active_plan_subscription": "לא נמצאה תכנית פעילה",
+	"click_to_purchase_plan": "לחצו לרכישת תכנית"
 }
