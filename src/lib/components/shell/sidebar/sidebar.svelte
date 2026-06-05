@@ -74,7 +74,7 @@
 	<Sidebar.Footer>
 		<Sidebar.Menu>
 			<Sidebar.MenuItem>
-				<SidebarUser />
+				<SidebarUser onMenuItemClick={onSidebarLink} />
 			</Sidebar.MenuItem>
 		</Sidebar.Menu>
 	</Sidebar.Footer>
