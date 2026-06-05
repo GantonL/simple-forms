@@ -1,69 +1,55 @@
 <script lang="ts">
 	import Avatar from '$lib/components/avatar/avatar.svelte';
 	import * as Card from '$lib/components/ui/card';
-	import * as Tooltip from '$lib/components/ui/tooltip';
-	import { Badge } from '$lib/components/ui/badge';
 	import { Separator } from '$lib/components/ui/separator';
 	import { t } from '$lib/i18n';
-	import { CircleCheck, CircleX } from '@lucide/svelte';
+	import { sections } from './configurations';
+	import { Label } from '../ui/label';
+	import { defaultDateCell } from '../app-data-table/configurations/defaults';
 
-	let { user, plan } = $props();
+	let { user } = $props();
 </script>
 
 <Card.Root class="w-full">
-	<Card.Header class="flex flex-col items-center pb-4 text-center">
+	<Card.Header class="flex flex-col items-center text-center">
 		<Avatar styleClass="h-18 w-18" src={user.image} size={120} />
 		<Card.Title class="mt-2 text-2xl">{user.name}</Card.Title>
 		<Card.Description>{user.email}</Card.Description>
 	</Card.Header>
 
-	<Card.Content class="space-y-4">
-		<div class="space-y-3">
-			<div class="flex items-center justify-between">
-				<span class="text-muted-foreground text-sm font-medium">{$t('common.plan')}</span>
-				<Badge variant={new Date(user.expiration) < new Date() ? 'destructive' : 'secondary'}
-					>{$t(`common.plans.${plan}.name`)}</Badge
-				>
-			</div>
-
-			<div class="flex items-center justify-between">
-				<span class="text-muted-foreground text-sm font-medium">{$t('common.license')}</span>
-				{#if user.license_id}
-					<Tooltip.Root>
-						<Tooltip.Trigger>
-							<span class="font-mono text-sm">{user.license_id}</span>
-						</Tooltip.Trigger>
-						<Tooltip.Content>
-							{$t('common.license_id_tooltip', { id: user.license_id })}
-						</Tooltip.Content>
-					</Tooltip.Root>
-				{:else}
-					<span class="text-muted-foreground text-sm">{$t('common.unknown')}</span>
-				{/if}
-			</div>
-		</div>
-
+	<Card.Content class="flex flex-col gap-8">
 		<Separator />
-
-		<div class="space-y-3">
-			<div class="flex items-center justify-between">
-				<span class="text-muted-foreground text-sm font-medium">{$t('common.email_verified')}</span>
-				{#if user.emailVerified}
-					<CircleCheck class="text-green-500" size={18} />
-				{:else}
-					<CircleX class="text-destructive" size={18} />
-				{/if}
-			</div>
-
-			<div class="flex items-center justify-between">
-				<span class="text-muted-foreground text-sm font-medium">{$t('common.created_at')}</span>
-				<span class="text-sm">{new Date(user.createdAt).toLocaleDateString()}</span>
-			</div>
-
-			<div class="flex items-center justify-between">
-				<span class="text-muted-foreground text-sm font-medium">{$t('common.last_updated')}</span>
-				<span class="text-sm">{new Date(user.updatedAt).toLocaleDateString()}</span>
-			</div>
-		</div>
+		{#each sections as section, i (section)}
+			{@render Section(section)}
+			{#if i < sections.length - 1}
+				<Separator />
+			{/if}
+		{/each}
 	</Card.Content>
 </Card.Root>
+
+{#snippet Section(config: (typeof sections)[0])}
+	<div class="flex flex-col gap-4">
+		<h3 class="font-bold">{$t(config.title)}</h3>
+		<div class="flex flex-row flex-wrap items-center justify-between gap-4">
+			{#each config.items as item, i (item)}
+				{@const value = user[item.key]}
+				{#if value}
+					<div class="flex flex-col gap-2">
+						<Label class="flex flex-row items-center gap-2">
+							{#if item.icon}
+								<item.icon size={16} />
+							{/if}
+							<span>{$t(item.label)}</span>
+						</Label>
+						{#if item.type === 'text'}
+							{value}
+						{:else if item.type === 'date'}
+							{defaultDateCell(value)}
+						{/if}
+					</div>
+				{/if}
+			{/each}
+		</div>
+	</div>
+{/snippet}

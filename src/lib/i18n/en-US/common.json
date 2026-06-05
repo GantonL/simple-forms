@@ -241,12 +241,21 @@
 	"subscriptions_cancelled_failed": "Subscription cancelation failed",
 	"yes": "YES",
 	"no": "NO",
-	"subscription_cancelled_at": "Subscription cancelled at {{date}}",
+	"subscription_cancelled": "Subscription cancelled",
 	"click_here_to_renew": "Click here to renew",
 	"paid": "Paid",
 	"download_invoice": "Download invoice",
 	"download_invoice_success": "Invoice downloaded successfully",
 	"download_invoice_failed": "Failed to download invoice",
 	"next_payment": "Next payment {{date}}",
-	"pricing": "Pricing"
+	"pricing": "Pricing",
+	"general_information": "General information",
+	"subscription": "Subscription",
+	"exipration": "Expiration",
+	"billing_cycle": "Billing cycle",
+	"billing_cycle_labels": {
+		"monthly": "Monthly"
+	},
+	"no_active_plan_subscription": "No active plan has been found",
+	"click_to_purchase_plan": "Click to purchase a plan"
 }

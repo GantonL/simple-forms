@@ -2,7 +2,12 @@ import type { Session, User } from 'better-auth';
 
 declare module 'better-auth' {
 	interface User {
+		name: string;
 		email: string;
+		emailVerified: boolean;
+		createdAt: Date;
+		updatedAt: Date;
+		image: string;
 		license_id?: string | null;
 		plan_id?: string | null;
 		expiration?: Date | string | null;

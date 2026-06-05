@@ -240,12 +240,21 @@
 	"subscriptions_cancelled_failed": "ביטול המינוי נכשל",
 	"yes": "כן",
 	"no": "לא",
-	"subscription_cancelled_at": "מינוי בוטל ב {{date}}",
+	"subscription_cancelled": "מינוי בוטל",
 	"click_here_to_renew": "לחצו כאן לחידוש המינוי",
 	"paid": "שולם",
 	"download_invoice": "הורדת חשבונית",
 	"download_invoice_success": "תהליך הורדת חשבונית הצליח",
 	"download_invoice_failed": "תהליך הורדת חשבונית נכשל",
 	"next_payment": "תשלום הבא {{date}}",
-	"pricing": "תמחור"
+	"pricing": "תמחור",
+	"general_information": "מידע כללי",
+	"subscription": "מינוי",
+	"expiration": "תוקף",
+	"billing_cycle": "מחזור תשלום",
+	"billing_cycle_labels": {
+		"monthly": "חודשי"
+	},
+	"no_active_plan_subscription": "לא נמצאה תכנית פעילה",
+	"click_to_purchase_plan": "לחצו לרכישת תכנית"
 }
