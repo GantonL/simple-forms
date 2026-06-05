@@ -8,6 +8,8 @@
 	import { resolve } from '$app/paths';
 	const session = authClient.useSession();
 	const user = $derived($session?.data?.user);
+
+	let { onMenuItemClick } = $props();
 	const showIfUser = (currentUser: typeof user) => {
 		return currentUser?.id;
 	};
@@ -47,6 +49,7 @@
 	});
 
 	function onItemClick(event: string) {
+		onMenuItemClick(event);
 		switch (event) {
 			case 'signout': {
 				authClient.signOut();
