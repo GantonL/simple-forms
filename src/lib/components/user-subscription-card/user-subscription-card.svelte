@@ -2,6 +2,7 @@
 	import { t } from '$lib/i18n';
 	import type { Subscription } from '$lib/models/subscription';
 	import { defaultDateCell } from '../app-data-table/configurations/defaults';
+	import Link from '../link/link.svelte';
 	import { Badge } from '../ui/badge';
 	import * as Card from '../ui/card';
 	import { Label } from '../ui/label';
@@ -27,23 +28,33 @@
 		<h3 class="font-bold">{$t(config.title)}</h3>
 		<div class="flex flex-row flex-wrap items-center justify-between gap-4">
 			{#each config.items as item, i (item)}
-				{@const value = subscription[item.key]}
-				{#if value}
-					<div class="flex flex-col gap-2">
-						<Label class="flex flex-row items-center gap-2">
-							{#if item.icon}
-								<item.icon size={16} />
+				{#if !(item.hideIf && item.hideIf(subscription))}
+					{@const rawValue = subscription[item.key]}
+					{@const value = item.trasformValue ? item.trasformValue(rawValue) : rawValue}
+					{#if value}
+						<div class="flex flex-col gap-2 p-2 {item.class}">
+							<Label class="flex flex-row items-center gap-2">
+								{#if item.icon}
+									<item.icon size={16} />
+								{/if}
+								<span>{$t(item.label)}</span>
+								{#if item.link}
+									<Link link={item.link} />
+								{/if}
+							</Label>
+							{#if item.type === 'text'}
+								{#if item.translateValue}
+									{$t(value as string)}
+								{:else}
+									{value}
+								{/if}
+							{:else if item.type === 'date'}
+								{defaultDateCell(value as Date)}
+							{:else if item.type === 'badge'}
+								<Badge>{$t(`common.plans.${value}.name`)}</Badge>
 							{/if}
-							<span>{$t(item.label)}</span>
-						</Label>
-						{#if item.type === 'text'}
-							{value}
-						{:else if item.type === 'date'}
-							{defaultDateCell(value as Date)}
-						{:else if item.type === 'badge'}
-							<Badge>{$t(`common.plans.${value}.name`)}</Badge>
-						{/if}
-					</div>
+						</div>
+					{/if}
 				{/if}
 			{/each}
 		</div>

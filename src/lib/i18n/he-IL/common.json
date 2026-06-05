@@ -240,7 +240,7 @@
 	"subscriptions_cancelled_failed": "ביטול המינוי נכשל",
 	"yes": "כן",
 	"no": "לא",
-	"subscription_cancelled_at": "מינוי בוטל ב {{date}}",
+	"subscription_cancelled": "מינוי בוטל",
 	"click_here_to_renew": "לחצו כאן לחידוש המינוי",
 	"paid": "שולם",
 	"download_invoice": "הורדת חשבונית",
@@ -250,5 +250,9 @@
 	"pricing": "תמחור",
 	"general_information": "מידע כללי",
 	"subscription": "מינוי",
-	"expiration": "תוקף"
+	"expiration": "תוקף",
+	"billing_cycle": "מחזור תשלום",
+	"billing_cycle_labels": {
+		"monthly": "חודשי"
+	}
 }

@@ -11,8 +11,6 @@
 	import type { User } from 'better-auth';
 	import { PaymentsSubscription } from '../../../../api';
 	import { toast } from 'svelte-sonner';
-	import * as Alert from '$lib/components/ui/alert';
-	import { resolve } from '$app/paths';
 	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
 	import { invoicesTable } from './configurations';
 	import { Shredder } from '@lucide/svelte';
@@ -47,15 +45,6 @@
 		<div class="flex w-full max-w-lg flex-col items-center justify-center gap-4">
 			<UserProfileCard {user} />
 			<UserSubscriptionCard {subscription} />
-			{#if subscription?.next_payment && !subscription?.cancelled_at}
-				<Alert.Root class="border-green-400 bg-green-400/20">
-					<Alert.Title
-						>{$t('common.next_payment', {
-							date: subscription.next_payment
-						})}</Alert.Title
-					>
-				</Alert.Root>
-			{/if}
 			<AppDataTable
 				data={invoices}
 				columns={invoicesTable.columns}
@@ -63,20 +52,6 @@
 				pageSizeChanged={onInvoicesTablesPageSizeChanged}
 				pageIndexChanged={onInvoicesTablesPageIndexChanged}
 			></AppDataTable>
-			{#if subscription?.cancelled_at}
-				<Alert.Root class="border-amber-400 bg-amber-400/20">
-					<Alert.Title
-						>{$t('common.subscription_cancelled_at', {
-							date: subscription.cancelled_at
-						})}</Alert.Title
-					>
-					<Alert.Description
-						><a class="underline underline-offset-1" href={resolve('/user/plan/renew')}
-							>{$t('common.click_here_to_renew')}</a
-						></Alert.Description
-					>
-				</Alert.Root>
-			{/if}
 			<DangerZone class="w-full">
 				<Button
 					class="flex flex-row gap-2"

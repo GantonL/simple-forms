@@ -241,7 +241,7 @@
 	"subscriptions_cancelled_failed": "Subscription cancelation failed",
 	"yes": "YES",
 	"no": "NO",
-	"subscription_cancelled_at": "Subscription cancelled at {{date}}",
+	"subscription_cancelled": "Subscription cancelled",
 	"click_here_to_renew": "Click here to renew",
 	"paid": "Paid",
 	"download_invoice": "Download invoice",
@@ -251,5 +251,9 @@
 	"pricing": "Pricing",
 	"general_information": "General information",
 	"subscription": "Subscription",
-	"exipration": "Expiration"
+	"exipration": "Expiration",
+	"billing_cycle": "Billing cycle",
+	"billing_cycle_labels": {
+		"monthly": "Monthly"
+	}
 }
