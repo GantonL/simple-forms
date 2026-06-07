@@ -2,7 +2,7 @@
 	"hero": {
 		"headline": "Digital Forms Management Made Easy",
 		"subheadline": "Streamline your workflow. Create, share, and sign professional forms in minutes.",
-		"cta_primary": "Start for Free",
+		"cta_primary": "Get Started",
 		"cta_secondary": "Browse Templates"
 	},
 	"features": {
@@ -10,7 +10,7 @@
 		"subtitle": "Everything you need to manage documents efficiently",
 		"template_based": {
 			"title": "Smart Templates",
-			"description": "Launch faster with pre-built professional templates or build your own from scratch with our drag-and-drop editor."
+			"description": "Launch faster with pre-built professional templates or build your own from scratch. Drag-and-drop editor coming soon."
 		},
 		"instant_sharing": {
 			"title": "Share via Link",
@@ -22,7 +22,7 @@
 		},
 		"real_time_tracking": {
 			"title": "Real-Time Dashboard",
-			"description": "Monitor form views and submissions as they happen. Export data or integrate with your favorite tools."
+			"description": "Monitor form views and submissions as they happen. Export data. Integrations coming soon."
 		}
 	},
 	"how_it_works": {
@@ -49,7 +49,7 @@
 		},
 		"save_time": {
 			"title": "Accelerate Workflows",
-			"description": "Automate the signature collection process. Reduce turnaround times from days to minutes with smart reminders."
+			"description": "Automate the signature collection process. Reduce turnaround times from days to minutes."
 		},
 		"organized": {
 			"title": "Centralized Hub",

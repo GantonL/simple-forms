@@ -25,7 +25,7 @@
 
 	let { activePlan } = page.data;
 	function handleGetStarted() {
-		goto(resolve('/signup'));
+		goto(resolve('/forms'));
 	}
 
 	function handleViewTemplates() {
