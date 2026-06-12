@@ -1,6 +1,7 @@
 {
 	"titles": {
-		"consent_form": "Consent Form"
+		"consent_form": "Consent Form",
+		"health_declaration_form": "Health Declaration Form"
 	},
 	"sections": {
 		"content": "Content",
@@ -9,7 +10,9 @@
 		"confirmation": "Confirmation",
 		"admin_statement": "Administrator Section",
 		"researcher_statement": "Researcher Section",
-		"doctor_statement": "Doctor Section"
+		"doctor_statement": "Doctor Section",
+		"declaration_intro": "Declaration",
+		"health_statement": "Health Statement"
 	},
 	"content": {
 		"content": "Your amazing form content",
@@ -19,7 +22,10 @@
 		"confirmation": "I hereby confirm that I have read, understood, and agree to all the terms and conditions outlined above.",
 		"admin_statement": "Administrator Approval: This form has been reviewed and approved by the administrator.",
 		"researcher_statement": "Researcher Approval: This form has been reviewed and approved by the researcher.",
-		"doctor_statement": ""
+		"doctor_statement": "",
+		"health_declaration_form_title": "Health Declaration Form",
+		"declaration_intro": "I hereby declare that the information provided below is accurate and complete to the best of my knowledge.",
+		"health_statement": "Please describe any known medical conditions, allergies, or medications relevant to this declaration:"
 	},
 	"labels": {
 		"full_name": "Full Name",
@@ -37,6 +43,8 @@
 		"first_name": "First Name",
 		"last_name": "Surname",
 		"injection_areas": "I declare that I have been given a detailed explanation about Botolinuim Toxin A injection as a medical cosmetic treatment in the following areas:",
-		"doctor_name": "Doctor Name"
+		"doctor_name": "Doctor Name",
+		"date_of_birth": "Date of Birth",
+		"health_conditions": "Health Conditions / Medications"
 	}
 }
