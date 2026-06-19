@@ -5,11 +5,11 @@ import {
 	getUrlFiltersUtil,
 	getUrlOptionsUtil,
 	getBodyFiltersUtil,
-	DEFAULT_LIMIT,
 	type BodyFiltersUtil
 } from '../utils';
 import { MAX_FIND_LIMIT } from '../abstract';
 import type { Column } from 'drizzle-orm';
+import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
 
 describe('Utils', () => {
 	beforeAll(async () => {
