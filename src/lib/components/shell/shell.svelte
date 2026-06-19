@@ -6,7 +6,7 @@
 	import ScrollToTop from '../scroll-to-top/scroll-to-top.svelte';
 	import { Elements } from '$lib/enums/elements';
 	import { onDestroy, onMount } from 'svelte';
-	import { shellContentScrollEvents } from '$lib/stores';
+	import { shellContentScrollEvents, shellScrollContainer } from '$lib/stores';
 	let { children } = $props();
 
 	let scrollContainer: HTMLDivElement;
@@ -21,6 +21,7 @@
 
 	function handleScrollEvents() {
 		if (scrollContainer) {
+			shellScrollContainer.set(scrollContainer);
 			scrollContainer.addEventListener('scroll', function () {
 				scrollEventListener();
 			});

@@ -1,44 +1,27 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { t } from '$lib/i18n';
-	import { direction } from '$lib/stores';
+	import { direction, shellContentScrollEvents, shellScrollContainer } from '$lib/stores';
 	import { ChevronUp } from '@lucide/svelte';
-	import { Elements } from '$lib/enums/elements';
 	import { afterNavigate } from '$app/navigation';
 
 	let showButton = $state(false);
-	let scrollContainer: Element | null = null;
+	let shellContainerRef: HTMLDivElement;
 
 	afterNavigate(() => {
 		scrollToTop();
 	});
 
-	onMount(() => {
-		scrollContainer = document.getElementById(Elements.ScrollableContent);
-
-		if (!scrollContainer) {
-			scrollContainer = document.documentElement;
-		}
-
-		const handleScroll = () => {
-			const scrollTop =
-				scrollContainer === document.documentElement
-					? window.scrollY
-					: scrollContainer?.scrollTop || 0;
-
-			showButton = scrollTop > 200;
-		};
-		scrollContainer?.addEventListener('scroll', handleScroll);
-		return () => scrollContainer?.removeEventListener('scroll', handleScroll);
+	shellContentScrollEvents.subscribe((scrollEvent) => {
+		const scrollTop = scrollEvent?.scrollTop ?? 0;
+		showButton = scrollTop > 200;
+	});
+	shellScrollContainer.subscribe((element) => {
+		if (element) shellContainerRef = element;
 	});
 
 	function scrollToTop() {
-		if (scrollContainer === document.documentElement) {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
-		} else {
-			scrollContainer?.scrollTo({ top: 0, behavior: 'smooth' });
-		}
+		shellContainerRef?.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 </script>
 
