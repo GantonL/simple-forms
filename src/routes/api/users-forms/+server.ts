@@ -1,3 +1,4 @@
+import { SearchParams } from '$lib/enums/search-params';
 import type { UserForm } from '$lib/server/database/schemas/form';
 import {
 	Service as service,
@@ -11,11 +12,15 @@ import {
 import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ url, locals }) => {
+	const user = locals.user;
+	if (user?.id) {
+		url.searchParams.append(SearchParams.UserId, user.id);
+	}
 	const filters = getUrlFilters(url);
 	const options = getUrlOptions(url);
 	const items = await service.find(filters, options);
 	if (options?.renderer) return json(items);
-	const isPostFindBlock = await postFindBlock(url, items, locals.user);
+	const isPostFindBlock = await postFindBlock(url, items, user);
 	if (isPostFindBlock) return json([]);
 	return json(items);
 };

@@ -39,9 +39,10 @@
 	async function onLoadMoreTemplates() {
 		dataLoading = true;
 		offset = displayTemplates.length;
-		const templatesRes = await GET<FormTemplate[]>(
-			`${FormsTemplates}${`?limit=${DEFAULT_LIMIT}&offset=${offset}`}`
-		);
+		const templatesRes = await GET<FormTemplate[]>(`${FormsTemplates}`, {
+			limit: DEFAULT_LIMIT,
+			offset
+		});
 		if (!templatesRes?.length) {
 			noMoreTemplates = true;
 		}

@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { DELETE, PUT } from '$lib/api/helpers/request';
+	import { DELETE, GET, PUT } from '$lib/api/helpers/request';
 	import AppAlertDialog from '$lib/components/app-alert-dialog/app-alert-dialog.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
 	import UserFormCard from '$lib/components/user-form-card/user-form-card.svelte';
@@ -11,8 +11,10 @@
 	import { t } from '$lib/i18n';
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { UserForm } from '$lib/server/database/schemas/form';
+	import { onMount } from 'svelte';
 	import { UsersForms } from '../../../api';
-	let userForms: UserForm[] = $state(page.data.userForms);
+	import { LoaderCircle } from '@lucide/svelte';
+	import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
 
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
@@ -25,6 +27,23 @@
 	let onEnableForm = $state(() => {});
 
 	let enableOrDisableInProgress = $state(false);
+
+	const formsStream: Promise<UserForm[]> = $state(page.data.userForms);
+	let offset = 0;
+	let noMoreForms = $state(false);
+	let dataLoading = $state(false);
+	let initialLoading = $state(true);
+	let displayForms: UserForm[] = $state([]);
+
+	onMount(() => {
+		formsStream
+			.then((initial) => {
+				displayForms = initial ?? [];
+			})
+			.finally(() => {
+				initialLoading = false;
+			});
+	});
 
 	function onUserCardEvent(event: AppCustomEvent<UserForm>) {
 		switch (event.type) {
@@ -62,7 +81,7 @@
 		deleteInProgress = true;
 		const deletedRes = await DELETE<unknown, { deleted: UserForm }>(`${UsersForms}/${id}`, {});
 		if (deletedRes?.deleted?.id === id) {
-			userForms = userForms.filter((uf) => uf.id !== id);
+			displayForms = displayForms.filter((uf) => uf.id !== id);
 		}
 		alertDelete = false;
 		deleteInProgress = false;
@@ -76,7 +95,7 @@
 			undefined
 		);
 		if (updateRes?.updated?.id === id) {
-			const updatedForm = userForms.find((uf) => uf.id === id);
+			const updatedForm = displayForms.find((uf) => uf.id === id);
 			updatedForm!.is_active = false;
 		}
 		alertDisable = false;
@@ -91,24 +110,52 @@
 			undefined
 		);
 		if (updateRes?.updated?.id === id) {
-			const updatedForm = userForms.find((uf) => uf.id === id);
+			const updatedForm = displayForms.find((uf) => uf.id === id);
 			updatedForm!.is_active = true;
 		}
 		alertEnable = false;
 		enableOrDisableInProgress = false;
 	}
+
+	async function onLoadMoreForms() {
+		dataLoading = true;
+		offset = displayForms.length;
+		const userFormsRes = await GET<UserForm[]>(`${UsersForms}`, {
+			orderBy: '-submissions',
+			limit: DEFAULT_LIMIT,
+			offset
+		});
+		if (!userFormsRes?.length) {
+			noMoreForms = true;
+		}
+		displayForms.push(...userFormsRes);
+		dataLoading = false;
+	}
 </script>
 
-<BasePage title="common.forms" description="seo.pages.forms.description">
+<BasePage
+	title="common.forms"
+	description="seo.pages.forms.description"
+	dataLoader={{ event: 'scroll', threshold: 75 }}
+	onLoadMore={onLoadMoreForms}
+	endOfData={noMoreForms}
+	{dataLoading}
+>
 	{#snippet header()}
 		<h2 class="text-2xl font-bold">{$t('common.my_forms')}</h2>
 		<p class="text-lg font-light">{$t('common.my_forms_description')}</p>
 	{/snippet}
-	<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
-		{#each userForms as userForm (userForm.id)}
-			<UserFormCard class="h-full" data={userForm} onEvent={onUserCardEvent} />
-		{/each}
-	</div>
+	{#if initialLoading}
+		<div class="flex h-12 items-center justify-center">
+			<LoaderCircle class="text-primary animate-spin" />
+		</div>
+	{:else}
+		<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
+			{#each displayForms as userForm (userForm.id)}
+				<UserFormCard class="h-full" data={userForm} onEvent={onUserCardEvent} />
+			{/each}
+		</div>
+	{/if}
 </BasePage>
 
 <AppAlertDialog

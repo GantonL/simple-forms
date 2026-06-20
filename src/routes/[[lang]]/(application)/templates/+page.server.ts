@@ -8,8 +8,11 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const tid = url.searchParams.get(SearchParams.TemplateId);
 	const templates = GET<FormTemplate[]>(
-		`${FormsTemplates}${Number(tid) ? `?${SearchParams.TemplateId}=${tid}` : `?limit=${DEFAULT_LIMIT}`}`,
-		{ fetch }
+		`${FormsTemplates}${Number(tid) ? `?${SearchParams.TemplateId}=${tid}` : ``}`,
+		{
+			fetch,
+			limit: !tid ? DEFAULT_LIMIT : undefined
+		}
 	);
 	return { templates };
 };
