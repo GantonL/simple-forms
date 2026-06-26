@@ -13,6 +13,11 @@ import type { User } from 'better-auth';
 
 const baseUrl = `http://${PAYMENTS_SERVICE_HOST}:${PAYMENTS_SERVICE_PORT}`;
 
+interface PaymentsPagination {
+	count: number;
+	offset: number;
+}
+
 async function validateLicense(licenseId: string) {
 	try {
 		const res = await fetch(`${baseUrl}/licenses/validate?license_id=${licenseId}`);
@@ -129,9 +134,18 @@ export async function validateCheckoutCompletionResponse(url: string) {
 	}
 }
 
-export async function getInvoices(user_id: string) {
+export async function getInvoices(user_id: string, options?: { pagination?: PaymentsPagination }) {
 	try {
-		const res = await fetch(`${baseUrl}/invoices?user_id=${user_id}`);
+		const searchParams = new URLSearchParams();
+		searchParams.append('user_id', user_id);
+		if (options) {
+			const pagination = options.pagination;
+			if (pagination) {
+				searchParams.append('count', String(pagination.count));
+				searchParams.append('offset', String(pagination.offset));
+			}
+		}
+		const res = await fetch(`${baseUrl}/invoices?${searchParams.toString()}`);
 		const invoicesJsonResult = await res.json();
 		return invoicesJsonResult?.payments ?? [];
 	} catch (error) {
