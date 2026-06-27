@@ -29,7 +29,6 @@ export const auth = betterAuth({
 		}
 	},
 	plugins: [
-		sveltekitCookies(getRequestEvent),
 		customSession(async ({ user, session }) => {
 			const entitlements = await db
 				.select()
@@ -45,7 +44,8 @@ export const auth = betterAuth({
 					expiration: entitlements?.[0]?.expiration
 				}
 			};
-		})
+		}),
+		sveltekitCookies(getRequestEvent) //always keep last
 	],
 	session: {
 		cookieCache: {
