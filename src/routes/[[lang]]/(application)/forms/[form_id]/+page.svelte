@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 	import { GET } from '$lib/api/helpers/request';
 	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
@@ -23,7 +24,8 @@
 
 	const userForm: UserForm = $state(page.data.userForm);
 	const template: FormTemplate = $state(page.data.template);
-	let submissions: FormSubmission[] = $state(page.data.submissions);
+	let submissions: FormSubmission[] = $state([]);
+	const submissionsPromise: Promise<FormSubmission[]> = $state(page.data.submissions);
 	const preProcessedSubmissionsCount: Promise<number> = $state(
 		page.data.preProcessedSubmissionsCount
 	);
@@ -42,6 +44,13 @@
 	});
 	let pageSize = $derived(configuration.pageSize ?? 10);
 	let fetchInProgress = $state(false);
+	let initialLoad = $state(false);
+
+	onMount(async () => {
+		initialLoad = true;
+		submissions = await submissionsPromise;
+		initialLoad = false;
+	});
 
 	async function onPageIndexChaged(newIndex: number) {
 		getSubmissionsPage(newIndex);
@@ -151,8 +160,8 @@
 			{configuration}
 			pageIndexChanged={onPageIndexChaged}
 			pageSizeChanged={onPageSizeChanged}
-			isLoading={fetchInProgress}
-			disabled={fetchInProgress}
+			isLoading={fetchInProgress || initialLoad}
+			disabled={fetchInProgress || initialLoad}
 			freeSearchChanged={onFreeSearchChanged}
 		/>
 	</div>

@@ -60,6 +60,7 @@
 	}
 
 	async function onInvoicesTablesPageSizeChanged(pageSize: number) {
+		if (loadingNextInvoices) return;
 		loadingNextInvoices = true;
 		invoicesOffset = 0;
 		invoicesPageSize = pageSize;
@@ -71,6 +72,7 @@
 		loadingNextInvoices = false;
 	}
 	async function onInvoicesTablesPageIndexChanged(pageIndex: number) {
+		if (loadingNextInvoices) return;
 		loadingNextInvoices = true;
 		invoicesOffset = pageIndex * invoicesPageSize;
 		const invoicesRes = await GET<{ invoices: unknown[] }>(PaymentsInvoices, {
