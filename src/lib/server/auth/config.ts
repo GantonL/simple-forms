@@ -4,12 +4,13 @@ import { betterAuth } from 'better-auth';
 import { account, session, user, verification } from '../database/schemas/auth';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
+import { BETTER_AUTH_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { customSession } from 'better-auth/plugins';
 import { userFsEntitlements } from '../database/schemas/entitlements';
 import { eq, desc } from 'drizzle-orm';
 
 export const auth = betterAuth({
+	baseURL: BETTER_AUTH_URL,
 	database: drizzleAdapter(db, {
 		provider: 'pg',
 		schema: {
