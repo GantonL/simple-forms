@@ -52,5 +52,10 @@ export const auth = betterAuth({
 			enabled: true,
 			maxAge: 5 * 60 // Cache duration in seconds
 		}
+	},
+	advanced: {
+		ipAddress: {
+			ipAddressHeaders: ['x-forwarded-for']
+		}
 	}
 });
