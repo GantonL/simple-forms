@@ -23,4 +23,7 @@ export interface TableConfiguration<T> {
 		manualPagination?: boolean;
 	};
 	hideAddDataAction?: boolean;
+	rowSelection?: {
+		enabled?: boolean;
+	};
 }
