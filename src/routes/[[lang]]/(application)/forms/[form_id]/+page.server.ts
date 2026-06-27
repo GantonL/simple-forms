@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ fetch, locals, params, url }) => {
 		}
 	);
 	const submissionId = url.searchParams.get(SearchParams.SubmissionId) ?? '';
-	const submissions = await GET<FormSubmission[]>(
+	const submissions = GET<FormSubmission[]>(
 		`${FormsSubmissions}?${SearchParams.FormId}=${userForm.id}&${SearchParams.FreeSearch}=${searchTerm}&${SearchParams.SubmissionId}=${submissionId}`,
 		{ fetch, orderBy: DEFAULT_ORDER_BY }
 	);
@@ -32,7 +32,7 @@ export const load: PageServerLoad = async ({ fetch, locals, params, url }) => {
 		`${FormSubmissionCandidateData}/count?${SearchParams.FormId}=${userForm.id}`,
 		{ fetch }
 	);
-	const template = await GET<FormTemplate>(`${FormsTemplates}/${userForm.template_id}`, { fetch });
+	const template = GET<FormTemplate>(`${FormsTemplates}/${userForm.template_id}`, { fetch });
 	return {
 		userForm,
 		submissions,

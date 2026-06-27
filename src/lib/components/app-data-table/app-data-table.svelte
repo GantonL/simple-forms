@@ -71,9 +71,10 @@
 
 	$effect.pre(() => {
 		if (configuration?.freeSearchFilter?.enabled) {
-			configuration.freeSearchFilter.initialValue = configuration.freeSearchFilter.initialValue ?? '';
+			configuration.freeSearchFilter.initialValue =
+				configuration.freeSearchFilter.initialValue ?? '';
 		}
-	})
+	});
 
 	const tableOptions: TableOptions<any> = {
 		get data() {
@@ -295,12 +296,16 @@
 
 {#snippet footer()}
 	<div class="flex flex-row justify-between gap-2">
-		<div class="text-muted-foreground flex-1 text-sm">
-			{table.getFilteredSelectedRowModel().rows.length}
-			{$t('common.of')}
-			{table.getFilteredRowModel().rows.length}
-			{$t('common.row(s)_selected')}.<br />
-			<span>{$t('common.total')}: {table.getRowCount()}</span>
+		<div class="text-muted-foreground flex flex-1 flex-col items-start justify-center text-sm">
+			{#if configuration?.rowSelection?.enabled}
+				{table.getFilteredSelectedRowModel().rows.length}
+				{$t('common.of')}
+				{table.getFilteredRowModel().rows.length}
+				{$t('common.row(s)_selected')}.<br />
+				{#if rowCount}
+					<div>{$t('common.total')}: {table.getRowCount()}</div>
+				{/if}
+			{/if}
 		</div>
 		<div class="flex items-center justify-end gap-1">
 			<Combobox

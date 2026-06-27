@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 	import { GET } from '$lib/api/helpers/request';
 	import AppDataTable from '$lib/components/app-data-table/app-data-table.svelte';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
@@ -7,7 +8,7 @@
 	import { t } from '$lib/i18n';
 	import type { TableConfiguration } from '$lib/models/table';
 	import type { FormSubmission, FormTemplate, UserForm } from '$lib/server/database/schemas/form';
-	import { LayoutTemplate, TriangleAlert } from '@lucide/svelte';
+	import { LayoutTemplate, TriangleAlert, LoaderCircle } from '@lucide/svelte';
 	import { FormsSubmissions } from '../../../../api';
 	import { columns, DEFAULT_ORDER_BY, pageActions, tableConfiguration } from './configurations';
 	import Link from '$lib/components/link/link.svelte';
@@ -22,8 +23,10 @@
 	const sidebar = useSidebar();
 
 	const userForm: UserForm = $state(page.data.userForm);
-	const template: FormTemplate = $state(page.data.template);
-	let submissions: FormSubmission[] = $state(page.data.submissions);
+	let template: FormTemplate = $state();
+	const templatePromise: Promise<FormTemplate> = $state(page.data.template);
+	let submissions: FormSubmission[] = $state([]);
+	const submissionsPromise: Promise<FormSubmission[]> = $state(page.data.submissions);
 	const preProcessedSubmissionsCount: Promise<number> = $state(
 		page.data.preProcessedSubmissionsCount
 	);
@@ -42,6 +45,14 @@
 	});
 	let pageSize = $derived(configuration.pageSize ?? 10);
 	let fetchInProgress = $state(false);
+	let initialLoad = $state(false);
+
+	onMount(async () => {
+		initialLoad = true;
+		submissions = await submissionsPromise;
+		template = await templatePromise;
+		initialLoad = false;
+	});
 
 	async function onPageIndexChaged(newIndex: number) {
 		getSubmissionsPage(newIndex);
@@ -103,11 +114,15 @@
 				<h2 class="truncate text-2xl font-bold">{userForm.name}</h2>
 				<p class="text-lg font-light">{$t('common.user_form_description')}</p>
 				<a
-					href={resolve(`/templates?${SearchParams.TemplateId}=${template.id}`)}
+					href={resolve(`/templates?${SearchParams.TemplateId}=${template?.id}`)}
 					class="bg-secondary/20 flex w-fit flex-row items-center gap-2 rounded-full border px-4 py-1 text-sm"
 				>
 					<LayoutTemplate size={12} />
-					<span>{$t(`common.templates.${template.key}.name`)}</span>
+					{#if template}
+						<span>{$t(`common.templates.${template.key}.name`)}</span>
+					{:else}
+						<LoaderCircle size={12} class="animate-spin" />
+					{/if}
 				</a>
 			</div>
 			<div class="flex flex-row flex-wrap items-center justify-end gap-2">
@@ -151,8 +166,8 @@
 			{configuration}
 			pageIndexChanged={onPageIndexChaged}
 			pageSizeChanged={onPageSizeChanged}
-			isLoading={fetchInProgress}
-			disabled={fetchInProgress}
+			isLoading={fetchInProgress || initialLoad}
+			disabled={fetchInProgress || initialLoad}
 			freeSearchChanged={onFreeSearchChanged}
 		/>
 	</div>

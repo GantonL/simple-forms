@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 import { type RemoteBrwoserServiceLoadStatusResponse } from '$lib/types/remote-browser';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const remoteBrowserServiceLoadStatus = await GET<RemoteBrwoserServiceLoadStatusResponse>(
+	const remoteBrowserServiceLoadStatus = GET<RemoteBrwoserServiceLoadStatusResponse>(
 		RemoteBrowserServiceLoadStatus,
 		{ fetch }
 	);

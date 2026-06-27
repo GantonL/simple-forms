@@ -3,7 +3,8 @@ import { json, redirect, type RequestHandler } from '@sveltejs/kit';
 import { Service as UsersEntitlements } from '$lib/server/database/services/users-entitlements';
 import { eq } from 'drizzle-orm';
 import { userFsEntitlements } from '$lib/server/database/schemas/entitlements';
-export const GET: RequestHandler = async ({ locals }) => {
+import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
+export const GET: RequestHandler = async ({ locals, url }) => {
 	const user = locals.user;
 	if (!user) {
 		redirect(300, '/signin');
@@ -12,6 +13,10 @@ export const GET: RequestHandler = async ({ locals }) => {
 	if (!entitledUser) {
 		redirect(300, '/user/plan/upgrade');
 	}
-	const invoices = await getInvoices(entitledUser?.fsUserId);
+	const pagination = {
+		count: Number(url.searchParams.get('limit') ?? DEFAULT_LIMIT),
+		offset: Number(url.searchParams.get('offset') ?? 0)
+	};
+	const invoices = await getInvoices(entitledUser?.fsUserId, { pagination });
 	return json({ invoices });
 };

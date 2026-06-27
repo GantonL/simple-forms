@@ -16,3 +16,5 @@ export const BaseUrl: string = 'https://app.simpleforms.cloud';
 export const Author: string = 'Guy Lahav';
 export const TwitterUsername: string = '@myusername';
 export const TwitterSitename: string = '@mysitename';
+
+export const DEFAULT_LIMIT = 10;

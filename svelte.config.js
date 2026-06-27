@@ -25,6 +25,9 @@ const config = {
 		adapter: adapter(),
 		csrf: {
 			trustedOrigins: ['*']
+		},
+		alias: {
+			'super-sitemap': './node_modules/super-sitemap/dist/adapters/sveltekit/index.js'
 		}
 	},
 	extensions: ['.svelte', '.md']

@@ -2,8 +2,7 @@ import type { PgTableWithColumns, TableConfig } from 'drizzle-orm/pg-core';
 import { MAX_FIND_LIMIT, type QueryOptions, type WhereCondition } from './abstract';
 import { ilike, desc, asc, inArray, type SQL, Column } from 'drizzle-orm';
 import { SearchParams } from '$lib/enums/search-params';
-
-export const DEFAULT_LIMIT = 10;
+import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
 
 export const getUrlFiltersUtil = <T>(
 	url: URL,
