@@ -9,7 +9,7 @@ import { getBaseMetaTags } from '$lib/client/configurations/meta-tags';
 export const load: LayoutLoad = async ({ fetch, params, url }) => {
 	const localeRes: { locale: AvailableLocals } = await (await fetch(Locale)).json();
 	const localeFromCookie = localeRes.locale;
-	const localeFromRoute = params['lang'];
+	const localeFromRoute = params['locale'];
 	let choosenLocale = localeFromRoute || localeFromCookie;
 	if (choosenLocale && !locales.get().includes(choosenLocale)) {
 		choosenLocale = defaultLocale;
