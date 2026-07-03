@@ -18,6 +18,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			fetch
 		}
 	);
+	console.log(userForm);
 	if (!userForm) {
 		error(404);
 	}
