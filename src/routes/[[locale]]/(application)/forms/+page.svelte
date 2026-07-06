@@ -15,6 +15,7 @@
 	import { UsersForms } from '../../../api';
 	import { LoaderCircle } from '@lucide/svelte';
 	import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
+	import type { BarChartData } from '$lib/models/chart';
 
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
@@ -33,7 +34,7 @@
 	let noMoreForms = $state(false);
 	let dataLoading = $state(false);
 	let initialLoading = $state(true);
-	let displayForms: UserForm[] = $state([]);
+	let displayForms: (UserForm & { submissionsHistory?: BarChartData[] })[] = $state([]);
 
 	onMount(() => {
 		formsStream
@@ -152,7 +153,12 @@
 	{:else}
 		<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
 			{#each displayForms as userForm (userForm.id)}
-				<UserFormCard class="h-full" data={userForm} onEvent={onUserCardEvent} />
+				<UserFormCard
+					class="h-full"
+					data={userForm}
+					onEvent={onUserCardEvent}
+					submissionsHistory={userForm.submissionsHistory}
+				/>
 			{/each}
 		</div>
 	{/if}
