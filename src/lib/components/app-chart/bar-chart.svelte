@@ -8,12 +8,14 @@
 	let {
 		data,
 		configuration,
-		header
+		header,
+		emptyState,
 	}: {
 		data: BarChartData[] | undefined;
 		configuration: ChartConfig;
 		header?: Snippet;
+		emptyState?: Snippet;
 	} = $props();
 </script>
 
-<AppChart {data} {configuration} type={ChartType.Bar} {header}></AppChart>
+<AppChart {data} {configuration} type={ChartType.Bar} {header} {emptyState}></AppChart>

@@ -10,12 +10,14 @@
 		configuration,
 		type,
 		data,
-		header
+		header,
+		emptyState,
 	}: {
 		configuration: Chart.ChartConfig;
 		type?: ChartType;
-		data: TData[];
+		data: TData[] | undefined;
 		header?: Snippet;
+		emptyState?: Snippet;
 	} = $props();
 
 	const series = $derived.by(() => {
@@ -43,6 +45,8 @@
 				<div class="flex h-full items-center justify-center">
 					<LoaderCircle size={24} class="text-primary animate-spin" />
 				</div>
+			{:else if (data.length === 0 && emptyState)}
+			    {@render emptyState()}
 			{:else if type === ChartType.Bar}
 				<BarChart {data} x="x" {y} {series}
 					>{#snippet tooltip()}

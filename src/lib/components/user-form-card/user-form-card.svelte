@@ -19,6 +19,7 @@
 	import { chartConfiguration } from './configurations/chart';
 	import { Label } from '../ui/label';
 	import type { BarChartData } from '$lib/models/chart';
+	import EmptyResults from '../empty-results/empty-results.svelte';
 	let {
 		data,
 		onEvent,
@@ -105,10 +106,6 @@
 		</Card.Header>
 		<Card.Content>
 			{#if data.is_active !== false}
-				<!-- <Badge variant="secondary" class="bg-secondary/35">
-					<Signature size={12} />
-					{data.submissions}
-				</Badge> -->
 				<BarChart data={submissionsHistory} configuration={dynamicChartConfiguration}>
 					{#snippet header()}
 						<div class="flex flex-row gap-2 p-4 text-xl">
@@ -116,6 +113,9 @@
 							|
 							<span>{data.submissions}</span>
 						</div>
+					{/snippet}
+					{#snippet emptyState()}
+					    <EmptyResults configuration={{class:'w-full'}}/>
 					{/snippet}
 				</BarChart>
 			{/if}

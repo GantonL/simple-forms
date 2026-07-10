@@ -12,7 +12,7 @@
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { UserForm } from '$lib/server/database/schemas/form';
 	import { onMount } from 'svelte';
-	import { UsersForms } from '../../../api';
+	import { UsersForm, UsersForms } from '../../../api';
 	import { LoaderCircle } from '@lucide/svelte';
 	import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
 	import type { BarChartData } from '$lib/models/chart';
@@ -34,12 +34,13 @@
 	let noMoreForms = $state(false);
 	let dataLoading = $state(false);
 	let initialLoading = $state(true);
-	let displayForms: (UserForm & { submissionsHistory?: BarChartData[] })[] = $state([]);
+	let displayForms = $state<(UserForm & { submissionsHistory?: BarChartData[] })[]>([]);
 
 	onMount(() => {
 		formsStream
 			.then((initial) => {
 				displayForms = initial ?? [];
+				fetchDisplayFormsHistory(displayForms);
 			})
 			.finally(() => {
 				initialLoading = false;
@@ -130,7 +131,23 @@
 			noMoreForms = true;
 		}
 		displayForms.push(...userFormsRes);
+		fetchDisplayFormsHistory(userFormsRes);
 		dataLoading = false;
+	}
+
+	async function fetchFormHistory(formId: UserForm['id']) {
+		const submissionHistory = await GET<(typeof displayForms)[0]['submissionsHistory']>(
+			`${UsersForm(formId)}/submissions-history`
+		);
+		return submissionHistory;
+	}
+
+	async function fetchDisplayFormsHistory(df: typeof displayForms) {
+		const promises = df.map((df) => fetchFormHistory(df.id));
+		const setteled = await Promise.allSettled(promises);
+		setteled.forEach((result, idx) => {
+		  df[idx].submissionsHistory = result.status === 'fulfilled' ? (result.value ?? []) : [];
+		})
 	}
 </script>
 
