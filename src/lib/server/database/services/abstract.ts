@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SQL } from 'drizzle-orm';
 import { type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-import { PgColumn, type PgTable, type SelectedFields } from 'drizzle-orm/pg-core';
+import { type PgTable, type SelectedFields } from 'drizzle-orm/pg-core';
 import { eq, and, count } from 'drizzle-orm';
 
 export const MAX_FIND_LIMIT = 100;
