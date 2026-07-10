@@ -34,5 +34,5 @@ export const GET: RequestHandler = async ({ params, url }) => {
 			y: Number(i.count)
 		};
 	});
-	return json(results);
+	return json(results.reverse());
 };
