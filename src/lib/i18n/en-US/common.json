@@ -87,7 +87,7 @@
 	"sign_in": "Sign in",
 	"built_by": "Built by {{author}}",
 	"email_verified": "Email verified",
-	"last_updated": "Last updated",
+	"last_updated": "Last updated {{date}}",
 	"plan": "Plan",
 	"license": "License",
 	"license_id_tooltip": "License ID: {{id}}",
@@ -209,7 +209,6 @@
 		}
 	},
 	"queued_requests": "{{number}} requests queued",
-	"last_signed_at_x": "Last signed at {{date}}",
 	"enable_form_sign": "Allow access to sign",
 	"disable_form_sign": "Deny access to sign",
 	"disable_user_form_confirm_message": "This action will block anyone who has a link from accessing the form",

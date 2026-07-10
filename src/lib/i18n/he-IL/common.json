@@ -87,7 +87,7 @@
 	"sign_in": "כניסה",
 	"built_by": "נבנה ע״י {{author}}",
 	"email_verified": "דוא״ל מאומת",
-	"last_updated": "עודכן לאחרונה",
+	"last_updated": "עודכן לאחרונה {{date}}",
 	"plan": "תוכנית",
 	"license": "רישיון",
 	"license_id_tooltip": "מזהה רישיון: {{id}}",
@@ -208,7 +208,6 @@
 		}
 	},
 	"queued_requests": "{{number}} ממתינות בתור",
-	"last_signed_at_x": "נחתם לאחרונה ב {{date}}",
 	"enable_form_sign": "לאפשר גישה לחתימה",
 	"disable_form_sign": "מניעת גישה לחתימה",
 	"disable_user_form_confirm_message": "פעולה זו תמנע מכל מי שיש לו את הקישור גישה לטופס",

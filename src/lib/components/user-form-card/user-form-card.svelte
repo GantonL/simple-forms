@@ -123,7 +123,7 @@
 		<Card.Footer class="align-items flex flex-row justify-between gap-2">
 			{@render copyLinkButton()}
 			<span class="text-muted-foreground text-xs italic"
-				>{$t('common.last_signed_at_x', {
+				>{$t('common.last_updated', {
 					date: Intl.DateTimeFormat(locale.get()).format(new Date(data.updatedAt))
 				})}</span
 			>
