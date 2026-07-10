@@ -109,7 +109,7 @@
 				<BarChart data={submissionsHistory} configuration={dynamicChartConfiguration}>
 					{#snippet header()}
 						<div class="flex flex-row gap-2 p-4 text-xl">
-							<Label>{$t('common.total_submissions')}</Label>
+							<Label>{$t('common.submissions')}</Label>
 							|
 							<span>{data.submissions}</span>
 						</div>

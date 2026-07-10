@@ -137,7 +137,8 @@
 
 	async function fetchFormHistory(formId: UserForm['id']) {
 		const submissionHistory = await GET<(typeof displayForms)[0]['submissionsHistory']>(
-			`${UsersForm(formId)}/submissions-history`
+			`${UsersForm(formId)}/submissions-history`,
+			{limit: 7}
 		);
 		return submissionHistory;
 	}
@@ -168,7 +169,7 @@
 			<LoaderCircle class="text-primary animate-spin" />
 		</div>
 	{:else}
-		<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
+		<div class="grid w-full grid-cols-3 gap-2 max-2xl:grid-cols-2 max-lg:grid-cols-1">
 			{#each displayForms as userForm (userForm.id)}
 				<UserFormCard
 					class="h-full"
