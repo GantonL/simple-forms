@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check, Signature, PowerOff } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, PowerOff } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -13,24 +13,39 @@
 	import { GET } from '$lib/api/helpers/request';
 	import { UsersForms } from '../../../routes/api';
 	import * as Dialog from '../ui/dialog';
-	import { Badge } from '../ui/badge';
 	import * as Tooltip from '../ui/tooltip';
 	import type { ClassValue } from 'svelte/elements';
+	import BarChart from '../app-chart/bar-chart.svelte';
+	import { chartConfiguration } from './configurations/chart';
+	import { Label } from '../ui/label';
+	import type { BarChartData } from '$lib/models/chart';
+	import EmptyResults from '../empty-results/empty-results.svelte';
 	let {
 		data,
 		onEvent,
-		class: className
+		class: className,
+		submissionsHistory
 	}: {
 		data: UserForm;
 		onEvent: (event: AppCustomEvent<UserForm>) => void;
 		class?: ClassValue;
+		submissionsHistory: BarChartData[] | undefined;
 	} = $props();
 	let copyDialogOpenInProgress = $state(false);
 	let copyLink = $state('');
 	let copiedSuccess = $state(false);
 	let copiedError = $state(false);
 	let openCopyLinkDialog = $state(false);
+	let dynamicChartConfiguration = $state(structuredClone(chartConfiguration));
 
+	locale.subscribe(() => {
+		Object.keys(chartConfiguration).forEach((key) => {
+			const label = chartConfiguration[key].label;
+			if (label) {
+				dynamicChartConfiguration[key].label = t.get(label);
+			}
+		});
+	});
 	async function onCopy(event: Event) {
 		event.stopImmediatePropagation();
 		copyDialogOpenInProgress = true;
@@ -91,10 +106,18 @@
 		</Card.Header>
 		<Card.Content>
 			{#if data.is_active !== false}
-				<Badge variant="secondary" class="bg-secondary/35">
-					<Signature size={12} />
-					{data.submissions}
-				</Badge>
+				<BarChart data={submissionsHistory} configuration={dynamicChartConfiguration}>
+					{#snippet header()}
+						<div class="flex flex-row gap-2 p-4 text-xl">
+							<Label>{$t('common.submissions')}</Label>
+							|
+							<span>{data.submissions}</span>
+						</div>
+					{/snippet}
+					{#snippet emptyState()}
+					    <EmptyResults configuration={{class:'w-full'}}/>
+					{/snippet}
+				</BarChart>
 			{/if}
 		</Card.Content>
 		<Card.Footer class="align-items flex flex-row justify-between gap-2">

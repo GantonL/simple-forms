@@ -20,6 +20,7 @@ export interface QueryOptions extends BaseQueryOptions {
 		condition: SQL;
 	};
 	renderer?: boolean;
+	groupBy?: SQL;
 }
 
 export type WhereCondition<T> = SQL<unknown> | ((table: T) => SQL<unknown>);
@@ -83,11 +84,15 @@ export class AbstractService<
 		if (options?.innerJoin) {
 			baseQuery.innerJoin(options.innerJoin.table, options.innerJoin.condition);
 		}
+
 		// Apply WHERE conditions
 		if (where) {
 			baseQuery = this.buildWhereQueries(baseQuery, where);
 		}
 
+		if (options?.groupBy) {
+			baseQuery.groupBy(options.groupBy);
+		}
 		// Apply ordering
 		if (options?.orderBy) {
 			if (Array.isArray(options.orderBy)) {

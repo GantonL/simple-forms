@@ -4,7 +4,7 @@ import type { Component } from 'svelte';
 import type { Link } from './link';
 
 export interface EmptyResultsConfiguration {
-	label: string;
+	label?: string;
 	icon?: Component;
 	action?: {
 		label: string;

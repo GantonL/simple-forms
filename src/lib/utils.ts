@@ -15,8 +15,8 @@ export type WithoutChildren<T> = T extends { children?: any } ? Omit<T, 'childre
 export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
 export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };
 
-export function getFullFormattedDate(date: Date) {
-	const options: Intl.DateTimeFormatOptions = {
+export function getFullFormattedDate(date: Date, options?: Intl.DateTimeFormatOptions) {
+	const defaults: Intl.DateTimeFormatOptions = {
 		year: 'numeric',
 		month: 'numeric',
 		day: 'numeric',
@@ -24,7 +24,8 @@ export function getFullFormattedDate(date: Date) {
 		minute: 'numeric',
 		second: 'numeric'
 	};
-	return Intl.DateTimeFormat(locale.get(), options).format(new Date(date));
+	const effectiveOptions = options ?? defaults;
+	return Intl.DateTimeFormat(locale.get(), effectiveOptions).format(new Date(date));
 }
 
 export function getFormattetCost(cost: string | number, currency: string) {

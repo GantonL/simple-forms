@@ -12,9 +12,10 @@
 	import { type AppCustomEvent } from '$lib/models/common';
 	import type { UserForm } from '$lib/server/database/schemas/form';
 	import { onMount } from 'svelte';
-	import { UsersForms } from '../../../api';
+	import { UsersForm, UsersForms } from '../../../api';
 	import { LoaderCircle } from '@lucide/svelte';
 	import { DEFAULT_LIMIT } from '$lib/api/configurations/common';
+	import type { BarChartData } from '$lib/models/chart';
 
 	let alertDelete = $state(false);
 	let onDeleteForm = $state(() => {});
@@ -33,12 +34,13 @@
 	let noMoreForms = $state(false);
 	let dataLoading = $state(false);
 	let initialLoading = $state(true);
-	let displayForms: UserForm[] = $state([]);
+	let displayForms = $state<(UserForm & { submissionsHistory?: BarChartData[] })[]>([]);
 
 	onMount(() => {
 		formsStream
 			.then((initial) => {
 				displayForms = initial ?? [];
+				fetchDisplayFormsHistory(displayForms);
 			})
 			.finally(() => {
 				initialLoading = false;
@@ -129,7 +131,24 @@
 			noMoreForms = true;
 		}
 		displayForms.push(...userFormsRes);
+		fetchDisplayFormsHistory(userFormsRes);
 		dataLoading = false;
+	}
+
+	async function fetchFormHistory(formId: UserForm['id']) {
+		const submissionHistory = await GET<(typeof displayForms)[0]['submissionsHistory']>(
+			`${UsersForm(formId)}/submissions-history`,
+			{limit: 7}
+		);
+		return submissionHistory;
+	}
+
+	async function fetchDisplayFormsHistory(df: typeof displayForms) {
+		const promises = df.map((df) => fetchFormHistory(df.id));
+		const setteled = await Promise.allSettled(promises);
+		setteled.forEach((result, idx) => {
+		  df[idx].submissionsHistory = result.status === 'fulfilled' ? (result.value ?? []) : [];
+		})
 	}
 </script>
 
@@ -150,9 +169,14 @@
 			<LoaderCircle class="text-primary animate-spin" />
 		</div>
 	{:else}
-		<div class="grid w-full grid-cols-3 gap-2 max-lg:grid-cols-1">
+		<div class="grid w-full grid-cols-3 gap-2 max-2xl:grid-cols-2 max-lg:grid-cols-1">
 			{#each displayForms as userForm (userForm.id)}
-				<UserFormCard class="h-full" data={userForm} onEvent={onUserCardEvent} />
+				<UserFormCard
+					class="h-full"
+					data={userForm}
+					onEvent={onUserCardEvent}
+					submissionsHistory={userForm.submissionsHistory}
+				/>
 			{/each}
 		</div>
 	{/if}
