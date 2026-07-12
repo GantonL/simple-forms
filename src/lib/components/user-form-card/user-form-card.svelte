@@ -22,7 +22,6 @@
 	import EmptyResults from '../empty-results/empty-results.svelte';
 	import { useSidebar } from '../ui/sidebar';
 	import type { BarChartProps } from 'layerchart';
-	import { direction } from '$lib/stores';
 	import { getDirection } from '$lib/api/configurations/common';
 	import type { AvailableLocals } from '$lib/enums/available-locales';
 	let {
