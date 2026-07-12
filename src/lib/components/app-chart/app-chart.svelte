@@ -1,6 +1,6 @@
 <script lang="ts" generics="TData">
 	import { ChartType } from '$lib/enums/chart';
-	import { Bar, BarChart, type SeriesData } from 'layerchart';
+	import { Bar, BarChart, type BarChartProps, type SeriesData } from 'layerchart';
 	import * as Chart from '../ui/chart/index';
 	import type { Component, Snippet } from 'svelte';
 	import * as Card from '../ui/card';
@@ -12,12 +12,14 @@
 		data,
 		header,
 		emptyState,
+		props,
 	}: {
 		configuration: Chart.ChartConfig;
 		type?: ChartType;
 		data: TData[] | undefined;
 		header?: Snippet;
 		emptyState?: Snippet;
+		props?: BarChartProps<TData>['props'];
 	} = $props();
 
 	const series = $derived.by(() => {
@@ -37,7 +39,7 @@
 	});
 </script>
 
-<Card.Root>
+<Card.Root class={header ? 'pt-0' : ''}>
 	{@render header?.()}
 	<Card.Content>
 		<Chart.Container config={configuration} class="min-h-50 w-full">
@@ -48,7 +50,7 @@
 			{:else if (data.length === 0 && emptyState)}
 			    {@render emptyState()}
 			{:else if type === ChartType.Bar}
-				<BarChart {data} x="x" {y} {series}
+				<BarChart {data} x="x" {y} {series} {props}
 					>{#snippet tooltip()}
 						<Chart.Tooltip />
 					{/snippet}

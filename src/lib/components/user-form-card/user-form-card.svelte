@@ -20,6 +20,11 @@
 	import { Label } from '../ui/label';
 	import type { BarChartData } from '$lib/models/chart';
 	import EmptyResults from '../empty-results/empty-results.svelte';
+	import { useSidebar } from '../ui/sidebar';
+	import type { BarChartProps } from 'layerchart';
+	import { direction } from '$lib/stores';
+	import { getDirection } from '$lib/api/configurations/common';
+	import type { AvailableLocals } from '$lib/enums/available-locales';
 	let {
 		data,
 		onEvent,
@@ -37,6 +42,25 @@
 	let copiedError = $state(false);
 	let openCopyLinkDialog = $state(false);
 	let dynamicChartConfiguration = $state(structuredClone(chartConfiguration));
+	const sidebar = useSidebar();
+	const submissionsHistoryChartProps = $state<BarChartProps<BarChartData[]>['props']>({});
+	$effect(() => {
+	  applySubmissionsChartProps();
+	});
+
+	function applySubmissionsChartProps() {
+	    if (sidebar.isMobile) {
+			submissionsHistoryChartProps!.xAxis = {
+			    tickLabelProps: {
+					rotate: 315,
+					textAnchor: getDirection(locale.get() as AvailableLocals) === 'rl' ? 'start' : 'end'
+				}
+			}
+		}
+		else {
+		  submissionsHistoryChartProps!.xAxis = {};
+		}
+	}
 
 	locale.subscribe(() => {
 		Object.keys(chartConfiguration).forEach((key) => {
@@ -46,6 +70,7 @@
 			}
 		});
 	});
+
 	async function onCopy(event: Event) {
 		event.stopImmediatePropagation();
 		copyDialogOpenInProgress = true;
@@ -106,7 +131,7 @@
 		</Card.Header>
 		<Card.Content>
 			{#if data.is_active !== false}
-				<BarChart data={submissionsHistory} configuration={dynamicChartConfiguration}>
+				<BarChart data={submissionsHistory} configuration={dynamicChartConfiguration} props={submissionsHistoryChartProps}>
 					{#snippet header()}
 						<div class="flex flex-row gap-2 p-4 text-xl">
 							<Label>{$t('common.submissions')}</Label>

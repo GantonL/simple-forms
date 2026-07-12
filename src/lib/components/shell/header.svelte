@@ -2,8 +2,11 @@
 	import { resolve } from '$app/paths';
 	import { t } from '$lib/i18n';
 	import ThemeSwitcher from '../theme-switcher/theme-switcher.svelte';
+	import { useSidebar } from '../ui/sidebar';
 	import SidebarTrigger from '../ui/sidebar/sidebar-trigger.svelte';
 	import * as Tooltip from '../ui/tooltip';
+
+	const sidebar = useSidebar();
 </script>
 
 <header class="grid w-full grid-cols-2 border-b p-2">
@@ -21,7 +24,9 @@
 		<h1>
 			<a class="flex flex-row items-center gap-3 text-xl" href={resolve('/')}>
 				<img class="h-10 w-10" src="/logo.svg" alt="Simple Forms Logo" />
-				<span>{$t('common.brand.name')} </span>
+				{#if !sidebar.isMobile}
+				    <span class="text-nowrap">{$t('common.brand.name')} </span>
+				{/if}
 			</a>
 		</h1>
 	</div>
