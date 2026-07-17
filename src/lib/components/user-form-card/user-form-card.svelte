@@ -16,7 +16,7 @@
 	import * as Tooltip from '../ui/tooltip';
 	import type { ClassValue } from 'svelte/elements';
 	import BarChart from '../app-chart/bar-chart.svelte';
-	import { chartConfiguration } from './configurations/chart';
+	import { chartConfiguration, chartProps } from './configurations/chart';
 	import { Label } from '../ui/label';
 	import type { BarChartData } from '$lib/models/chart';
 	import EmptyResults from '../empty-results/empty-results.svelte';
@@ -42,7 +42,7 @@
 	let openCopyLinkDialog = $state(false);
 	let dynamicChartConfiguration = $state(structuredClone(chartConfiguration));
 	const sidebar = useSidebar();
-	const submissionsHistoryChartProps = $state<BarChartProps<BarChartData[]>['props']>({});
+	const submissionsHistoryChartProps = $state<BarChartProps<BarChartData[]>['props']>(chartProps);
 	$effect(() => {
 	  applySubmissionsChartProps();
 	});

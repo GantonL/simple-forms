@@ -50,7 +50,7 @@
 			{:else if (data.length === 0 && emptyState)}
 			    {@render emptyState()}
 			{:else if type === ChartType.Bar}
-				<BarChart {data} x="x" {y} {series} {props}
+				<BarChart {data} x="x" {y} {series} {props} yNice
 					>{#snippet tooltip()}
 						<Chart.Tooltip />
 					{/snippet}
