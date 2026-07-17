@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import BasePage from '$lib/components/base-page/base-page.svelte';
+	import * as Alert from '$lib/components/ui/alert';
 	import * as Card from '$lib/components/ui/card';
 	import { t } from '$lib/i18n';
-	import type { RemoteBrwoserServiceLoadStatusResponse } from '$lib/types/remote-browser';
+	import {type RemoteBrwoserServiceLoadStatusResponse, LoadStatus } from '$lib/types/remote-browser';
 	import { LoaderCircle } from '@lucide/svelte';
 	import { onMount } from 'svelte';
+	import { statusConfig } from './configurations/remote-browser-service-load-status';
 
 	let remoteBrowserServiceLoadStatusRes: Promise<
 		RemoteBrwoserServiceLoadStatusResponse | undefined
@@ -28,10 +30,22 @@
 </script>
 
 <BasePage title="common.dashboard" description="seo.pages.dashboard.description">
-	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-	    {@render TotalActiveForms(totalActiveForms)}
-	</div>
+    <div class="flex flex-col gap-4 items-center justify-center">
+        {@render SlowServicesMessage(remoteBrowserServiceLoadStatus)}
+    	<div class="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    	    {@render TotalActiveForms(totalActiveForms)}
+    	</div>
+    </div>
 </BasePage>
+
+{#snippet SlowServicesMessage(status?: RemoteBrwoserServiceLoadStatusResponse)}
+    {#if status && [LoadStatus.HIGH, LoadStatus.EXTREME].includes(status.status)}
+        {@const config = statusConfig[status.status]}
+    	<Alert.Root variant="destructive" class={`flex items-center justify-center ${config.bg}`}>
+    	    <Alert.Title class={config.color}>{$t('common.slow_services_message')}</Alert.Title>
+    	</Alert.Root>
+	{/if}
+{/snippet}
 
 {#snippet TotalActiveForms(totalActiveForms: number)}
 	<Card.Root>
