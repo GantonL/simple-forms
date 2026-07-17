@@ -9,6 +9,7 @@
 	import { onMount } from 'svelte';
 	import { statusConfig } from './configurations/remote-browser-service-load-status';
 	import Link from '$lib/components/link/link.svelte';
+	import type { UserForm } from '$lib/server/database/schemas/form';
 
 	let remoteBrowserServiceLoadStatusRes: Promise<
 		RemoteBrwoserServiceLoadStatusResponse | undefined
@@ -16,17 +17,22 @@
 	let remoteBrowserServiceLoadStatus: RemoteBrwoserServiceLoadStatusResponse | undefined =
 		$state(undefined);
 
-	let totalActiveFormsRes: Promise<number | undefined> = $state(page.data.totalActiveForms);
+	let totalActiveFormsRes: Promise<UserForm[] | undefined> = page.data.totalActiveForms;
 	let totalActiveForms: number = $state(0);
 	let totalActiveFormLoaded = $state(false);
+
+	let totalSubmissions: number = $state(0);
+
 	onMount(() => {
 		remoteBrowserServiceLoadStatusRes
 			.then((res) => (remoteBrowserServiceLoadStatus = res));
 		totalActiveFormsRes
-		  .then((res) => totalActiveForms = res ?? 0)
+		  .then((res) => {
+				totalActiveForms = res?.length ?? 0;
+				totalSubmissions = res?.reduce((acc, next) => acc + next.submissions, 0) ?? 0;
+			})
 		  .finally(() => totalActiveFormLoaded = true);
 	});
-
 
 </script>
 
@@ -34,7 +40,8 @@
     <div class="flex flex-col gap-4 items-center justify-center">
         {@render SlowServicesMessage(remoteBrowserServiceLoadStatus)}
     	<div class="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-    	    {@render TotalActiveForms(totalActiveForms)}
+    	    {@render TotalActiveForms()}
+    	    {@render TotalSubmissions()}
     	</div>
     </div>
 </BasePage>
@@ -48,17 +55,33 @@
 	{/if}
 {/snippet}
 
-{#snippet TotalActiveForms(totalActiveForms: number)}
+{#snippet TotalActiveForms()}
     <Link link={{path: '/forms', label: ''}}>
-    	<Card.Root>
-    	    <Card.Header>
-    			{#if totalActiveFormLoaded}
-    			    <Card.Title class="text-5xl text-primary">{totalActiveForms}</Card.Title>
-    			{:else}
-    			    <LoaderCircle class="animate-spin text-primary" size={48}/>
-    			{/if}
-    			<Card.Description>{$t('common.active_forms')}</Card.Description>
-    		</Card.Header>
-    	</Card.Root>
+        {@render CounterCard({
+          isLoading: totalActiveFormLoaded,
+          count: totalActiveForms,
+          label: 'common.active_forms'
+        })}
     </Link>
+{/snippet}
+
+{#snippet TotalSubmissions()}
+   	{@render CounterCard({
+      isLoading: totalActiveFormLoaded,
+      count: totalSubmissions,
+      label: 'common.submissions'
+    })}
+{/snippet}
+
+{#snippet CounterCard(params: {isLoading: boolean, count: number, label: string})}
+    <Card.Root>
+   	    <Card.Header>
+ 			{#if params.isLoading}
+ 			    <Card.Title class="text-5xl text-primary">{params.count}</Card.Title>
+ 			{:else}
+ 			    <LoaderCircle class="animate-spin text-primary" size={48}/>
+ 			{/if}
+ 			<Card.Description>{$t(params.label)}</Card.Description>
+  		</Card.Header>
+   	</Card.Root>
 {/snippet}

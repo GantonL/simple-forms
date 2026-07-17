@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		{ fetch }
 	);
 
-	const totalActiveForms = GET<number>(`${UsersForms}/count?active=true`, { fetch });
+	const totalActiveForms = GET(`${UsersForms}?active=true`, { fetch });
 
 	return {
 		remoteBrowserServiceLoadStatus,
