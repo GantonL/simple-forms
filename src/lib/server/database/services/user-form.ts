@@ -66,12 +66,16 @@ const getServiceUrlFilters = (url: URL): WhereCondition<typeof UserFormTable>[] 
 	const searchParams = url.searchParams;
 	const pli = searchParams.get(SearchParams.PublicLinkIdentifier);
 	const uid = searchParams.get(SearchParams.UserId);
+	const active = searchParams.get(SearchParams.Active);
 	const conditions: WhereCondition<typeof UserFormTable>[] = [];
 	if (pli) {
 		conditions.push(eq(UserFormTable.public_link_identifier, pli));
 	}
 	if (uid) {
 		conditions.push(eq(UserFormTable.user_id, uid));
+	}
+	if (active) {
+		conditions.push(eq(UserFormTable.is_active, active === 'true'));
 	}
 	return conditions;
 };

@@ -255,5 +255,6 @@
 		"monthly": "חודשי"
 	},
 	"no_active_plan_subscription": "לא נמצאה תכנית פעילה",
-	"click_to_purchase_plan": "לחצו לרכישת תכנית"
+	"click_to_purchase_plan": "לחצו לרכישת תכנית",
+	"active_forms": "טפסים פעילים"
 }
