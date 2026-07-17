@@ -8,6 +8,7 @@
 	import { LoaderCircle } from '@lucide/svelte';
 	import { onMount } from 'svelte';
 	import { statusConfig } from './configurations/remote-browser-service-load-status';
+	import Link from '$lib/components/link/link.svelte';
 
 	let remoteBrowserServiceLoadStatusRes: Promise<
 		RemoteBrwoserServiceLoadStatusResponse | undefined
@@ -48,14 +49,16 @@
 {/snippet}
 
 {#snippet TotalActiveForms(totalActiveForms: number)}
-	<Card.Root>
-	    <Card.Header>
-			{#if totalActiveFormLoaded}
-			    <Card.Title class="text-5xl text-primary">{totalActiveForms}</Card.Title>
-			{:else}
-			    <LoaderCircle class="animate-spin text-primary" size={48}/>
-			{/if}
-			<Card.Description>{$t('common.active_forms')}</Card.Description>
-		</Card.Header>
-	</Card.Root>
+    <Link link={{path: '/forms', label: ''}}>
+    	<Card.Root>
+    	    <Card.Header>
+    			{#if totalActiveFormLoaded}
+    			    <Card.Title class="text-5xl text-primary">{totalActiveForms}</Card.Title>
+    			{:else}
+    			    <LoaderCircle class="animate-spin text-primary" size={48}/>
+    			{/if}
+    			<Card.Description>{$t('common.active_forms')}</Card.Description>
+    		</Card.Header>
+    	</Card.Root>
+    </Link>
 {/snippet}
