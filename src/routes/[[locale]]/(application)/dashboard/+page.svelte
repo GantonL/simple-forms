@@ -54,7 +54,7 @@
 <BasePage title="common.dashboard" description="seo.pages.dashboard.description">
     <div class="flex flex-col gap-4 items-center justify-center">
         {@render SlowServicesMessage(remoteBrowserServiceLoadStatus)}
-    	<div class="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    	<div class="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-3">
     	    {@render TotalActiveForms()}
     	    {@render TotalSubmissions()}
     	    {@render SubmissionsAlerts()}
