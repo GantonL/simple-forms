@@ -1,4 +1,4 @@
-import { eq, inArray, type Column } from 'drizzle-orm';
+import { inArray, type Column } from 'drizzle-orm';
 import {
 	FormSubmissionCandidateDataTable,
 	type FormSubmissionCandidateDataInsert
@@ -101,7 +101,12 @@ const getServiceUrlFilters = (
 	const fid = searchParams.get(SearchParams.FormId);
 	const conditions: WhereCondition<typeof FormSubmissionCandidateDataTable>[] = [];
 	if (fid) {
-		conditions.push(eq(FormSubmissionCandidateDataTable.user_form_id, Number(fid)));
+		conditions.push(
+			inArray(
+				FormSubmissionCandidateDataTable.user_form_id,
+				fid.split(',').map((raw) => Number(raw.trim()))
+			)
+		);
 	}
 	return conditions;
 };

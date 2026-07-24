@@ -5,11 +5,13 @@
 	import * as Card from '$lib/components/ui/card';
 	import { t } from '$lib/i18n';
 	import {type RemoteBrwoserServiceLoadStatusResponse, LoadStatus } from '$lib/types/remote-browser';
-	import { LoaderCircle } from '@lucide/svelte';
-	import { onMount } from 'svelte';
+	import {CircleCheck, Form, LoaderCircle, Signature, TriangleAlert } from '@lucide/svelte';
+	import { onMount, type Component, type Snippet } from 'svelte';
 	import { statusConfig } from './configurations/remote-browser-service-load-status';
 	import Link from '$lib/components/link/link.svelte';
 	import type { UserForm } from '$lib/server/database/schemas/form';
+	import { GET } from '$lib/api/helpers/request';
+	import { FormSubmissionCandidateData } from '../../../api';
 
 	let remoteBrowserServiceLoadStatusRes: Promise<
 		RemoteBrwoserServiceLoadStatusResponse | undefined
@@ -23,16 +25,29 @@
 
 	let totalSubmissions: number = $state(0);
 
+	let totalSubmissionsAlerts: number = $state(0);
+	let totalSubmissionsAlertsLoaded = $state(false);
+
 	onMount(() => {
 		remoteBrowserServiceLoadStatusRes
 			.then((res) => (remoteBrowserServiceLoadStatus = res));
 		totalActiveFormsRes
-		  .then((res) => {
-				totalActiveForms = res?.length ?? 0;
-				totalSubmissions = res?.reduce((acc, next) => acc + next.submissions, 0) ?? 0;
-			})
-		  .finally(() => totalActiveFormLoaded = true);
+		    .then(onTotalActiveForms)
+			.finally(() => totalActiveFormLoaded = true);
 	});
+
+	async function onTotalActiveForms(activeForms: UserForm[] | undefined) {
+		totalActiveForms = activeForms?.length ?? 0;
+		const activeFormsIds: number[] = [];
+		activeForms?.forEach((form) => {
+          activeFormsIds.push(form.id);
+          totalSubmissions += form.submissions;
+		});
+		if (activeFormsIds?.length) {
+		    totalSubmissionsAlerts = await GET<number>(`${FormSubmissionCandidateData}/count?fid=${activeFormsIds.join(',')}`);
+			totalSubmissionsAlertsLoaded = true;
+		}
+	}
 
 </script>
 
@@ -42,6 +57,7 @@
     	<div class="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-4">
     	    {@render TotalActiveForms()}
     	    {@render TotalSubmissions()}
+    	    {@render SubmissionsAlerts()}
     	</div>
     </div>
 </BasePage>
@@ -60,7 +76,9 @@
         {@render CounterCard({
           isLoading: totalActiveFormLoaded,
           count: totalActiveForms,
-          label: 'common.active_forms'
+          label: 'common.active_forms',
+          icon: Form,
+          class: 'text-primary'
         })}
     </Link>
 {/snippet}
@@ -69,19 +87,38 @@
    	{@render CounterCard({
       isLoading: totalActiveFormLoaded,
       count: totalSubmissions,
-      label: 'common.submissions'
+      label: 'common.submissions',
+      icon: Signature,
+      class: 'text-primary'
     })}
 {/snippet}
 
-{#snippet CounterCard(params: {isLoading: boolean, count: number, label: string})}
-    <Card.Root>
-   	    <Card.Header>
- 			{#if params.isLoading}
- 			    <Card.Title class="text-5xl text-primary">{params.count}</Card.Title>
- 			{:else}
- 			    <LoaderCircle class="animate-spin text-primary" size={48}/>
- 			{/if}
- 			<Card.Description>{$t(params.label)}</Card.Description>
+{#snippet SubmissionsAlerts()}
+   	{@render CounterCard({
+      isLoading: totalSubmissionsAlertsLoaded,
+      count: totalSubmissionsAlerts,
+      label: 'common.alerts',
+      icon: totalSubmissionsAlerts > 0 ? TriangleAlert : CircleCheck,
+      class: totalSubmissionsAlerts > 0 ? 'text-destructive' : 'text-primary',
+    })}
+{/snippet}
+
+{#snippet CounterCard(params: {isLoading: boolean, count: number, label: string, icon: Component, emptyState?: Snippet, class?: string})}
+    <Card.Root class={params.class}>
+        {#if params.count === 0 && params.emptyState}
+            {@render params.emptyState()}
+        {:else}
+   	    <Card.Header class="flex flex-row flex-nowrap gap-4 justify-between">
+            <div class="flex flex-col gap-2">
+     			{#if params.isLoading}
+     			    <Card.Title class="text-5xl text-inherit">{params.count}</Card.Title>
+     			{:else}
+     			    <LoaderCircle class="animate-spin text-inherit" size={48}/>
+     			{/if}
+     			<Card.Title>{$t(params.label)}</Card.Title>
+            </div>
+            <params.icon class="text-inherit" size={48}/>
   		</Card.Header>
+        {/if}
    	</Card.Root>
 {/snippet}
