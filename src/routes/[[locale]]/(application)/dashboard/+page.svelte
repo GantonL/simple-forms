@@ -12,6 +12,12 @@
 	import type { UserForm } from '$lib/server/database/schemas/form';
 	import { GET } from '$lib/api/helpers/request';
 	import { FormSubmissionCandidateData } from '../../../api';
+	import BarChart from '$lib/components/app-chart/bar-chart.svelte';
+	import { Label } from '$lib/components/ui/label';
+	import EmptyResults from '$lib/components/empty-results/empty-results.svelte';
+	import { chartConfiguration, chartProps } from './configurations/per-form-submissions-chart';
+	import type { ChartConfig } from '$lib/components/ui/chart';
+	import type { BarChartData } from '$lib/models/chart';
 
 	let remoteBrowserServiceLoadStatusRes: Promise<
 		RemoteBrwoserServiceLoadStatusResponse | undefined
@@ -28,12 +34,33 @@
 	let totalSubmissionsAlerts: number = $state(0);
 	let totalSubmissionsAlertsLoaded = $state(false);
 
+	type MostUsedFormsSubmissionsPerDayData = (BarChartData & {data: Record<keyof typeof chartConfiguration, {name: string}>});
+	let mostUsedFormsSubmissionsPerDayRes: Promise<MostUsedFormsSubmissionsPerDayData[]> = $state(page.data.mostUsedFormsSubmissionsPerDay);
+	let mostUsedFormsSubmissionsPerDay: MostUsedFormsSubmissionsPerDayData[] | undefined = $state();
+
+	const dynamicChartConfiguration: ChartConfig = $derived.by(() => {
+	    let finalizedConfig: ChartConfig = {};
+		if (!mostUsedFormsSubmissionsPerDay) return finalizedConfig;
+		const yAxisKeys = Object.keys(mostUsedFormsSubmissionsPerDay[0]).filter(key => !['x', 'data'].includes(key));
+        for (const key of yAxisKeys) {
+          const formConfig  = chartConfiguration[key];
+          finalizedConfig[key] = {
+            ...formConfig,
+            label: mostUsedFormsSubmissionsPerDay[0].data[key].name,
+          }
+        }
+        return finalizedConfig;
+	});
+
 	onMount(() => {
 		remoteBrowserServiceLoadStatusRes
 			.then((res) => (remoteBrowserServiceLoadStatus = res));
 		totalActiveFormsRes
 		    .then(onTotalActiveForms)
 			.finally(() => totalActiveFormLoaded = true);
+		mostUsedFormsSubmissionsPerDayRes
+		  .then((res) => mostUsedFormsSubmissionsPerDay = res)
+		  .catch(() => mostUsedFormsSubmissionsPerDay = [])
 	});
 
 	async function onTotalActiveForms(activeForms: UserForm[] | undefined) {
@@ -59,6 +86,9 @@
     	    {@render TotalSubmissions()}
     	    {@render SubmissionsAlerts()}
     	</div>
+        <div class="w-full">
+            {@render PerFormSubmissions()}
+        </div>
     </div>
 </BasePage>
 
@@ -121,4 +151,19 @@
   		</Card.Header>
         {/if}
    	</Card.Root>
+{/snippet}
+
+
+{#snippet PerFormSubmissions()}
+    <BarChart data={mostUsedFormsSubmissionsPerDay} configuration={dynamicChartConfiguration} props={chartProps}>
+    	{#snippet header()}
+            <div class="flex flex-col gap-2 p-4">
+                <Label class="text-2xl">{$t('common.submissions')}</Label>
+                <Label class="text-sm text-muted-foreground">{$t('common.submissions_per_form_per_day_chart_desc')}</Label>
+            </div>
+    	{/snippet}
+    	{#snippet emptyState()}
+    	    <EmptyResults configuration={{class:'w-full'}}/>
+        {/snippet}
+	</BarChart>
 {/snippet}

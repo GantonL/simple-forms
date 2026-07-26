@@ -248,5 +248,6 @@
 	"no_active_plan_subscription": "No active plan has been found",
 	"click_to_purchase_plan": "Click to purchase a plan",
 	"active_forms": "Active forms",
-	"slow_services_message": "Our server are under high load, future requests are queued"
+	"slow_services_message": "Our server are under high load, future requests are queued",
+	"submissions_per_form_per_day_chart_desc": "Submissions for the 3 most common signed forms"
 }
