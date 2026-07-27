@@ -18,8 +18,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			fetch
 		}
 	);
-	console.log(userForm);
 	if (!userForm) {
+		console.log('Could not find form for public link', publicLinkIndetifier);
 		error(404);
 	}
 	if (userForm.is_active === false) {

@@ -40,7 +40,7 @@
 
 	const dynamicChartConfiguration: ChartConfig = $derived.by(() => {
 	    let finalizedConfig: ChartConfig = {};
-		if (!mostUsedFormsSubmissionsPerDay) return finalizedConfig;
+		if (!mostUsedFormsSubmissionsPerDay || mostUsedFormsSubmissionsPerDay.length === 0) return finalizedConfig;
 		const yAxisKeys = Object.keys(mostUsedFormsSubmissionsPerDay[0]).filter(key => !['x', 'data'].includes(key));
         for (const key of yAxisKeys) {
           const formConfig  = chartConfiguration[key];
