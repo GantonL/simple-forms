@@ -129,7 +129,7 @@
       count: totalSubmissionsAlerts,
       label: 'common.alerts',
       icon: totalSubmissionsAlerts > 0 ? TriangleAlert : CircleCheck,
-      class: totalSubmissionsAlerts > 0 ? 'text-destructive' : 'text-primary',
+      class: totalSubmissionsAlerts > 0 ? 'text-destructive bg-destructive/20' : 'text-primary',
     })}
 {/snippet}
 
