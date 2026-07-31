@@ -40,6 +40,9 @@
 	const seriesLayout = $derived.by(() => {
 	  if (series.length > 1) return 'stack';
 	});
+	const axis = $derived.by(() => {
+      return seriesLayout?.includes('stack') ? 'x' : undefined
+	});
 </script>
 
 <Card.Root class={header ? 'pt-0' : ''}>
@@ -61,18 +64,17 @@
 
 
 {#snippet RenderBarChart()}
-    <BarChart {data} x="x" {y} axis={seriesLayout?.includes('stack') ? 'x' : undefined} {series} {props} yNice legend={!!props?.legend} {seriesLayout}
+    <BarChart {data} x="x" {y} {axis} {series} {props} yNice legend={!!props?.legend} {seriesLayout}
 		>{#snippet tooltip()}
 			<Chart.Tooltip />
 		{/snippet}
 		{#snippet marks({ context })}
             {#each series as s, i (i)}
-                {@const isLast = i === series.length - 1}
     			{#each data as d, i (i)}
          			<Bar
         				seriesKey={s.key}
-                        rounded={isLast ? 'top' : undefined}
-                        radius={isLast ? 8 : undefined}
+                        rounded={series.length === 1 ? 'top' : undefined}
+                        radius={series.length === 1 ? 8 : undefined}
         				motion="spring"
         				fill={'color' in d ? d.color as string : s.color}
         				data={d}
