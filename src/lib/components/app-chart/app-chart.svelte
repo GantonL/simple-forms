@@ -73,8 +73,6 @@
     			{#each data as d, i (i)}
          			<Bar
         				seriesKey={s.key}
-                        rounded={series.length === 1 ? 'top' : undefined}
-                        radius={series.length === 1 ? 8 : undefined}
         				motion="spring"
         				fill={'color' in d ? d.color as string : s.color}
         				data={d}
