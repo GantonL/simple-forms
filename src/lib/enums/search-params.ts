@@ -6,5 +6,6 @@ export enum SearchParams {
 	FormId = 'fid',
 	FreeSearch = 'fs',
 	SearchTerm = 'searchTerm',
-	SubmissionId = 'sid'
+	SubmissionId = 'sid',
+	Active = 'active'
 }

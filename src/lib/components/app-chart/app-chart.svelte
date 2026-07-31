@@ -1,4 +1,4 @@
-<script lang="ts" generics="TData">
+<script lang="ts" generics="TData extends object">
 	import { ChartType } from '$lib/enums/chart';
 	import { Bar, BarChart, type BarChartProps, type SeriesData } from 'layerchart';
 	import * as Chart from '../ui/chart/index';
@@ -28,7 +28,7 @@
 			derivedSeries.push({
 				key,
 				label: configuration[key]?.label,
-				color: configuration[key]?.color
+				color: configuration[key]?.color,
 			});
 		});
 		return derivedSeries;
@@ -36,6 +36,12 @@
 	const y = $derived.by(() => {
 		if (series.length === 1) return series[0].key;
 		return undefined;
+	});
+	const seriesLayout = $derived.by(() => {
+	  if (series.length > 1) return 'stack';
+	});
+	const axis = $derived.by(() => {
+      return seriesLayout?.includes('stack') ? 'x' : undefined
 	});
 </script>
 
@@ -50,28 +56,34 @@
 			{:else if (data.length === 0 && emptyState)}
 			    {@render emptyState()}
 			{:else if type === ChartType.Bar}
-				<BarChart {data} x="x" {y} {series} {props} yNice
-					>{#snippet tooltip()}
-						<Chart.Tooltip />
-					{/snippet}
-					{#snippet marks({ context })}
-						{@const s = context.series.visibleSeries[0]}
-						{#each data as d, i (i)}
-							<Bar
-								seriesKey={s.key}
-								{...s.props}
-								rounded="all"
-								radius={8}
-								motion="spring"
-								fill={d.color ?? s.color}
-								data={d}
-								fillOpacity={0.8}
-								strokeWidth={0}
-							/>
-						{/each}
-					{/snippet}
-				</BarChart>
+				{@render RenderBarChart()}
 			{/if}
 		</Chart.Container>
 	</Card.Content>
 </Card.Root>
+
+
+{#snippet RenderBarChart()}
+    <BarChart {data} x="x" {y} {axis} {series} {props} yNice legend={!!props?.legend} {seriesLayout}
+		>{#snippet tooltip()}
+			<Chart.Tooltip />
+		{/snippet}
+		{#snippet marks({ context })}
+            {#each series as s, i (i)}
+    			{#each data as d, i (i)}
+         			<Bar
+        				seriesKey={s.key}
+                        rounded={series.length === 1 ? 'top' : undefined}
+                        radius={series.length === 1 ? 8 : undefined}
+        				motion="spring"
+        				fill={'color' in d ? d.color as string : s.color}
+        				data={d}
+        				fillOpacity={0.8}
+        				strokeWidth={0}
+        				{...s.props}
+         			/>
+    			{/each}
+            {/each}
+		{/snippet}
+	</BarChart>
+{/snippet}

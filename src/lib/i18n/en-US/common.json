@@ -198,16 +198,6 @@
 	"regeneration_failed": "Failed to send form for regeneration",
 	"unknown": "Unknown",
 	"danger_zone": "Danger zone",
-	"service_load_status": "Service load status",
-	"remote_browser_service": {
-		"load_status": {
-			"minimum": "Service is operating at minimum capacity",
-			"low": "Service is operating at low capacity",
-			"medium": "Service is operating at medium capacity",
-			"high": "Service is operating at high capacity",
-			"extreme": "Service is at full capacity. Requests are being queued"
-		}
-	},
 	"queued_requests": "{{number}} requests queued",
 	"enable_form_sign": "Allow access to sign",
 	"disable_form_sign": "Deny access to sign",
@@ -256,5 +246,8 @@
 		"monthly": "Monthly"
 	},
 	"no_active_plan_subscription": "No active plan has been found",
-	"click_to_purchase_plan": "Click to purchase a plan"
+	"click_to_purchase_plan": "Click to purchase a plan",
+	"active_forms": "Active forms",
+	"slow_services_message": "Our server are under high load, future requests are queued",
+	"submissions_per_form_per_day_chart_desc": "Submissions for the 3 most common signed forms"
 }

@@ -6,3 +6,5 @@ export type BarChartData =
 			x: string;
 			y: number;
 	  };
+
+export type LineChartData = BarChartData;
