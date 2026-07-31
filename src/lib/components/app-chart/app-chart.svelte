@@ -61,7 +61,7 @@
 
 
 {#snippet RenderBarChart()}
-    <BarChart {data} x="x" {y} {series} {props} yNice legend={!!props?.legend} {seriesLayout}
+    <BarChart {data} x="x" {y} axis={seriesLayout?.includes('stack') ? 'x' : undefined} {series} {props} yNice legend={!!props?.legend} {seriesLayout}
 		>{#snippet tooltip()}
 			<Chart.Tooltip />
 		{/snippet}
