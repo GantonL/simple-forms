@@ -179,7 +179,7 @@
         	        <Link size={12} class="text-secondary"></Link>
                     <span>{$t('common.copy_link')}</span>
     			</Card.Title>
-    			<Card.Description>כל מי שיש לו גישה לקישור יכול לחתום על הטופס</Card.Description>
+    			<Card.Description>{$t('common.copy_link_description')}</Card.Description>
     		</Card.Header>
 			<Card.Content>
         		<div class="flex flex-row items-center gap-2 rounded-md border p-2 shadow-md min-w-0 max-w-full" dir="ltr">

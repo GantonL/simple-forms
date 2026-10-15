@@ -251,5 +251,6 @@
 	"slow_services_message": "Our server are under high load, future requests are queued",
 	"submissions_per_form_per_day_chart_desc": "Submissions for the 3 most common signed forms",
 	"share": "Share",
-	"qr_code": "QR code"
+	"qr_code": "QR code",
+	"copy_link_description": "Anyone with access to this link can sign the form"
 }
