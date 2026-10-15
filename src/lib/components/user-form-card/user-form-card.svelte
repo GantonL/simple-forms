@@ -103,12 +103,6 @@
 		copiedSuccess = false;
 	}
 
-	function openPrefilledEmail() {
-        const recipient = "recipient@example.com";
-        const subject = encodeURIComponent(t.get('common.share_sign_link_email_subject'));
-        const body = encodeURIComponent(t.get('common.share_sign_link_email_body')) + `\n${copyLink}`;
-        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
-	}
 </script>
 
 <button class="hover:cursor-pointer" onclick={onOpen}>
@@ -168,11 +162,6 @@
 <Dialog.Root bind:open={openCopyLinkDialog} onOpenChangeComplete={onDialogOpenComplete}>
 	<Dialog.Content>
 		<Dialog.Title><h2 class="p-2">{$t('common.share')}</h2></Dialog.Title>
-		<!-- <div class="flex flex-row gap-2 justify-between">
-		    <Button variant="outline" onclick={openPrefilledEmail}>
-		        <Mail size={24} class="text-primary"></Mail>
-			</Button>
-		</div> -->
 		<Card.Root class="min-w-0">
     		<Card.Header>
     		    <Card.Title class="flex flex-row gap-2 items-center">
