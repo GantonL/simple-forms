@@ -164,7 +164,7 @@
 						disabled={isSubmitting}
 					>
 						{#if isSubmitting}
-							<LoaderCircle size={12} />
+							<LoaderCircle size={12} class="animate-spin"/>
 						{/if}
 						<span>
 							{$t(

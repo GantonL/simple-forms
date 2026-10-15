@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check, PowerOff } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, PowerOff, Share2, Mail, QrCode } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -24,6 +24,7 @@
 	import type { BarChartProps } from 'layerchart';
 	import { getDirection } from '$lib/api/configurations/common';
 	import type { AvailableLocals } from '$lib/enums/available-locales';
+	import header from '$lib/templates/emails/components/header';
 	let {
 		data,
 		onEvent,
@@ -99,6 +100,13 @@
 		copiedError = false;
 		copiedSuccess = false;
 	}
+
+	function openPrefilledEmail() {
+        const recipient = "recipient@example.com";
+        const subject = encodeURIComponent(t.get('common.share_sign_link_email_subject'));
+        const body = encodeURIComponent(t.get('common.share_sign_link_email_body')) + `\n${copyLink}`;
+        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+	}
 </script>
 
 <button class="hover:cursor-pointer" onclick={onOpen}>
@@ -157,19 +165,46 @@
 
 <Dialog.Root bind:open={openCopyLinkDialog} onOpenChangeComplete={onDialogOpenComplete}>
 	<Dialog.Content>
-		<Dialog.Title><h2 class="p-2">{$t('common.copy_link')}</h2></Dialog.Title>
-		<div class="flex flex-row items-center gap-2 rounded-md border p-2 shadow-md" dir="ltr">
-			<p class="break-all">{copyLink}</p>
-			<Button variant="ghost" size="icon" onclick={executeCopy}>
-				{#if copiedError}
-					<X size={14} class="text-destructive" />
-				{:else if copiedSuccess}
-					<Check size={14} class="text-primary" />
-				{:else}
-					<Copy size={14} />
-				{/if}
+		<Dialog.Title><h2 class="p-2">{$t('common.share')}</h2></Dialog.Title>
+		<!-- <div class="flex flex-row gap-2 justify-between">
+		    <Button variant="outline" onclick={openPrefilledEmail}>
+		        <Mail size={24} class="text-primary"></Mail>
 			</Button>
-		</div>
+		</div> -->
+		<Card.Root class="min-w-0">
+    		<Card.Header>
+    		    <Card.Title class="flex flex-row gap-2 items-center">
+        	        <Link size={12} class="text-secondary"></Link>
+                    <span>{$t('common.copy_link')}</span>
+    			</Card.Title>
+    			<Card.Description>כל מי שיש לו גישה לקישור יכול לחתום על הטופס</Card.Description>
+    		</Card.Header>
+			<Card.Content>
+        		<div class="flex flex-row items-center gap-2 rounded-md border p-2 shadow-md min-w-0 max-w-full" dir="ltr">
+        			<p class="grow min-w-0 text-ellipsis overflow-hidden whitespace-nowrap">{copyLink}</p>
+        			<Button variant="ghost" size="icon" onclick={executeCopy}>
+        				{#if copiedError}
+        					<X size={14} class="text-destructive" />
+        				{:else if copiedSuccess}
+        					<Check size={14} class="text-primary" />
+        				{:else}
+        					<Copy size={14} />
+        				{/if}
+        			</Button>
+        		</div>
+			</Card.Content>
+		</Card.Root>
+		<Card.Root class="min-w-0">
+    		<Card.Header>
+    		    <Card.Title class="flex flex-row gap-2 items-center">
+        	        <QrCode size={12} class="text-secondary"/>
+                    <span>{$t('common.qr_code')}</span>
+    			</Card.Title>
+    		</Card.Header>
+			<Card.Content>
+
+			</Card.Content>
+		</Card.Root>
 	</Dialog.Content>
 </Dialog.Root>
 
@@ -186,9 +221,9 @@
 				{#if copyDialogOpenInProgress}
 					<LoaderCircle size={12} class="animate-spin" />
 				{:else}
-					<Link size={12} />
+					<Share2 size={12} />
 				{/if}
-				<span>{$t('common.copy_link')}</span>
+				<span>{$t('common.share')}</span>
 			</Button>
 		</Tooltip.Trigger>
 		{#if disabledNotActive}

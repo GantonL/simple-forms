@@ -248,5 +248,6 @@
 	"click_to_purchase_plan": "לחצו לרכישת תכנית",
 	"active_forms": "טפסים פעילים",
 	"slow_services_message": "אנו חווים כרגע עומסים בשרתים שלנו, בקשות עתידיות ממתינות בתור",
-	"submissions_per_form_per_day_chart_desc": "הגשות עבור שלושת הטפסים הנחתמים ביותר לפי תאריך"
+	"submissions_per_form_per_day_chart_desc": "הגשות עבור שלושת הטפסים הנחתמים ביותר לפי תאריך",
+	"share": "שיתוף"
 }
