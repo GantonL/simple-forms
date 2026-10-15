@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check, PowerOff, Share2, Mail, QrCode } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, PowerOff, Share2, QrCode } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -24,7 +24,8 @@
 	import type { BarChartProps } from 'layerchart';
 	import { getDirection } from '$lib/api/configurations/common';
 	import type { AvailableLocals } from '$lib/enums/available-locales';
-	import header from '$lib/templates/emails/components/header';
+	import SvgQR from '@svelte-put/qr/svg/QR.svelte';
+
 	let {
 		data,
 		onEvent,
@@ -42,6 +43,7 @@
 	let copiedError = $state(false);
 	let openCopyLinkDialog = $state(false);
 	let dynamicChartConfiguration = $state(structuredClone(chartConfiguration));
+
 	const sidebar = useSidebar();
 	const submissionsHistoryChartProps = $state<BarChartProps<BarChartData[]>['props']>(chartProps);
 	$effect(() => {
@@ -202,7 +204,9 @@
     			</Card.Title>
     		</Card.Header>
 			<Card.Content>
-
+			    <div class="flex items-center justify-center">
+			        <SvgQR data={copyLink} class="h-48 w-48"/>
+				</div>
 			</Card.Content>
 		</Card.Root>
 	</Dialog.Content>
