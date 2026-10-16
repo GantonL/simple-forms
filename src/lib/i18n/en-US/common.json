@@ -249,5 +249,9 @@
 	"click_to_purchase_plan": "Click to purchase a plan",
 	"active_forms": "Active forms",
 	"slow_services_message": "Our server are under high load, future requests are queued",
-	"submissions_per_form_per_day_chart_desc": "Submissions for the 3 most common signed forms"
+	"submissions_per_form_per_day_chart_desc": "Submissions for the 3 most common signed forms",
+	"share": "Share",
+	"qr_code": "QR code",
+	"copy_link_description": "Anyone with access to this link can sign the form",
+	"qr_code_description": "Scan the code to access the form"
 }

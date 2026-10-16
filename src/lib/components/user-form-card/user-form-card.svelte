@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check, PowerOff } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, PowerOff, Share2, QrCode, CloudDownload } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -24,6 +24,10 @@
 	import type { BarChartProps } from 'layerchart';
 	import { getDirection } from '$lib/api/configurations/common';
 	import type { AvailableLocals } from '$lib/enums/available-locales';
+	import SvgQR from '@svelte-put/qr/svg/QR.svelte';
+	import { createQrSvgDataUrl, type QRConfig } from '@svelte-put/qr';
+	import { resolve } from '$app/paths';
+
 	let {
 		data,
 		onEvent,
@@ -41,6 +45,7 @@
 	let copiedError = $state(false);
 	let openCopyLinkDialog = $state(false);
 	let dynamicChartConfiguration = $state(structuredClone(chartConfiguration));
+
 	const sidebar = useSidebar();
 	const submissionsHistoryChartProps = $state<BarChartProps<BarChartData[]>['props']>(chartProps);
 	$effect(() => {
@@ -99,6 +104,7 @@
 		copiedError = false;
 		copiedSuccess = false;
 	}
+
 </script>
 
 <button class="hover:cursor-pointer" onclick={onOpen}>
@@ -157,19 +163,53 @@
 
 <Dialog.Root bind:open={openCopyLinkDialog} onOpenChangeComplete={onDialogOpenComplete}>
 	<Dialog.Content>
-		<Dialog.Title><h2 class="p-2">{$t('common.copy_link')}</h2></Dialog.Title>
-		<div class="flex flex-row items-center gap-2 rounded-md border p-2 shadow-md" dir="ltr">
-			<p class="break-all">{copyLink}</p>
-			<Button variant="ghost" size="icon" onclick={executeCopy}>
-				{#if copiedError}
-					<X size={14} class="text-destructive" />
-				{:else if copiedSuccess}
-					<Check size={14} class="text-primary" />
-				{:else}
-					<Copy size={14} />
-				{/if}
-			</Button>
-		</div>
+		<Dialog.Title><h2 class="p-2">{$t('common.share')}</h2></Dialog.Title>
+		<Card.Root class="min-w-0">
+    		<Card.Header>
+    		    <Card.Title class="flex flex-row gap-2 items-center">
+        	        <Link size={12} class="text-secondary"></Link>
+                    <span>{$t('common.copy_link')}</span>
+    			</Card.Title>
+    			<Card.Description>{$t('common.copy_link_description')}</Card.Description>
+    		</Card.Header>
+			<Card.Content>
+        		<div class="flex flex-row items-center gap-2 rounded-md border p-2 shadow-md min-w-0 max-w-full" dir="ltr">
+        			<p class="grow min-w-0 text-ellipsis overflow-hidden whitespace-nowrap">{copyLink}</p>
+        			<Button variant="ghost" size="icon" onclick={executeCopy}>
+        				{#if copiedError}
+        					<X size={14} class="text-destructive" />
+        				{:else if copiedSuccess}
+        					<Check size={14} class="text-primary" />
+        				{:else}
+        					<Copy size={14} />
+        				{/if}
+        			</Button>
+        		</div>
+			</Card.Content>
+		</Card.Root>
+		<Card.Root class="min-w-0">
+    		<Card.Header>
+    		    <Card.Title class="flex flex-row gap-2 items-center">
+        	        <QrCode size={12} class="text-secondary"/>
+                    <span>{$t('common.qr_code')}</span>
+    			</Card.Title>
+                <Card.Description>{$t('common.qr_code_description')}</Card.Description>
+    		</Card.Header>
+			<Card.Content>
+			    <div class="flex flex-col items-center justify-center gap-2">
+					{#if copyLink}
+					    {@const qrConfig: QRConfig = {data: copyLink, shape: 'circle'}}
+    			        <SvgQR {...qrConfig} class="h-48 w-48"/>
+    					<a href={createQrSvgDataUrl(qrConfig)} download={`${data.name}.svg`}>
+    					    <Button variant="outline" class="flex flex-row flex-nowrap gap-2 items-center w-48">
+    							<CloudDownload size={12}/>
+    							<span>{$t('common.download')}</span>
+    						</Button>
+    					</a>
+					{/if}
+				</div>
+			</Card.Content>
+		</Card.Root>
 	</Dialog.Content>
 </Dialog.Root>
 
@@ -186,9 +226,9 @@
 				{#if copyDialogOpenInProgress}
 					<LoaderCircle size={12} class="animate-spin" />
 				{:else}
-					<Link size={12} />
+					<Share2 size={12} />
 				{/if}
-				<span>{$t('common.copy_link')}</span>
+				<span>{$t('common.share')}</span>
 			</Button>
 		</Tooltip.Trigger>
 		{#if disabledNotActive}
