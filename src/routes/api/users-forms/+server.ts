@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 	const options = getUrlOptions(url);
 	const items = await service.find(filters, options);
 	if (options?.renderer) return json(items);
-	const isPostFindBlock = await postFindBlock(url, items, user);
+	const isPostFindBlock = await postFindBlock(url, items);
 	if (isPostFindBlock) return json([]);
 	return json(items);
 };
