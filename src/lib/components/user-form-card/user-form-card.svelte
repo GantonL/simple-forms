@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { locale, t } from '$lib/i18n';
 	import type { UserForm } from '$lib/server/database/schemas/form';
-	import { Copy, Link, LoaderCircle, X, Check, PowerOff, Share2, QrCode } from '@lucide/svelte';
+	import { Copy, Link, LoaderCircle, X, Check, PowerOff, Share2, QrCode, CloudDownload } from '@lucide/svelte';
 	import * as Card from '../ui/card';
 	import Button from '../ui/button/button.svelte';
 	import { copyToClipboard } from '$lib/client/utils';
@@ -25,6 +25,8 @@
 	import { getDirection } from '$lib/api/configurations/common';
 	import type { AvailableLocals } from '$lib/enums/available-locales';
 	import SvgQR from '@svelte-put/qr/svg/QR.svelte';
+	import { createQrSvgDataUrl, type QRConfig } from '@svelte-put/qr';
+	import { resolve } from '$app/paths';
 
 	let {
 		data,
@@ -194,8 +196,17 @@
                 <Card.Description>{$t('common.qr_code_description')}</Card.Description>
     		</Card.Header>
 			<Card.Content>
-			    <div class="flex items-center justify-center">
-			        <SvgQR data={copyLink} class="h-48 w-48"/>
+			    <div class="flex flex-col items-center justify-center gap-2">
+					{#if copyLink}
+					    {@const qrConfig: QRConfig = {data: copyLink, shape: 'circle'}}
+    			        <SvgQR {...qrConfig} class="h-48 w-48"/>
+    					<a href={createQrSvgDataUrl(qrConfig)} download={`${data.name}.svg`}>
+    					    <Button variant="outline" class="flex flex-row flex-nowrap gap-2 items-center w-48">
+    							<CloudDownload size={12}/>
+    							<span>{$t('common.download')}</span>
+    						</Button>
+    					</a>
+					{/if}
 				</div>
 			</Card.Content>
 		</Card.Root>
