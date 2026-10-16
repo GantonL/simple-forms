@@ -191,6 +191,7 @@
         	        <QrCode size={12} class="text-secondary"/>
                     <span>{$t('common.qr_code')}</span>
     			</Card.Title>
+                <Card.Description>{$t('common.qr_code_description')}</Card.Description>
     		</Card.Header>
 			<Card.Content>
 			    <div class="flex items-center justify-center">

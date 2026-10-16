@@ -251,5 +251,6 @@
 	"submissions_per_form_per_day_chart_desc": "הגשות עבור שלושת הטפסים הנחתמים ביותר לפי תאריך",
 	"share": "שיתוף",
 	"qr_code": "קוד QR",
-	"copy_link_description":"כל מי שיש לו גישה לקישור יכול לחתום על הטופס"
+	"copy_link_description":"כל מי שיש לו גישה לקישור יכול לחתום על הטופס",
+	"qr_code_description": "סירקו את הקוד כדי לגשת ישירות לטופס"
 }
