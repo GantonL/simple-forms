@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n';
 	import type { Subscription } from '$lib/models/subscription';
-	import { ShieldUser, TriangleAlert } from '@lucide/svelte';
+	import { RefreshCcw, ShieldUser } from '@lucide/svelte';
 	import { defaultDateCell } from '../app-data-table/configurations/defaults';
 	import Link from '../link/link.svelte';
 	import * as Alert from '../ui/alert';
@@ -10,6 +10,8 @@
 	import { Label } from '../ui/label';
 	import Separator from '../ui/separator/separator.svelte';
 	import { sections } from './configurations';
+	import { Button } from '../ui/button';
+	import { Plans } from '$lib/enums/plans';
 
 	let { subscription }: { subscription: Subscription } = $props();
 </script>
@@ -33,6 +35,17 @@
 					<Separator />
 				{/if}
 			{/each}
+			{#if subscription.cancelled_at}
+			    <Button>
+    			    <Link link={{
+    					label: 'common.click_here_to_renew',
+    					path: '/user/plan/renew',
+    					icon: RefreshCcw,
+    					planRequired: [Plans.Basic],
+                        }} class="text-primary-foreground">
+					</Link>
+				</Button>
+			{/if}
 		{/if}
 	</Card.Content>
 </Card.Root>

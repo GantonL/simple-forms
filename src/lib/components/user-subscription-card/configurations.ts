@@ -26,10 +26,6 @@ export const sections: DisplaySection<Subscription>[] = [
 				type: 'date',
 				icon: CalendarOff,
 				hideIf: (sub) => !sub.cancelled_at,
-				link: {
-					path: '/user/plan/renew',
-					label: 'common.click_here_to_renew'
-				},
 				class: 'border rounded-sm border-amber-400 bg-amber-400/20'
 			},
 			{

@@ -252,5 +252,8 @@
 	"share": "שיתוף",
 	"qr_code": "קוד QR",
 	"copy_link_description":"כל מי שיש לו גישה לקישור יכול לחתום על הטופס",
-	"qr_code_description": "סירקו את הקוד כדי לגשת ישירות לטופס"
+	"qr_code_description": "סירקו את הקוד כדי לגשת ישירות לטופס",
+	"redirecting_to_renewal_page_checkout": "מנווטים אותך לדף חידוש המינוי",
+	"renewal_page_checkout_waiting_for_action": "דף חידוש המינוי מחכה לפעולה מצדך",
+	"renewal_page_checkout_closed": "דף חידוש המינוי נסגר"
 }
