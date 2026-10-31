@@ -253,5 +253,8 @@
 	"share": "Share",
 	"qr_code": "QR code",
 	"copy_link_description": "Anyone with access to this link can sign the form",
-	"qr_code_description": "Scan the code to access the form"
+	"qr_code_description": "Scan the code to access the form",
+	"redirecting_to_renewal_page_checkout": "You are being redirected to the renewal checkout page",
+	"renewal_page_checkout_waiting_for_action": "Renewal checkout page is waiting for your action",
+	"renewal_page_checkout_closed": "Renewal checkout page closed"
 }

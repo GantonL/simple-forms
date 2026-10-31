@@ -97,7 +97,10 @@ export function getPlanNameById(id: string) {
 export async function getCheckoutLink(
 	user: User,
 	plan: Plans,
-	options?: { language: AvailableLocals }
+  options?: {
+    language?: AvailableLocals;
+    renewLicense?: boolean;
+  }
 ) {
 	const baseCheckoutUrl = `${baseUrl}/checkout/link`;
 	const productId = getProductId();
@@ -112,6 +115,10 @@ export async function getCheckoutLink(
 	});
 	if (options?.language?.length) {
 		queryParams.append('language', options.language.split('-')[0]);
+  }
+  const licenseId = String(user.license_id);
+	if (options?.renewLicense && licenseId.length > 0) {
+		queryParams.append('licenseKey', licenseId);
 	}
 	const url = `${baseCheckoutUrl}?${queryParams.toString()}`;
 	try {

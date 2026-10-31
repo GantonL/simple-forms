@@ -7,7 +7,8 @@ export const GET: RequestHandler = async ({ params, locals, url }) => {
 	if (!user) {
 		redirect(300, '/signin');
 	}
-	const language = url.searchParams.get('language') as AvailableLocals;
-	const checkoutLink = await getCheckoutLink(user, params.plan as Plans, { language });
+  const language = url.searchParams.get('language') as AvailableLocals;
+	const renewLicense = url.searchParams.get('renewLicense') === 'true';
+	const checkoutLink = await getCheckoutLink(user, params.plan as Plans, { language, renewLicense });
 	return json({ checkoutLink });
 };
